@@ -13,6 +13,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Link,
 } from '@chakra-ui/react'
 import {
   HamburgerIcon,
@@ -65,7 +66,7 @@ export default function WithSubnavigation() {
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
-          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
+          <Button as={Link} fontSize={'sm'} fontWeight={400} variant={'link'} href={'/login'}>
             Sign In
           </Button>
           <Button

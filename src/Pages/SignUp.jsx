@@ -10,17 +10,14 @@ const SignUp = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/auth/signup", {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-              });
-            const data = await response.json();
-            sessionStorage.setItem('token', data.token);
-            console.log("Successfully logged in");
-        }
+                const response = await axios.post("http://localhost:3001/auth/signup", {
+                    email,
+                    password
+                });
+                const data = response.data;
+                sessionStorage.setItem('token', data.token);
+                console.log("Successfully signed up");
+            }
         catch (err) {
             console.log("Oops login error", error);
         }

@@ -3,6 +3,7 @@ import { Container, Heading, Box,
         InputGroup, FormLabel, Input, 
         Button } from '@chakra-ui/react';
 import axios from 'axios';
+import { redirect } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -10,17 +11,15 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/auth/login", {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-              });
-            const data = await response.json();
-            sessionStorage.setItem('token', data.token);
-            console.log("Successfully logged in");
-        }
+                const response = await axios.post("http://localhost:3001/auth/login", {
+                    email,
+                    password
+                });
+                const data = response.data;
+                sessionStorage.setItem('token', data.token);
+                console.log("Successfully logged in");
+                window.location("/dashboard");
+            }
         catch (err) {
             console.log("Oops login error", error);
         }

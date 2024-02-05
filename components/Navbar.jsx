@@ -21,10 +21,22 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons'
+import { useEffect, useState } from 'react';
 
 export default function WithSubnavigation() {
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onToggle } = useDisclosure();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(()=> {
+    const token = sessionStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  },[])
+
+  const handleSignOut = () => {
+    sessionStorage.removeItem('token');
+    setIsLoggedIn(false);
+    console.log("Logged Out");
+  }
   return (
     <Box>
       <Flex
@@ -66,6 +78,8 @@ export default function WithSubnavigation() {
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
+            {!isLoggedIn? 
+           <>
           <Button as={Link} fontSize={'sm'} fontWeight={400} variant={'link'} href={'/login'}>
             Sign In
           </Button>
@@ -81,7 +95,15 @@ export default function WithSubnavigation() {
               bg: 'pink.300',
             }}>
             Sign Up
-          </Button>
+          </Button> 
+           </>:
+           <>
+            <Button
+              onClick={handleSignOut}
+            >
+              Sign Out</Button>
+           </>
+          }
         </Stack>
       </Flex>
 

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -13,11 +14,12 @@ const SignUp = () => {
     const handleLogin = async () => {
         try {
                 const response = await axios.post("http://localhost:3001/auth/signup", {
+                    name, 
                     email,
                     password
                 });
                 const data = response.data;
-                sessionStorage.setItem('token', data.token);
+                // sessionStorage.setItem('token', data.token);
                 console.log("Successfully signed up");
                 navigate("/login")
             }
@@ -26,6 +28,9 @@ const SignUp = () => {
         }
     }
     
+    const handleNameChange = (event) => {
+        setName(event.target.value)
+    }
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
     }
@@ -52,6 +57,17 @@ const SignUp = () => {
                     boxShadow= "2xl"
                     borderRadius= "xl"
                 >
+                    <InputGroup
+                        mb = "1em"
+                    >
+                        <FormLabel>Name</FormLabel>
+                        <Input 
+                            type='text'
+                            value={name}
+                            onChange={handleNameChange}
+                            placeholder='Some One'
+                        />
+                    </InputGroup>
                     <InputGroup
                         mb = "1em"
                     >

@@ -291,7 +291,7 @@ const NAV_ITEMS= [
     href: '#',
   },
   {
-    label: 'Hire Designers',
-    href: '#',
+    label: 'Dasboard',
+    href: '/dashboard',
   },
 ]

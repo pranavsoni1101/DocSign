@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
+import Dashboard from './Pages/Dashboard';
 
 
 const router = createBrowserRouter([
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <SignUp />
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />
   }
 ])
 

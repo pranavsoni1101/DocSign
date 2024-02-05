@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Heading, Text, Box, Button, Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, FormControl, FormLabel } from '@chakra-ui/react';
+import { Container, Heading, Text, 
+         Box, Button, Input, 
+         Modal, ModalOverlay, ModalContent, 
+         ModalHeader, ModalCloseButton, ModalBody, 
+         ModalFooter, FormControl, FormLabel, IconButton 
+} from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { FaFilePdf } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const Dashboard = () => {
     // Stores the user details
@@ -12,8 +19,10 @@ const Dashboard = () => {
     const [pdfs, setPdfs] = useState(null);
     // Handles input pdf File
     const [inputPdfFile, setInputPdfFile] = useState(null);
-    // New state to track loading state
-    const [isLoading, setIsLoading] = useState(true); 
+    // New state to track users loading state
+    const [usersLoading, setUsersLoading] = useState(true); 
+    // New state to track pdfs loading state
+    const [pdfsLoading, setPdfsLoading] = useState(true); 
     // Modal state
     const [isOpen, setIsOpen] = useState(false);
     // To redirect a user if they are not logged in
@@ -43,7 +52,7 @@ const Dashboard = () => {
           });
           // Set the user state with the received user details
           setUser(response.data);
-          setIsLoading(false); // Set loading state to false after user details are fetched
+          setUsersLoading(false); // Set loading state to false after user details are fetched
           console.log("State", user);
         //   console.log(response.data);
         } catch (err) {
@@ -61,6 +70,7 @@ const Dashboard = () => {
           const pdfFiles = response.data;
         //   return pdfs;
         setPdfs(pdfFiles);
+        setPdfsLoading(false);
         console.log("pdf",pdfs);
         } catch (error) {
           console.error('Error fetching PDFs:', error);
@@ -72,8 +82,8 @@ const Dashboard = () => {
       const handlePdfFileChange = (e) => {
         setInputPdfFile(e.target.files[0]);
     };
-    
-// Handle PDF upload
+
+    // Handle PDF upload
     const handlePdfUpload = async () => {
         try {
             const formData = new FormData();
@@ -94,6 +104,26 @@ const Dashboard = () => {
             setError('Error uploading PDF');
         }
     };
+
+    // DELETE delete a PDF file by ID
+    const handleDeletePdf = async (pdfId) => {
+        try {
+            // Make a DELETE request to delete the PDF file
+            await axios.delete(`http://localhost:3001/pdf/${pdfId}`, {
+                headers: {
+                    'Authorization': 'Bearer 65c0c3dfb849ea0136a63124' // Pass the user ID in the Authorization header
+                }
+            });
+            console.log('PDF deleted successfully');
+            // Update the PDFs state to reflect the deletion
+            setPdfs(prevPdfs => prevPdfs.filter(pdf => pdf._id !== pdfId));
+        } catch (err) {
+            console.error('Error deleting PDF:', err);
+            setError('Error deleting PDF');
+        }
+    };
+
+    const isLoading = usersLoading || pdfsLoading ;
 
   return (
     <>
@@ -129,6 +159,22 @@ const Dashboard = () => {
                         PDF's
                     </Heading>
                     {/* <Text>{pdfs.length} pdf(s)</Text> */}
+                    {pdfs.map((pdf)  => (
+                        <Box  
+                            my = "12px"
+                            key={pdf._id}
+                        >
+                            <FaFilePdf />
+                            <Text>{pdf.name}</Text>
+                            <IconButton
+                                colorScheme='red'
+                                onClick={() => handleDeletePdf(pdf._id)}
+                            >
+                                <MdDelete />
+                            </IconButton>
+                        </Box>
+                    ))}
+
                     <Button mt="1em" onClick={() => setIsOpen(true)}>Upload PDF</Button>
                     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                         <ModalOverlay />

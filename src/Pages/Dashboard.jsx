@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Heading, Text } from '@chakra-ui/react';
+import { Container, Heading, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -42,13 +42,21 @@ const Dashboard = () => {
 
   return (
     <>
-        <Heading>Dashboard</Heading>
-        <Heading
-            as = "h2"
+        <Container
+            maxW={"100%"}
         >
-            Hi {user.name}
-        </Heading>
-        <Text>Email: {user.email}</Text>
+            <Heading
+                as = "h2"
+                textAlign={"center"}
+            >
+                Hi {user.name}
+            </Heading>
+            <Text
+                textAlign={"center"}
+            >
+                Email: {user.email}
+            </Text>
+        </Container>
     </>
   );
 };

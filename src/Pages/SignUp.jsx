@@ -3,10 +3,12 @@ import { Container, Heading, Box,
         InputGroup, FormLabel, Input, 
         Button } from '@chakra-ui/react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
@@ -17,6 +19,7 @@ const SignUp = () => {
                 const data = response.data;
                 sessionStorage.setItem('token', data.token);
                 console.log("Successfully signed up");
+                navigate("/login")
             }
         catch (err) {
             console.log("Oops login error", error);

@@ -70,13 +70,13 @@ export default function WithSubnavigation() {
             Sign In
           </Button>
           <Button
-            as={'a'}
+            as={Link}
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}
             color={'white'}
             bg={'pink.400'}
-            href={'#'}
+            href={'/signup'}
             _hover={{
               bg: 'pink.300',
             }}>

@@ -4,13 +4,13 @@ import { Container, Heading, Box,
         Button } from '@chakra-ui/react';
 import axios from 'axios';
 
-const Login = () => {
+const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/auth/login", {
+            const response = await axios.post("http://localhost:3001/auth/signup", {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const Login = () => {
                     my = "1em"
                     textAlign="center"
                 >
-                    This is login
+                    This is Sign Up
                 </Heading>
                 <Box
                     m = "0 auto"
@@ -87,4 +87,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default SignUp;

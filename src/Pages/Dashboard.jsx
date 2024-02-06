@@ -4,7 +4,7 @@ import { Container, Heading, Text,
          Box, Button, Input, 
          Modal, ModalOverlay, ModalContent, 
          ModalHeader, ModalCloseButton, ModalBody, 
-         ModalFooter, FormControl, FormLabel, IconButton 
+         ModalFooter, FormControl, FormLabel, IconButton, Link 
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { FaFilePdf } from "react-icons/fa";
@@ -166,12 +166,22 @@ const Dashboard = () => {
                         >
                             <FaFilePdf />
                             <Text>{pdf.name}</Text>
+                            <Box>
+                            </Box>
                             <IconButton
                                 colorScheme='red'
                                 onClick={() => handleDeletePdf(pdf._id)}
                             >
                                 <MdDelete />
                             </IconButton>
+                            <Button
+                                as={Link}
+                                href={`/pdf/${pdf._id}`}
+                                ml = "12px"
+                                colorScheme='twitter'
+                            >
+                                View & Edit
+                            </Button>
                         </Box>
                     ))}
 

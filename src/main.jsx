@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import Dashboard from './Pages/Dashboard';
+import ViewPdf from './Pages/ViewPdf';
 
 
 const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <Dashboard />
+  },
+  {
+    path: '/pdf/:id',
+    element: <ViewPdf />
   }
 ])
 

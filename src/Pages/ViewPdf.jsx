@@ -43,7 +43,6 @@ const ViewPdf = () => {
     return(
         <>
             <DndProvider backend={HTML5Backend}>
-                
                 <Heading>This is edit pdf</Heading>
                 <Box
                     bg = "grey"

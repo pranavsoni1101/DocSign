@@ -53,8 +53,6 @@ const Dashboard = () => {
           // Set the user state with the received user details
           setUser(response.data);
           setUsersLoading(false); // Set loading state to false after user details are fetched
-          console.log("State", user);
-        //   console.log(response.data);
         } catch (err) {
           console.error('Error fetching user details:', err);
           setError('Error fetching user details');
@@ -71,7 +69,7 @@ const Dashboard = () => {
         //   return pdfs;
         setPdfs(pdfFiles);
         setPdfsLoading(false);
-        console.log("pdf",pdfs);
+        // console.log("pdf",pdfs);
         } catch (error) {
           console.error('Error fetching PDFs:', error);
           return [];
@@ -96,7 +94,7 @@ const Dashboard = () => {
                     'Authorization': 'Bearer 65c0c3dfb849ea0136a63124' // Pass the user ID in the Authorization header
                 }
             });
-            console.log('PDF uploaded successfully', response.data);
+            console.log('PDF uploaded successfully');
             // Close the modal after successful upload
             setIsOpen(false);
         } catch (err) {
@@ -205,6 +203,24 @@ const Dashboard = () => {
                             </ModalFooter>
                         </ModalContent>
                     </Modal>
+                </Box>
+                <Box
+                    p = "1em"
+                    boxSize= "xs"
+                    boxShadow= "2xl"
+                    borderRadius= "xl"
+                >
+                    <Heading
+                        size="md"
+                    >
+                        Create an envelope
+                    </Heading>
+                    <Button
+                        as={Link}
+                        href='/createEnvelope'
+                    >
+                        Create
+                    </Button>
                 </Box>
             </Container>
         )}

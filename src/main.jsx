@@ -8,6 +8,7 @@ import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import Dashboard from './Pages/Dashboard';
 import ViewPdf from './Pages/ViewPdf';
+import Envelope from './Pages/Envelope';
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: '/pdf/:id',
     element: <ViewPdf />
+  },
+  {
+    path: '/createEnvelope',
+    element: <Envelope />
   }
 ])
 

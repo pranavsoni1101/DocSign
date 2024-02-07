@@ -24,8 +24,8 @@ const ViewPdf = () => {
         if(!dragEnabled) return;
         // Calculate the position of the input field relative to the PDF
         const boundingRect = e.target.getBoundingClientRect();
-        const x = e.clientX - boundingRect.left + window.pageXOffset;
-        const y = e.clientY - boundingRect.top + window.pageYOffset;
+        const x = e.clientX - boundingRect.left + window.scrollX;
+        const y = e.clientY - boundingRect.top + window.scrollY;
         
         // Add the input field position and page index to the list
         setInputFields([...inputFields, { x, y, pageIndex }]);
@@ -43,7 +43,7 @@ const ViewPdf = () => {
     return(
         <>
             <DndProvider backend={HTML5Backend}>
-                <Sidebar >
+                
                 <Heading>This is edit pdf</Heading>
                 <Box
                     bg = "grey"
@@ -83,7 +83,6 @@ const ViewPdf = () => {
                         ))}
                     </Document>
                 </Flex>
-                </Sidebar>
             </DndProvider>
 
         </>

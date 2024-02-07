@@ -36,6 +36,7 @@ export default function WithSubnavigation() {
     sessionStorage.removeItem('token');
     setIsLoggedIn(false);
     console.log("Logged Out");
+    history.go("/");
   }
   return (
     <Box>
@@ -62,10 +63,12 @@ export default function WithSubnavigation() {
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
           <Text
+            as = {Link}
+            href='/'
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}>
-            Logo
+            Home
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>

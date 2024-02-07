@@ -31,7 +31,7 @@ const LinkItems = [
   { name: 'Settings', icon: FiSettings },
 ]
 
-export default function Sidebar({children}) {
+export default function Sidebar({children, handleAddInputField}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -44,7 +44,7 @@ export default function Sidebar({children}) {
         onOverlayClick={onClose}
         size="full">
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent onClose={onClose} handleAddInputField={handleAddInputField}/>
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
@@ -57,7 +57,7 @@ export default function Sidebar({children}) {
 }
 
 
-const SidebarContent = ({ onClose, ...rest }) => {
+const SidebarContent = ({ onClose, handleAddInputField, ...rest }) => {
   return (
     <Box
       bg={useColorModeValue('white', 'gray.900')}
@@ -73,7 +73,9 @@ const SidebarContent = ({ onClose, ...rest }) => {
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      <Button>{<FiPenTool />} Add Signature</Button>
+      <Button
+        onClick={handleAddInputField}
+      >{<FiPenTool />} Add Signature</Button>
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon}>
           {link.name}

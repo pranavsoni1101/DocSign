@@ -43,7 +43,7 @@ const ViewPdf = () => {
     return(
         <>
             <DndProvider backend={HTML5Backend}>
-                {/* <Sidebar > */}
+                <Sidebar >
                 <Heading>This is edit pdf</Heading>
                 <Box
                     bg = "grey"
@@ -83,7 +83,7 @@ const ViewPdf = () => {
                         ))}
                     </Document>
                 </Flex>
-                {/* </Sidebar> */}
+                </Sidebar>
             </DndProvider>
 
         </>

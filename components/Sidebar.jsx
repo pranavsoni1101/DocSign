@@ -10,14 +10,10 @@ import {
   Drawer,
   DrawerContent,
   useDisclosure,
-  Button,
 } from '@chakra-ui/react'
 import {
-  FiHome,
+  FiPhone,
   FiCalendar,
-  FiCompass,
-  FiStar,
-  FiSettings,
   FiMenu,
   FiPenTool
 } from 'react-icons/fi'
@@ -28,6 +24,7 @@ const LinkItems = [
   { name: 'Date Signed', icon: FiCalendar  },
   { name: 'Name', icon: FiPenTool },
   { name: 'Email', icon: FaRegEnvelope   },
+  { name: 'Contact', icon: FiPhone },
   { name: 'Download Pdf', icon: FaDownload },
 ]
 

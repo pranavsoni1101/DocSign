@@ -65,10 +65,16 @@ export default function WithSubnavigation() {
           <Text
             as = {Link}
             href='/'
+            fontWeight= "bold"
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
-            color={useColorModeValue('gray.800', 'white')}>
-            Home
+            color={useColorModeValue('gray.800', 'white')}
+            textDecoration= "none"  
+            _hover={{
+              textDecoration: "none"
+            }}
+          >
+              
+            DocSign
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -290,8 +296,8 @@ const NAV_ITEMS= [
     ],
   },
   {
-    label: 'Learn Design',
-    href: '#',
+    label: 'Create Envelope',
+    href: '/createEnvelope',
   },
   {
     label: 'Dasboard',

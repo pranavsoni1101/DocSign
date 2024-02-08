@@ -1,26 +1,69 @@
-import { Box, Container, FormControl, Heading, Input, Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Box, Container, FormControl, 
+         Heading, Input, Button } from '@chakra-ui/react';
+import UploadPdfModal from '../../components/UploadPdfModal';
+import fetchUserDetails from '../../utils/fetchUser';
 
 const Envelope = () => {
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    // const [recipients, setRecipients] = useState([])
+    const [inputPdfFile, setInputPdfFile] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [user, setUser] = useState(null);
+    const [usersLoading, setUsersLoading] = useState(true); 
 
+    // Logic to redirect user if the token is not found in the sessionStorage
     useEffect(()=> {
-        const token = sessionStorage.getItem('token');
-        if(!token)
-            navigate("/login");
+        fetchUserDetails(navigate,setUser,setUsersLoading)
+        // const token = sessionStorage.getItem('token');
+        // if(!token)
+        //     navigate("/login");
     },[])
-
+    
+    // Handle Name input change and store to state
     const handleNameChange = (event) => {
         setName(event.target.value);
     }
-    
+
+    // Handle Email input change and store to state
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     }
+    
+    // Handle File Input Change
+    const handlePdfFileChange = (e) => {
+        setInputPdfFile(e.target.files[0]);
+    };
+
+    // Handle PDF upload
+    const handlePdfUpload = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('pdf', inputPdfFile);
+
+            // Make a POST request to upload the PDF file
+            const response = await axios.post(`http://localhost:3001/pdf/${user.id}/pdfs`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer 65c0c3dfb849ea0136a63124' // Pass the user ID in the Authorization header
+                }
+            });
+            console.log('PDF uploaded successfully');
+            // Close the modal after successful upload
+            setIsOpen(false);
+        } catch (err) {
+            console.error('Error uploading PDF:', err);
+            // setError('Error uploading PDF');
+        }
+    };
+
+    const handleSetIsOpen = (bool) => {
+        setIsOpen(bool);
+    }
+
     return(
         <>
             <Container
@@ -33,7 +76,17 @@ const Envelope = () => {
                     boxShadow= "2xl"
                     borderRadius= "md"
                 >
-                    <Button>Upload Pdf</Button>
+                    <Button
+                        onClick={() => setIsOpen(true)}
+                    >
+                        Upload Pdf
+                    </Button>
+                    <UploadPdfModal
+                        isOpen={isOpen}
+                        setIsOpen={handleSetIsOpen}
+                        handlePdfUpload={handlePdfUpload}
+                        handlePdfFileChange={handlePdfFileChange}
+                    />
                 </Box>
                 <Box
                     p = "2em"

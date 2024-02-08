@@ -9,6 +9,7 @@ import { Container, Heading, Text,
 import { useNavigate } from 'react-router-dom';
 import { FaFilePdf } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import fetchUserDetails from '../../utils/fetchUser';
 
 const Dashboard = () => {
     // Stores the user details
@@ -29,7 +30,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchUserDetails();
+        fetchUserDetails(navigate, setUser, setUsersLoading);
     }, [navigate]); // Only fetch user details when navigating
     
     useEffect(() => {
@@ -38,40 +39,10 @@ const Dashboard = () => {
         }
     }, [user]); // Fetch PDFs when user state changes
     
-      
-    //   To fetch User Details
-      const fetchUserDetails = async () => {
-        try {
-          // Check if token exists in session storage
-          const token = sessionStorage.getItem('token');
-          if (!token) {
-            // If token doesn't exist, redirect to login
-            navigate("/login");
-            return;
-          }
-          
-          // Make a GET request to the /user endpoint with the token as a bearer token
-          const response = await axios.get('http://localhost:3001/auth/user', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          // Set the user state with the received user details
-          if(response.status === 200)
-            setUser(response.data);
-          setUsersLoading(false); // Set loading state to false after user details are fetched
-          console.log("asdsa", )
-        } catch (err) {
-          console.error('Error fetching user details:', err);
-          setError('Error fetching user details');
-        }
-      };
-    
     // To fetch user uploaded files
     const fetchPDFs = async () => {
         try {
           // Make a GET request to the endpoint that serves PDFs
-          console.log("user", user);
           const response = await axios.get(`http://localhost:3001/pdf/${user.id}/pdfs`);
           // Extract the PDFs from the response data
           const pdfFiles = response.data;
@@ -156,8 +127,9 @@ const Dashboard = () => {
                 </Text>
                 <Box
                     p = "1em"
-                    boxSize= "xs"
+                    w= "sm"
                     boxShadow= "2xl"
+                    display= "inline-block"
                     borderRadius= "xl"
                 >
                     <Heading
@@ -192,8 +164,8 @@ const Dashboard = () => {
                         </Box>
                     ))}
 
-                    <Button mt="1em" onClick={() => setIsOpen(true)}>Upload PDF</Button>
-                    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                    <Button mt="1em" as={Link} href='/createEnvelope'>Upload PDF</Button>
+                    {/* <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                         <ModalOverlay />
                         <ModalContent>
                             <ModalHeader>Upload PDF</ModalHeader>
@@ -211,13 +183,14 @@ const Dashboard = () => {
                                 <Button variant="ghost" onClick={() => setIsOpen(false)}>Cancel</Button>
                             </ModalFooter>
                         </ModalContent>
-                    </Modal>
+                    </Modal> */}
                 </Box>
                 <Box
                     p = "1em"
                     boxSize= "xs"
                     boxShadow= "2xl"
                     borderRadius= "xl"
+                    display= "inline-block"
                 >
                     <Heading
                         size="md"

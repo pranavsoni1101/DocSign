@@ -14,21 +14,21 @@ import {
 } from '@chakra-ui/react'
 import {
   FiHome,
-  FiTrendingUp,
+  FiCalendar,
   FiCompass,
   FiStar,
   FiSettings,
   FiMenu,
   FiPenTool
 } from 'react-icons/fi'
-// import { FaPenNib } from "react-icons/fa";
+import { FaSignature,FaRegEnvelope, FaDownload  } from "react-icons/fa6";
 
 const LinkItems = [
-  { name: 'Add Signature', icon: FiPenTool },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
+  { name: 'Signature', icon: FaSignature },
+  { name: 'Date Signed', icon: FiCalendar  },
+  { name: 'Name', icon: FiPenTool },
+  { name: 'Email', icon: FaRegEnvelope   },
+  { name: 'Download Pdf', icon: FaDownload },
 ]
 
 export default function Sidebar({children, handleAddInputField}) {
@@ -38,6 +38,7 @@ export default function Sidebar({children, handleAddInputField}) {
       <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
       <Drawer
         isOpen={isOpen}
+        isFullHeight = {true}
         placement="left"
         onClose={onClose}
         returnFocusOnClose={false}
@@ -68,14 +69,11 @@ const SidebarContent = ({ onClose, handleAddInputField, ...rest }) => {
       h="full"
       {...rest}>
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+        <Text fontSize="xl" fontWeight="bold">
+          Standard Fields
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      <Button
-        onClick={handleAddInputField}
-      >{<FiPenTool />} Add Signature</Button>
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon}>
           {link.name}

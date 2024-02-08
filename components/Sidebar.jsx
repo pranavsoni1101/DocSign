@@ -17,32 +17,38 @@ import {
   FiMenu,
   FiPenTool
 } from 'react-icons/fi'
-import { FaSignature,FaRegEnvelope, FaDownload  } from "react-icons/fa6";
+import { FaSignature, FaRegEnvelope, FaDownload } from "react-icons/fa6";
 
 const LinkItems = [
   { name: 'Signature', icon: FaSignature },
-  { name: 'Date Signed', icon: FiCalendar  },
+  { name: 'Date Signed', icon: FiCalendar },
   { name: 'Name', icon: FiPenTool },
-  { name: 'Email', icon: FaRegEnvelope   },
+  { name: 'Email', icon: FaRegEnvelope },
   { name: 'Contact', icon: FiPhone },
   { name: 'Download Pdf', icon: FaDownload },
 ]
 
-export default function Sidebar({children, handleAddInputField}) {
+export default function Sidebar({ children, toggleDrag }) {
+  // console.log("sidebar",toggleDrag);
+  // const handleToggleDrag = () => toggleDrag();
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
+      <SidebarContent 
+        onClose={() => onClose} 
+        display={{ base: 'none', md: 'block' }} 
+        toggleDrag={toggleDrag} 
+      />
       <Drawer
         isOpen={isOpen}
-        isFullHeight = {true}
+        isFullHeight={true}
         placement="left"
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
         size="full">
         <DrawerContent>
-          <SidebarContent onClose={onClose} handleAddInputField={handleAddInputField}/>
+          <SidebarContent onClose={onClose} toggleDrag={toggleDrag}/>
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
@@ -55,7 +61,7 @@ export default function Sidebar({children, handleAddInputField}) {
 }
 
 
-const SidebarContent = ({ onClose, handleAddInputField, ...rest }) => {
+const SidebarContent = ({ onClose, toggleDrag, ...rest }) => {
   return (
     <Box
       bg={useColorModeValue('white', 'gray.900')}
@@ -72,7 +78,9 @@ const SidebarContent = ({ onClose, handleAddInputField, ...rest }) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon}
+          toggleDrag={toggleDrag}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -80,11 +88,11 @@ const SidebarContent = ({ onClose, handleAddInputField, ...rest }) => {
   )
 }
 
-const NavItem = ({ icon, children, ...rest }) => {
+const NavItem = ({ icon, toggleDrag, dragEnabled, children, ...rest }) => {
+  const handleClick = () => toggleDrag();
   return (
     <Box
-      as="a"
-      href="#"
+      onClick={handleClick}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}>
       <Flex

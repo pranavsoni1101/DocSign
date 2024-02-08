@@ -58,7 +58,9 @@ const ViewPdf = () => {
         :
             (
             <DndProvider backend={HTML5Backend}>
-                <Sidebar>
+                <Sidebar
+                    toggleDrag = {toggleDrag}
+                >
                 <Heading>This is edit pdf</Heading>
                 <Box
                     bg = "grey"

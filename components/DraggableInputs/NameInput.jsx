@@ -2,7 +2,7 @@ import React from 'react';
 import { useDrag } from 'react-dnd';
 import { FormLabel, FormControl, Box, Input  } from '@chakra-ui/react';
 
-const DraggableNameInput = ({ x, y, index }) => {
+const NameInput = ({ x, y, index }) => {
     const [{ isDragging }, drag] = useDrag({
         type: 'input',
         item: {  x, y },
@@ -36,4 +36,4 @@ const DraggableNameInput = ({ x, y, index }) => {
     );
 };
 
-export default DraggableNameInput
+export default NameInput;

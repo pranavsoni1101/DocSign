@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, FormControl, 
          Heading, Input, Button } from '@chakra-ui/react';
-import UploadPdfModal from '../../components/UploadPdfModal';
+import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
 import fetchUserDetails from '../../utils/fetchUser';
 
 const Envelope = () => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     Container, Heading, Text,
-    Box, Button, IconButton, Link
+    Box, Button, IconButton, Link, Grid, GridItem
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { FaFilePdf } from "react-icons/fa";
@@ -66,7 +66,7 @@ const Dashboard = () => {
             setError('Error deleting PDF');
         }
     };
-    const formatDateFromISO = (isoDate) =>{
+    const formatDateFromISO = (isoDate) => {
         const date = new Date(isoDate);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -74,7 +74,7 @@ const Dashboard = () => {
         const hours = String(date.getHours()).padStart(2, '0');
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+
         return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
     }
 
@@ -102,66 +102,80 @@ const Dashboard = () => {
                         >
                             Email: {user.email}
                         </Text>
-                        <Box
-                            p="1em"
-                            w="sm"
-                            boxShadow="2xl"
-                            display="inline-block"
-                            borderRadius="xl"
+                        <Grid
+                            templateRows="repeat(2, 1fr)"
+                            templateColumns="repeat(12, 1fr)"
+                            gap={4}
                         >
-                            <Heading
-                                size="md"
+                            <GridItem
+                            // colSpan={}
                             >
-                                PDF's
-                            </Heading>
-                            {pdfs.map((pdf) => (
                                 <Box
-                                    my="12px"
-                                    key={pdf._id}
+                                    p="1em"
+                                    w="sm"
+                                    boxShadow="2xl"
+                                    display="inline-block"
+                                    borderRadius="xl"
                                 >
-                                    <FaFilePdf />
-                                    <Text>{pdf.name}</Text>
-                                    <Text>{pdf.size} bytes</Text>
-                                    <Text>{formatDateFromISO(pdf.uploadedAt)}</Text>
-                                    <Box>
-                                    </Box>
-                                    <IconButton
-                                        colorScheme='red'
-                                        onClick={() => handleDeletePdf(pdf._id)}
+                                    <Heading
+                                        size="md"
                                     >
-                                        <MdDelete />
-                                    </IconButton>
+                                        PDF's
+                                    </Heading>
+                                    {pdfs.map((pdf) => (
+                                        <Box
+                                            my="12px"
+                                            key={pdf._id}
+                                        >
+                                            <FaFilePdf />
+                                            <Text>{pdf.name}</Text>
+                                            <Text>{pdf.size} bytes</Text>
+                                            <Text>{formatDateFromISO(pdf.uploadedAt)}</Text>
+                                            <Box>
+                                            </Box>
+                                            <IconButton
+                                                colorScheme='red'
+                                                onClick={() => handleDeletePdf(pdf._id)}
+                                            >
+                                                <MdDelete />
+                                            </IconButton>
+                                            <Button
+                                                as={Link}
+                                                href={`/pdf/${pdf._id}`}
+                                                ml="12px"
+                                                colorScheme='twitter'
+                                            >
+                                                View & Edit
+                                            </Button>
+                                        </Box>
+                                    ))}
+                                </Box>
+
+                            </GridItem>
+                            <GridItem
+                            // colSpan={}
+                            >
+                                <Box
+                                    p="1em"
+                                    boxSize="xs"
+                                    boxShadow="2xl"
+                                    borderRadius="xl"
+                                    display="inline-block"
+                                >
+                                    <Heading
+                                        size="md"
+                                    >
+                                        Create an envelope
+                                    </Heading>
                                     <Button
                                         as={Link}
-                                        href={`/pdf/${pdf._id}`}
-                                        ml="12px"
-                                        colorScheme='twitter'
+                                        href='/createEnvelope'
                                     >
-                                        View & Edit
+                                        Create
                                     </Button>
                                 </Box>
-                            ))}
-                            <Button mt="1em" as={Link} href='/createEnvelope'>Upload PDF</Button>
-                        </Box>
-                        <Box
-                            p="1em"
-                            boxSize="xs"
-                            boxShadow="2xl"
-                            borderRadius="xl"
-                            display="inline-block"
-                        >
-                            <Heading
-                                size="md"
-                            >
-                                Create an envelope
-                            </Heading>
-                            <Button
-                                as={Link}
-                                href='/createEnvelope'
-                            >
-                                Create
-                            </Button>
-                        </Box>
+                            </GridItem>
+                        </Grid>
                     </Container>
                 )}
         </>

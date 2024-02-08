@@ -16,7 +16,7 @@ const Dashboard = () => {
     // Stores if any error occurs
     const [error, setError] = useState(null);
     // Fetches all the pdfs a user has uploaded 
-    const [pdfs, setPdfs] = useState(null);
+    const [pdfs, setPdfs] = useState([]);
     // Handles input pdf File
     const [inputPdfFile, setInputPdfFile] = useState(null);
     // New state to track users loading state
@@ -30,8 +30,14 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchUserDetails();
-        fetchPDFs();
-      }, [navigate]);
+    }, [navigate]); // Only fetch user details when navigating
+    
+    useEffect(() => {
+        if (user) { // Check if user state is not null
+            fetchPDFs(); // Call fetchPDFs only when user state is set
+        }
+    }, [user]); // Fetch PDFs when user state changes
+    
       
     //   To fetch User Details
       const fetchUserDetails = async () => {
@@ -51,8 +57,10 @@ const Dashboard = () => {
             },
           });
           // Set the user state with the received user details
-          setUser(response.data);
+          if(response.status === 200)
+            setUser(response.data);
           setUsersLoading(false); // Set loading state to false after user details are fetched
+          console.log("asdsa", )
         } catch (err) {
           console.error('Error fetching user details:', err);
           setError('Error fetching user details');
@@ -63,7 +71,8 @@ const Dashboard = () => {
     const fetchPDFs = async () => {
         try {
           // Make a GET request to the endpoint that serves PDFs
-          const response = await axios.get('http://localhost:3001/pdf');
+          console.log("user", user);
+          const response = await axios.get(`http://localhost:3001/pdf/${user.id}/pdfs`);
           // Extract the PDFs from the response data
           const pdfFiles = response.data;
         //   return pdfs;
@@ -88,7 +97,7 @@ const Dashboard = () => {
             formData.append('pdf', inputPdfFile);
 
             // Make a POST request to upload the PDF file
-            const response = await axios.post('http://localhost:3001/pdf', formData, {
+            const response = await axios.post(`http://localhost:3001/pdf/${user.id}/pdfs`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer 65c0c3dfb849ea0136a63124' // Pass the user ID in the Authorization header
@@ -107,9 +116,9 @@ const Dashboard = () => {
     const handleDeletePdf = async (pdfId) => {
         try {
             // Make a DELETE request to delete the PDF file
-            await axios.delete(`http://localhost:3001/pdf/${pdfId}`, {
+            await axios.delete(`http://localhost:3001/pdf/${user.id}/pdfs/${pdfId}`, {
                 headers: {
-                    'Authorization': 'Bearer 65c0c3dfb849ea0136a63124' // Pass the user ID in the Authorization header
+                    'Authorization': `Bearer ${user.id} ` // Pass the user ID in the Authorization header
                 }
             });
             console.log('PDF deleted successfully');

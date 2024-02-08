@@ -12,6 +12,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
 import Sidebar from '../../components/Sidebar';
+import DraggableNameInput from '../../components/DraggableInput';
 import fetchUserDetails from '../../utils/fetchUser';
 
 const ViewPdf = () => {
@@ -91,7 +92,7 @@ const ViewPdf = () => {
                                 {inputFields
                                 .filter(field => field.pageIndex === index)
                                 .map((field, idx) => (
-                                    <DraggableInput key={idx} x={field.x} y={field.y} index={index} />
+                                    <DraggableNameInput key={idx} x={field.x} y={field.y} index={index} />
                                 ))}
                             </Box>
                         ))}
@@ -102,29 +103,5 @@ const ViewPdf = () => {
             )}
             </>
 )}
-
-const DraggableInput = ({ x, y, index }) => {
-    const [{ isDragging }, drag] = useDrag({
-        type: 'input',
-        item: {  x, y },
-        collect: monitor => ({
-            isDragging: !!monitor.isDragging(),
-        }),
-    });
-
-    return (
-        <Box
-            ref={drag}
-            style={{
-                position: 'absolute',
-                left: x,
-                top: y,
-                opacity: isDragging ? 0.5 : 1,
-            }}
-        >
-            <Input size="xs"w ="sm" zIndex={2} bg="pink" type="text" placeholder={`${index} input position is x: ${x} and y: ${y}`}/>
-        </Box>
-    );
-};
 
 export default ViewPdf;

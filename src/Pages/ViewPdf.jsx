@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Heading, Box, Button, 
         Text, Flex, Grid, 
         GridItem, Input 
 } from '@chakra-ui/react';
 import { Page, Document } from 'react-pdf';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDrag, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -12,13 +12,21 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
 import Sidebar from '../../components/Sidebar';
+import fetchUserDetails from '../../utils/fetchUser';
 
 const ViewPdf = () => {
     let { id } = useParams();
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [inputFields, setInputFields] = useState([]);
     const [dragEnabled, setDragEnabled] = useState(false); // State to track drag enablement
+    const [usersLoading, setUsersLoading] = useState(true); 
+
+    useEffect(()=> {
+        fetchUserDetails(navigate, setUser, setUsersLoading);
+    }, [])
 
     const handleAddInputField = (e, pageIndex) => {
         if(!dragEnabled) return;
@@ -42,6 +50,12 @@ const ViewPdf = () => {
 
     return(
         <>
+        {usersLoading? 
+            (
+                <Box>Loading..</Box>
+            )
+        :
+            (
             <DndProvider backend={HTML5Backend}>
                 <Heading>This is edit pdf</Heading>
                 <Box
@@ -61,7 +75,7 @@ const ViewPdf = () => {
                     // w = "50em"
                 >
                     <Document
-                        file={`http://localhost:3001/pdf/${id}`}
+                        file={`http://localhost:3001/pdf/${user.id}/pdfs/${id}`}
                         onLoadSuccess={handleDocumentLoadSuccess}
                     >
                         {Array.from(new Array(numPages), (el, index) => (
@@ -83,10 +97,9 @@ const ViewPdf = () => {
                     </Document>
                 </Flex>
             </DndProvider>
-
-        </>
-    )
-}
+            )}
+            </>
+)}
 
 const DraggableInput = ({ x, y, index }) => {
     const [{ isDragging }, drag] = useDrag({

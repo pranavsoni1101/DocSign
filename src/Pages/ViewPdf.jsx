@@ -67,9 +67,6 @@ const ViewPdf = () => {
                     maxH={"4em"}
                 >
                     <Text display={"inline-block"}>{pageNumber} of {numPages}</Text>
-                    <Button onClick={toggleDrag}>
-                        {dragEnabled ? 'Disable Drag' : 'Enable Drag'}
-                    </Button>
                 </Box>
                 <Flex
                     bg = "#00000099"

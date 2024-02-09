@@ -7,6 +7,7 @@ import { Page, Document } from 'react-pdf';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDrag, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { FaDownload } from "react-icons/fa6";
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -82,19 +83,22 @@ const ViewPdf = () => {
                 <Sidebar
                     toggleDrag = {toggleDrag}
                 >
-                <Heading>This is edit pdf</Heading>
-                <Box
+                <Flex
+                    p = "12px"
+                    justify="space-between"
                     bg = "grey"
                     maxH={"4em"}
                 >
                     <Text display={"inline-block"}>{pageNumber} of {numPages}</Text>
                     <Button
-                        variant= "ghost"
+                        // variant= "outline"
+                        colorScheme='twitter'
+                        rightIcon={<FaDownload />}
                         onClick={handleDownload}
                     >
                         Download
                     </Button>
-                </Box>
+                </Flex>
                 <Flex
                     bg = "#00000099"
                     display = "flex"

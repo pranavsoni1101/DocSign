@@ -5,7 +5,6 @@ import { Box, Container, FormControl,
          Heading, Input, Button, useToast } from '@chakra-ui/react';
 import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
 import fetchUserDetails from '../../utils/fetchUser';
-import Toast from '../../components/Toast/Toast';
 
 const Envelope = () => {
     const navigate = useNavigate();
@@ -52,6 +51,8 @@ const Envelope = () => {
                 }
             });
             toast({
+                position: "top",
+                variant: "left-accent",
                 title: 'PDF Uploaded',
                 description: 'File Uploaded Successfully',
                 status: 'success',
@@ -62,6 +63,8 @@ const Envelope = () => {
             setIsOpen(false);
         } catch (err) {
             toast({
+                position: "top",
+                variant: "left-accent",
                 title: "OOPS Could not upload PDF",
                 description: 'An Error Occured in Uploading the file',
                 status: 'error',

@@ -61,6 +61,8 @@ const Dashboard = () => {
                 }
             });
             toast({
+                position: "top",
+                variant: "left-accent",
                 title: "PDF Deleted!",
                 description: "File Deleted Successfully",
                 status: "success",
@@ -72,6 +74,8 @@ const Dashboard = () => {
             setPdfs(prevPdfs => prevPdfs.filter(pdf => pdf._id !== pdfId));
         } catch (err) {
             toast({
+                position: "top",
+                variant: "left-accent",
                 title: "OOPS PDF not Deleted!",
                 description: "Error Deleting the File",
                 status: "error",

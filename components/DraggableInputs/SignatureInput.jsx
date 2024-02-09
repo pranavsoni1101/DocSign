@@ -17,6 +17,7 @@ const SignatureInput = ({ x, y, index, isOpen,user, setIsOpen }) => {
     return (
         <Box
             ref={drag}
+            zIndex={2}
             style={{
                 position: 'absolute',
                 left: x,

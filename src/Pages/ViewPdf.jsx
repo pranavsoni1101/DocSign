@@ -55,6 +55,21 @@ const ViewPdf = () => {
         setIsOpen(bool);
     };
 
+    const handleDownload = async () => {
+        try {
+            const pdfBlob = await fetch(`http://localhost:3001/pdf/${user.id}/pdfs/${id}`).then(res => res.blob());
+            const url = window.URL.createObjectURL(pdfBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'document.pdf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading PDF:', error);
+        }
+    };
+
     return(
         <>
         {usersLoading? 
@@ -73,6 +88,12 @@ const ViewPdf = () => {
                     maxH={"4em"}
                 >
                     <Text display={"inline-block"}>{pageNumber} of {numPages}</Text>
+                    <Button
+                        variant= "ghost"
+                        onClick={handleDownload}
+                    >
+                        Download
+                    </Button>
                 </Box>
                 <Flex
                     bg = "#00000099"

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, FormControl, 
-         Heading, Input, Button } from '@chakra-ui/react';
+         Heading, Input, Button, useToast } from '@chakra-ui/react';
 import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
 import fetchUserDetails from '../../utils/fetchUser';
+import Toast from '../../components/Toast/Toast';
 
 const Envelope = () => {
     const navigate = useNavigate();
@@ -15,12 +16,11 @@ const Envelope = () => {
     const [user, setUser] = useState(null);
     const [usersLoading, setUsersLoading] = useState(true); 
 
+    const toast = useToast();
+    
     // Logic to redirect user if the token is not found in the sessionStorage
     useEffect(()=> {
         fetchUserDetails(navigate,setUser,setUsersLoading)
-        // const token = sessionStorage.getItem('token');
-        // if(!token)
-        //     navigate("/login");
     },[])
     
     // Handle Name input change and store to state
@@ -51,10 +51,23 @@ const Envelope = () => {
                     'Authorization': 'Bearer 65c0c3dfb849ea0136a63124' // Pass the user ID in the Authorization header
                 }
             });
-            console.log('PDF uploaded successfully');
+            toast({
+                title: 'PDF Uploaded',
+                description: 'File Uploaded Successfully',
+                status: 'success',
+                duration: 9000,
+                isClosable: true
+            })
             // Close the modal after successful upload
             setIsOpen(false);
         } catch (err) {
+            toast({
+                title: "OOPS Could not upload PDF",
+                description: 'An Error Occured in Uploading the file',
+                status: 'error',
+                duration: 9000,
+                isClosable: true
+            })
             console.error('Error uploading PDF:', err);
             // setError('Error uploading PDF');
         }

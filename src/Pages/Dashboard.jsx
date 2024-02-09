@@ -141,7 +141,7 @@ const Dashboard = () => {
                                             </IconButton>
                                             <Button
                                                 as={Link}
-                                                href={`/pdf/${pdf._id}`}
+                                                href={`/pdf/${pdf._id}/${pdf.name}/`}
                                                 ml="12px"
                                                 colorScheme='twitter'
                                             >

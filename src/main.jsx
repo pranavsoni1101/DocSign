@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     element: <Dashboard />
   },
   {
-    path: '/pdf/:id',
+    path: '/pdf/:id/:fileName',
     element: <ViewPdf />
   },
   {

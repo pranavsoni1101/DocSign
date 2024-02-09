@@ -17,7 +17,7 @@ import fetchUserDetails from '../../utils/fetchUser';
 import SignatureInput from '../../components/DraggableInputs/SignatureInput';
 
 const ViewPdf = () => {
-    let { id } = useParams();
+    let { id, fileName } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +26,7 @@ const ViewPdf = () => {
     const [inputFields, setInputFields] = useState([]);
     const [dragEnabled, setDragEnabled] = useState(false); // State to track drag enablement
     const [usersLoading, setUsersLoading] = useState(true); 
-
+    console.log(fileName);
     useEffect(()=> {
         fetchUserDetails(navigate, setUser, setUsersLoading);
     }, [])
@@ -61,7 +61,7 @@ const ViewPdf = () => {
             const url = window.URL.createObjectURL(pdfBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'document.pdf');
+            link.setAttribute('download', fileName);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

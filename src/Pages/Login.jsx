@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Heading, Box, 
         InputGroup, FormLabel, Input, 
-        Button } from '@chakra-ui/react';
+        Button, 
+        useToast} from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +10,7 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const toast = useToast();
 
     const handleLogin = async () => {
         try {
@@ -18,10 +20,27 @@ const Login = () => {
                 });
                 const data = response.data;
                 sessionStorage.setItem('token', data.token);
-                console.log("Successfully logged in");
+                toast({
+                    position: "top",
+                    variant: "left-accent",
+                    title: "You have Logged In!",
+                    description: "Feel free to Explore",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true
+                });
                 navigate("/dashboard");
             }
         catch (err) {
+            toast({
+                position: "top",
+                variant: "left-accent",
+                title: "Could Not Log You In",
+                description: "An Error occured while trying to log you in",
+                status: "error",
+                duration: 9000,
+                isClosable: true
+            });
             console.log("Oops login error", err);
         }
     }

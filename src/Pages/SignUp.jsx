@@ -38,7 +38,7 @@ const SignUp = () => {
             toast({
                 position: "top",
                 variant: "left-accent",
-                title: "Could Not Your Account!",
+                title: "Could Not Create Your Account!",
                 description: "An Error occured while creating your account",
                 status: "error",
                 duration: 9000,

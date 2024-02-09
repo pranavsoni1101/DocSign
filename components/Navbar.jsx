@@ -303,4 +303,8 @@ const NAV_ITEMS= [
     label: 'Dasboard',
     href: '/dashboard',
   },
+  {
+    label: 'Profile',
+    href: '/profile',
+  },
 ]

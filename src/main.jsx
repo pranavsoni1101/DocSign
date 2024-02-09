@@ -9,6 +9,7 @@ import SignUp from './Pages/SignUp';
 import Dashboard from './Pages/Dashboard';
 import ViewPdf from './Pages/ViewPdf';
 import Envelope from './Pages/Envelope';
+import Profile from './Pages/Profile';
 
 
 const router = createBrowserRouter([
@@ -35,6 +36,11 @@ const router = createBrowserRouter([
   {
     path: '/createEnvelope',
     element: <Envelope />
+  }
+  ,
+  {
+    path: '/profile',
+    element: <Profile />
   }
 ])
 

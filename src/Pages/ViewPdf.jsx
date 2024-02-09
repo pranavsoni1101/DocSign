@@ -104,7 +104,9 @@ const ViewPdf = () => {
                                         index={index} 
                                         isOpen={isOpen}
                                         setIsOpen={setIsOpen}
-                                        handleSetIsOpen={handleSetIsOpen}/>
+                                        handleSetIsOpen={handleSetIsOpen}
+                                        user = {user}
+                                        />
                                     // <NameInput key={idx} x={field.x} y={field.y} index={index} />
                                 ))}
                             </Box>

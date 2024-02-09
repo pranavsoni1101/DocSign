@@ -4,7 +4,7 @@ import { Button, Box, Text } from '@chakra-ui/react';
 import UploadSignModal from '../ModalsPopover/UploadSignModal';
 
 
-const SignatureInput = ({ x, y, index, isOpen,handleSetIsOpen, setIsOpen }) => {
+const SignatureInput = ({ x, y, index, isOpen,user, setIsOpen }) => {
 
     const [{ isDragging }, drag] = useDrag({
         type: 'input',
@@ -30,6 +30,7 @@ const SignatureInput = ({ x, y, index, isOpen,handleSetIsOpen, setIsOpen }) => {
             >Sign Here</Button>
             <UploadSignModal 
                 isOpen={isOpen}
+                user = {user}
                 setIsOpen = {setIsOpen}
             />
         </Box>

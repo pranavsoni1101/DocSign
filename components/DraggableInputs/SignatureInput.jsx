@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDrag } from 'react-dnd';
-import { Button, Box } from '@chakra-ui/react';
+import { Button, Box, Text } from '@chakra-ui/react';
+import UploadSignModal from '../ModalsPopover/UploadSignModal';
 
 
-const SignatureInput = ({ x, y, index }) => {
+const SignatureInput = ({ x, y, index, isOpen,handleSetIsOpen, setIsOpen }) => {
+
     const [{ isDragging }, drag] = useDrag({
         type: 'input',
         item: {  x, y },
@@ -23,7 +25,13 @@ const SignatureInput = ({ x, y, index }) => {
             }}
         >   
             <Text>{index} Button position is x: {x} and y: {y}</Text>
-            <Button>Sign Here</Button>
+            <Button
+                onClick={() => setIsOpen(true)}
+            >Sign Here</Button>
+            <UploadSignModal 
+                isOpen={isOpen}
+                setIsOpen = {setIsOpen}
+            />
         </Box>
     )
 }

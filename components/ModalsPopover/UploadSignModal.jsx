@@ -13,9 +13,9 @@ import {
   TabPanel,
 } from '@chakra-ui/react';
 
-const UploadSignModal = ({ isOpen, onClose }) => {
+const UploadSignModal = ({ isOpen, onClose, setIsOpen }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Modal Title</ModalHeader>

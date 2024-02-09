@@ -14,11 +14,13 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import Sidebar from '../../components/Sidebar';
 import NameInput from '../../components/DraggableInputs/NameInput';
 import fetchUserDetails from '../../utils/fetchUser';
+import SignatureInput from '../../components/DraggableInputs/SignatureInput';
 
 const ViewPdf = () => {
     let { id } = useParams();
     const navigate = useNavigate();
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [inputFields, setInputFields] = useState([]);
@@ -47,6 +49,10 @@ const ViewPdf = () => {
     // Function to toggle drag enablement
     const toggleDrag = () => {
         setDragEnabled(!dragEnabled);
+    };
+
+    const handleSetIsOpen = (bool) => {
+        setIsOpen(bool);
     };
 
     return(
@@ -91,7 +97,15 @@ const ViewPdf = () => {
                                 {inputFields
                                 .filter(field => field.pageIndex === index)
                                 .map((field, idx) => (
-                                    <NameInput key={idx} x={field.x} y={field.y} index={index} />
+                                    <SignatureInput 
+                                        key={idx} 
+                                        x={field.x} 
+                                        y={field.y} 
+                                        index={index} 
+                                        isOpen={isOpen}
+                                        setIsOpen={setIsOpen}
+                                        handleSetIsOpen={handleSetIsOpen}/>
+                                    // <NameInput key={idx} x={field.x} y={field.y} index={index} />
                                 ))}
                             </Box>
                         ))}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     Container, Heading, Text,
-    Box, Button, IconButton, Link, Grid, GridItem
+    Box, Button, IconButton, Link, Grid, GridItem, useToast
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { FaFilePdf } from "react-icons/fa";
@@ -22,6 +22,8 @@ const Dashboard = () => {
     const [pdfsLoading, setPdfsLoading] = useState(true);
     // To redirect a user if they are not logged in
     const navigate = useNavigate();
+
+    const toast = useToast();
 
     useEffect(() => {
         fetchUserDetails(navigate, setUser, setUsersLoading);
@@ -58,10 +60,24 @@ const Dashboard = () => {
                     'Authorization': `Bearer ${user.id} ` // Pass the user ID in the Authorization header
                 }
             });
+            toast({
+                title: "PDF Deleted!",
+                description: "File Deleted Successfully",
+                status: "success",
+                duration: 9000,
+                isClosable: true
+            });
             console.log('PDF deleted successfully');
             // Update the PDFs state to reflect the deletion
             setPdfs(prevPdfs => prevPdfs.filter(pdf => pdf._id !== pdfId));
         } catch (err) {
+            toast({
+                title: "OOPS PDF not Deleted!",
+                description: "Error Deleting the File",
+                status: "error",
+                duration: 9000,
+                isClosable: true
+            });
             console.error('Error deleting PDF:', err);
             setError('Error deleting PDF');
         }

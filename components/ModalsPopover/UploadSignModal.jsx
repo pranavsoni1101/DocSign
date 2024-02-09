@@ -1,31 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
+  Modal, ModalOverlay,ModalContent,
+  ModalHeader, ModalBody,ModalCloseButton,
+  Tabs,TabList,Tab,
+  TabPanels,TabPanel,FormControl,
+  FormLabel,Input,Button,
+  Text,
+  Box,
 } from '@chakra-ui/react';
 import axios from 'axios';
+import SignatureCanvas from 'react-signature-canvas';
 
 const UploadSignModal = ({ isOpen, user, setIsOpen }) => {
   // State to set the type of signature, i.e. Draw/Upload/Text
-  const [type, setType] = useState("")
+  // const [type, setType] = useState("");
+  const signatureRef = useRef(null);
+
+  const [fileName, setFileName] = useState("");
   const [textSignature, setTextSignature] = useState("");
 
   const handleNameChange = (event) => {
     setTextSignature(event.target.value)
   };
+
+  const handleFileName = (event) => {
+    setFileName(event.target.value)
+  };
+
+  const handleDrawSignatureUpload = async () => {
+    const signatureDataUrl = signatureRef.current.toDataURL(); // Get signature as data URL
+    const signatureBlob = await fetch(signatureDataUrl).then(res => res.blob()); // Convert data URL to Blob
+    const formData = new FormData();
+    formData.append('signature', signatureBlob, fileName);
+    formData.append('type', 'draw'); // Append the type information
+    try {
+      await axios.post(`http://localhost:3001/signature/${user.id}/signatures`, formData);
+      setFileName("");
+      signatureRef.current.clear();
+      console.log('Signature uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading signature:', error);
+    }
+  };
+
+  const handleClear = () => {
+    signatureRef.current.clear();
+    setFileName("");
+  }
 
   const handleTextSignatureUpload = async () => {
     const blob = new Blob([textSignature], { type: "text/plain" });
@@ -59,10 +80,40 @@ const UploadSignModal = ({ isOpen, user, setIsOpen }) => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <p>Content for Tab 1</p>
+                
+                <Text
+                  fontWeight= "bold"
+                >
+                  Draw Signature
+                </Text>
+                <Box border="1px solid black">
+                  <SignatureCanvas ref={signatureRef}/>
+                </Box>
+                <FormControl>
+                  <Input 
+                    type='text'
+                    value={fileName}
+                    onChange={handleFileName}
+                    placeholder='Enter File Name'
+                  />
+                </FormControl>
+                <Button 
+                    mt = "1em"
+                    colorScheme='green'
+                    onClick={handleDrawSignatureUpload}
+                >
+                    Save Signature
+                </Button>
+                <Button 
+                    mt = "1em"
+                    colorScheme='yellow'
+                    onClick={handleClear}
+                >
+                    Clear
+                </Button>   
               </TabPanel>
               <TabPanel>
-                <p>Content for Tab 2</p>
+              <p>Content for Tab 1</p>
               </TabPanel>
               <TabPanel>
                 <FormControl>

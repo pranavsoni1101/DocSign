@@ -1,4 +1,4 @@
-import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel } from '@chakra-ui/react';
+import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import fetchUserDetails from '../../utils/fetchUser';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { FaPen } from "react-icons/fa";
 import axios from 'axios';
 
 const Profile = () => {
+    const toast = useToast();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -13,32 +14,55 @@ const Profile = () => {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     const [usersLoading, setUsersLoading] =  useState(true);
+    const [profilePicture, setProfilePicture]  = useState(null);
 
     useEffect(() => {
         fetchUserDetails(navigate, setUser, setUsersLoading);
     }, []);
 
     const handleUpdate = () => {
-        const updatedUser = {
-            name: name,
-            phone: phone,
-            address: address
-        };
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('phone', phone);
+        formData.append('address', address);
+        formData.append('profilePicture', profilePicture); // Assuming profilePicture is a file object
+        
+        const token = sessionStorage.getItem("token");
 
-        const token = sessionStorage.getItem('token');
-
-        axios.patch("http://localhost:3001/auth/user", updatedUser, {
+        axios.patch("http://localhost:3001/auth/user", formData, {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}` // Pass the user ID in the Authorization header
             }
         })
             .then(response => {
                 console.log('Updated successfully');
                 setIsEditing(false);
+                toast({
+                    title: "Details Updated!",
+                    description: "That's great your details have been saved",
+                    status: "success",
+                    variant: "left-accent",
+                    position: "top",
+                    duration: 9000,
+                    isClosable: true
+                });
+                fetchUserDetails(navigate, setUser, setUsersLoading);
             })
             .catch(err => console.log("Error updating", err));
     };
+    
+
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        setProfilePicture(file);
+    };
+
+    // if(user) {
+    //     setName(user.name);
+    //     setAddress(user.address);
+    //     setPhone(user.phone);
+    // }
 
     return (
         <>
@@ -47,12 +71,16 @@ const Profile = () => {
             ) : (
                 <Container maxW="100%">
                     <Heading>Edit Profile</Heading>
-                    <Image boxSize="xs" borderRadius="full" src={user.profilePicture} />
+                    <Image boxSize="xs" borderRadius="full" src={`data:image/png;base64,${user.profilePicture}`} />
                     <Button mt="1em" colorScheme='twitter' onClick={() => setIsEditing(true)} rightIcon={<FaPen />}>Edit</Button>
 
                     {isEditing ? (
                         <Container maxW="100%">
                             <Box p="1em" w="sm" my="1em" borderRadius="xl" boxShadow="2xl">
+                                <FormControl>
+                                    <FormLabel>Upload Picture</FormLabel>
+                                    <Input type='file' accept="image/png, image/jpeg" onChange={handleFileUpload} />
+                                </FormControl>
                                 <FormControl>
                                     <FormLabel>Name</FormLabel>
                                     <Input type='text' value={name} onChange={(e) => setName(e.target.value)} />

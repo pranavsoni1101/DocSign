@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, FormControl, 
-         Heading, Input, Button, useToast } from '@chakra-ui/react';
+         Heading, Input, Button, 
+         useToast, FormLabel 
+} from '@chakra-ui/react';
 import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
 import fetchUserDetails from '../../utils/fetchUser';
 
@@ -116,19 +118,24 @@ const Envelope = () => {
                     >
                         Add Recipient's Details</Heading>
                     <FormControl
+                        isRequired
                         mt = "1em"
                     >
+                        <FormLabel>Recipient's Name</FormLabel>
                         <Input
-                            mt = "1em" 
+                            // mt = "1em" 
                             type='text'
                             value={name}
                             onChange={handleNameChange}
                             placeholder='John Doe'
                         />
                     </FormControl>
-                    <FormControl>
+                    <FormControl
+                        isRequired
+                    >
+                        <FormLabel>Recipient's Email</FormLabel>
                         <Input
-                            mt = "1em" 
+                            // mt = "1em" 
                             type='email'
                             value={email}
                             onChange={handleEmailChange}
@@ -137,7 +144,6 @@ const Envelope = () => {
                     </FormControl>
                         <Button
                             mt = "1em"
-                            // colorScheme=''
                         >
                             Add Recipient
                         </Button>

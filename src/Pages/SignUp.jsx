@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Heading, Box, 
-        InputGroup, FormLabel, Input, 
-        Button, 
-        useToast} from '@chakra-ui/react';
+         FormLabel, Input, Button, 
+        useToast, FormControl
+} from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,40 +11,35 @@ const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
     const toast = useToast();
 
     const handleSignUp = async () => {
         try {
-                const response = await axios.post("http://localhost:3001/auth/signup", {
-                    name, 
-                    email,
-                    password
-                });
-
-                toast({
-                    position: "top",
-                    variant: "left-accent",
-                    title: "We've Created Your Account!",
-                    description: "Login to access the dashboard",
-                    status: "success",
-                    duration: 9000,
-                    isClosable: true
-                });
-                // console.log("Successfully signed up");
-                navigate("/login")
+            // Perform form validations
+            if (!name.trim()) {
+                toastError("Name is required");
+                return;
             }
-        catch (err) {
-            toast({
-                position: "top",
-                variant: "left-accent",
-                title: "Could Not Create Your Account!",
-                description: "An Error occured while creating your account",
-                status: "error",
-                duration: 9000,
-                isClosable: true
+            if (!validateEmail(email)) {
+                toastError("Invalid email address");
+                return;
+            }
+            if (!password.trim()) {
+                toastError("Password is required");
+                return;
+            }
+
+            const response = await axios.post("http://localhost:3001/auth/signup", {
+                name, 
+                email,
+                password
             });
-            console.log("Oops login error", error);
+
+            toastSuccess("Account created successfully");
+            navigate("/login");
+        } catch (err) {
+            toastError("An error occurred while creating your account");
+            console.error("Oops login error", error);
         }
     }
     
@@ -58,6 +53,37 @@ const SignUp = () => {
     const handlePasswordChange = (event) => {
         setPassword(event.target.value)
     }
+
+    const validateEmail = (email) => {
+        // Basic email validation using regex
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    const toastSuccess = (message) => {
+        toast({
+            position: "top",
+            variant: "left-accent",
+            title: "Success",
+            description: message,
+            status: "success",
+            duration: 5000,
+            isClosable: true
+        });
+    }
+
+    const toastError = (message) => {
+        toast({
+            position: "top",
+            variant: "left-accent",
+            title: "Error",
+            description: message,
+            status: "error",
+            duration: 5000,
+            isClosable: true
+        });
+    }
+
     return(
         <>
             <Container
@@ -73,11 +99,11 @@ const SignUp = () => {
                     m = "0 auto"
                     w = "xl"
                     p = "1em"
-                    // bg= "cyan"
                     boxShadow= "2xl"
                     borderRadius= "xl"
                 >
-                    <InputGroup
+                    <FormControl
+                        isRequired
                         mb = "1em"
                     >
                         <FormLabel>Name</FormLabel>
@@ -87,8 +113,9 @@ const SignUp = () => {
                             onChange={handleNameChange}
                             placeholder='Some One'
                         />
-                    </InputGroup>
-                    <InputGroup
+                    </FormControl>
+                    <FormControl
+                        isRequired
                         mb = "1em"
                     >
                         <FormLabel>Email</FormLabel>
@@ -98,9 +125,10 @@ const SignUp = () => {
                             onChange={handleEmailChange}
                             placeholder='someone@email.com'
                         />
-                    </InputGroup>
-                    <InputGroup
+                    </FormControl>
+                    <FormControl
                         mb = "1em"
+                        isRequired
                     >
                         <FormLabel>Password</FormLabel>
                         <Input 
@@ -109,13 +137,13 @@ const SignUp = () => {
                             onChange={handlePasswordChange}
                             placeholder='Type Your password'
                         />
-                    </InputGroup>
+                    </FormControl>
                     <Button
                         w = "100%"
                         colorScheme = "green"
                         onClick={handleSignUp}
                     >
-                        Sign In
+                        Sign Up
                     </Button>
                 </Box>
             </Container>

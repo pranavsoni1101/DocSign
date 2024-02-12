@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     Container, Heading, Text,
-    Box, Button, IconButton, Link, Grid, GridItem, useToast
+    Box, Button, IconButton, 
+    Link, Grid, GridItem, 
+    useToast, Spinner
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { FaFilePdf } from "react-icons/fa";
@@ -104,7 +106,14 @@ const Dashboard = () => {
         <>
             {isLoading ?
                 (
-                    <Box>Loading..</Box>
+                    <Spinner 
+                    // m = "0 auto "
+                    position= "fixed"
+                    top= "50%"
+                    left= "50%"
+                    size = "xl"
+                    transform= "translate(-50%, -50%)"
+                />
                 )
                 :
                 (

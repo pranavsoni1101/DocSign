@@ -1,4 +1,4 @@
-import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel, useToast } from '@chakra-ui/react';
+import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel, useToast, Spinner } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import fetchUserDetails from '../../utils/fetchUser';
 import { useNavigate } from 'react-router-dom';
@@ -58,16 +58,17 @@ const Profile = () => {
         setProfilePicture(file);
     };
 
-    // if(user) {
-    //     setName(user.name);
-    //     setAddress(user.address);
-    //     setPhone(user.phone);
-    // }
-
     return (
         <>
             {!user ? (
-                <Box>Loading...</Box>
+                <Spinner 
+                    // m = "0 auto "
+                    position= "fixed"
+                    top= "50%"
+                    left= "50%"
+                    size = "xl"
+                    transform= "translate(-50%, -50%)"
+                />
             ) : (
                 <Container maxW="100%">
                     <Heading>Edit Profile</Heading>

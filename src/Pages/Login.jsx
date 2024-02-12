@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Container, Heading, Box, 
-        InputGroup, FormLabel, Input, 
-        Button, 
-        useToast} from '@chakra-ui/react';
+         FormLabel, Input, Button, 
+         useToast,
+         FormControl
+} from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,34 +15,33 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-                const response = await axios.post("http://localhost:3001/auth/login", {
-                    email,
-                    password
-                });
-                const data = response.data;
-                sessionStorage.setItem('token', data.token);
-                toast({
-                    position: "top",
-                    variant: "left-accent",
-                    title: "You have Logged In!",
-                    description: "Feel free to Explore",
-                    status: "success",
-                    duration: 9000,
-                    isClosable: true
-                });
-                navigate("/dashboard");
+            // Perform form validations
+            if (!validateEmail(email)) {
+                toastError("Invalid email address");
+                return;
             }
-        catch (err) {
-            toast({
-                position: "top",
-                variant: "left-accent",
-                title: "Could Not Log You In",
-                description: "An Error occured while trying to log you in",
-                status: "error",
-                duration: 9000,
-                isClosable: true
+            if (!password.trim()) {
+                toastError("Password is required");
+                return;
+            }
+
+            const response = await axios.post("http://localhost:3001/auth/login", {
+                email,
+                password
             });
-            console.log("Oops login error", err);
+            const data = response.data;
+            sessionStorage.setItem('token', data.token);
+            toastSuccess("You have Logged In!");
+            navigate("/dashboard");
+        } catch (err) {
+            if (err.response && err.response.status === 404) {
+                toastError("User does not exist");
+            } else if (err.response && err.response.status === 401) {
+                toastError("Invalid email or password");
+            } else {
+                toastError("An error occurred while trying to log you in");
+                console.error("Oops login error", err);
+            }
         }
     }
     
@@ -52,6 +52,37 @@ const Login = () => {
     const handlePasswordChange = (event) => {
         setPassword(event.target.value)
     }
+
+    const validateEmail = (email) => {
+        // Basic email validation using regex
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    const toastSuccess = (message) => {
+        toast({
+            position: "top",
+            variant: "left-accent",
+            title: "Success",
+            description: message,
+            status: "success",
+            duration: 9000,
+            isClosable: true
+        });
+    }
+
+    const toastError = (message) => {
+        toast({
+            position: "top",
+            variant: "left-accent",
+            title: "Error",
+            description: message,
+            status: "error",
+            duration: 9000,
+            isClosable: true
+        });
+    }
+
     return(
         <>
             <Container
@@ -67,13 +98,10 @@ const Login = () => {
                     m = "0 auto"
                     w = "xl"
                     p = "1em"
-                    // bg= "cyan"
                     boxShadow= "2xl"
                     borderRadius= "xl"
                 >
-                    <InputGroup
-                        mb = "1em"
-                    >
+                    <FormControl mb="1em" isRequired>
                         <FormLabel>Email</FormLabel>
                         <Input 
                             type='email'
@@ -81,10 +109,8 @@ const Login = () => {
                             onChange={handleEmailChange}
                             placeholder='someone@email.com'
                         />
-                    </InputGroup>
-                    <InputGroup
-                        mb = "1em"
-                    >
+                    </FormControl>
+                    <FormControl mb="1em" isRequired>
                         <FormLabel>Password</FormLabel>
                         <Input 
                             type='password'
@@ -92,7 +118,7 @@ const Login = () => {
                             onChange={handlePasswordChange}
                             placeholder='Type Your password'
                         />
-                    </InputGroup>
+                    </FormControl>
                     <Button
                         w = "100%"
                         colorScheme = "green"

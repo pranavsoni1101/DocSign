@@ -157,7 +157,7 @@ const Dashboard = () => {
                                             key={pdf._id}
                                         >
                                             <FaFilePdf />
-                                            <Text>{pdf.name}</Text>
+                                            <Text>{pdf.fileName}</Text>
                                             <Text>{pdf.size} bytes</Text>
                                             <Text>{formatDateFromISO(pdf.uploadedAt)}</Text>
                                             <Box>
@@ -170,7 +170,7 @@ const Dashboard = () => {
                                             </IconButton>
                                             <Button
                                                 as={Link}
-                                                href={`/pdf/${pdf._id}/${pdf.name}/`}
+                                                href={`/pdf/${pdf._id}/${pdf.fileName}/`}
                                                 ml="12px"
                                                 colorScheme='twitter'
                                             >

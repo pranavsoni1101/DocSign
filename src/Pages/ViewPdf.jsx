@@ -27,7 +27,6 @@ const ViewPdf = () => {
     const [inputFields, setInputFields] = useState([]);
     const [dragEnabled, setDragEnabled] = useState(false); // State to track drag enablement
     const [usersLoading, setUsersLoading] = useState(true); 
-    console.log(fileName);
     useEffect(()=> {
         fetchUserDetails(navigate, setUser, setUsersLoading);
     }, [])

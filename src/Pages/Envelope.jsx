@@ -37,14 +37,31 @@ const Envelope = () => {
     // Handle File Input Change
     const handlePdfFileChange = (e) => {
         setInputPdfFile(e.target.files[0]);
+        setTimeout(()=> {
+            setIsOpen(false)
+
+        }, 1000)
     };
 
     // Handle PDF upload
     const handlePdfUpload = async () => {
+        if (!name.trim() || !email.trim()) {
+            toast({
+                position: "top",
+                variant: "left-accent",
+                title: "Fields Required",
+                description: "Please enter both name and email",
+                status: "warning",
+                duration: 9000,
+                isClosable: true,
+            });
+            return;
+        }
         try {
             const formData = new FormData();
             formData.append('pdf', inputPdfFile);
-
+            formData.append('recipientName', name);
+            formData.append('recipientEmail', email);
             // Make a POST request to upload the PDF file
             const response = await axios.post(`http://localhost:3001/pdf/${user.id}/pdfs`, formData, {
                 headers: {
@@ -102,7 +119,7 @@ const Envelope = () => {
                     <UploadPdfModal
                         isOpen={isOpen}
                         setIsOpen={handleSetIsOpen}
-                        handlePdfUpload={handlePdfUpload}
+                        // handlePdfUpload={handlePdfUpload}
                         handlePdfFileChange={handlePdfFileChange}
                     />
                 </Box>
@@ -148,6 +165,7 @@ const Envelope = () => {
                             Add Recipient
                         </Button>
                 </Box>
+                <Button colorScheme='green' onClick={handlePdfUpload}>Upload pDF</Button>
             </Container>
             
         </>

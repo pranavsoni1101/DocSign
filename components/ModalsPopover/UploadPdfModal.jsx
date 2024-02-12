@@ -20,9 +20,6 @@ const UploadPdfModal = ({isOpen, setIsOpen, handlePdfFileChange, handlePdfUpload
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={handlePdfUpload}>
-                            Upload
-                        </Button>
                         <Button variant="ghost" onClick={() => setIsOpen(false)}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>

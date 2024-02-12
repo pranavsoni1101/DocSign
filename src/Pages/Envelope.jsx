@@ -47,7 +47,7 @@ const Envelope = () => {
             const response = await axios.post(`http://localhost:3001/pdf/${user.id}/pdfs`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': 'Bearer 65c0c3dfb849ea0136a63124' // Pass the user ID in the Authorization header
+                    'Authorization': `Bearer ${user.id}` // Pass the user ID in the Authorization header
                 }
             });
             toast({

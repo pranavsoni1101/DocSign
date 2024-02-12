@@ -49,7 +49,18 @@ const Profile = () => {
                 });
                 fetchUserDetails(navigate, setUser, setUsersLoading);
             })
-            .catch(err => console.log("Error updating", err));
+            .catch(err => {
+                console.log("Error updating", err);
+                toast({
+                    position: "top",
+                    variant: "left-accent",
+                    title: "OOPS Details not updated",
+                    description: "Error updating your personal details",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true
+                });
+            });
     };
     
 

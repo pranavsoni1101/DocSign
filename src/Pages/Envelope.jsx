@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Box, Container, FormControl, 
-         Heading, Input, Button, 
-         useToast, FormLabel 
+import {
+    Box, Container, FormControl,
+    Heading, Input, Button,
+    useToast, FormLabel, Grid, GridItem, Text
 } from '@chakra-ui/react';
 import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
 import fetchUserDetails from '../../utils/fetchUser';
+import { Document, Page } from 'react-pdf';
 
 const Envelope = () => {
     const navigate = useNavigate();
@@ -15,15 +17,16 @@ const Envelope = () => {
     const [inputPdfFile, setInputPdfFile] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [user, setUser] = useState(null);
-    const [usersLoading, setUsersLoading] = useState(true); 
+    const [usersLoading, setUsersLoading] = useState(true);
+    const [fileName, setFileName] = useState("")
 
     const toast = useToast();
-    
+
     // Logic to redirect user if the token is not found in the sessionStorage
-    useEffect(()=> {
-        fetchUserDetails(navigate,setUser,setUsersLoading)
-    },[])
-    
+    useEffect(() => {
+        fetchUserDetails(navigate, setUser, setUsersLoading)
+    }, [])
+
     // Handle Name input change and store to state
     const handleNameChange = (event) => {
         setName(event.target.value);
@@ -33,11 +36,12 @@ const Envelope = () => {
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     }
-    
+
     // Handle File Input Change
     const handlePdfFileChange = (e) => {
         setInputPdfFile(e.target.files[0]);
-        setTimeout(()=> {
+        setFileName(e.target.files[0].name)
+        setTimeout(() => {
             setIsOpen(false)
 
         }, 1000)
@@ -99,75 +103,134 @@ const Envelope = () => {
         setIsOpen(bool);
     }
 
-    return(
+    return (
         <>
             <Container
+                p="2em"
                 maxW="100%"
             >
-                <Heading>This is envelope</Heading>
-                <Box
-                    p = "2em"
-                    boxSize = "xs"
-                    boxShadow= "2xl"
-                    borderRadius= "md"
-                >
-                    <Button
-                        onClick={() => setIsOpen(true)}
-                    >
-                        Upload Pdf
-                    </Button>
-                    <UploadPdfModal
-                        isOpen={isOpen}
-                        setIsOpen={handleSetIsOpen}
-                        // handlePdfUpload={handlePdfUpload}
-                        handlePdfFileChange={handlePdfFileChange}
-                    />
-                </Box>
-                <Box
-                    p = "2em"
-                    w = "sm"
-                    boxShadow= "xl"
+                <Grid
+                    templateRows="repeat(2, 1fr)"
+                    templateColumns="repeat(12, 1fr)"
+                    gap={4}
 
                 >
-                    <Heading
-                        size= "sm"
-                        as = "h3"
-                    >
-                        Add Recipient's Details</Heading>
-                    <FormControl
-                        isRequired
-                        mt = "1em"
-                    >
-                        <FormLabel>Recipient's Name</FormLabel>
-                        <Input
-                            // mt = "1em" 
-                            type='text'
-                            value={name}
-                            onChange={handleNameChange}
-                            placeholder='John Doe'
-                        />
-                    </FormControl>
-                    <FormControl
-                        isRequired
-                    >
-                        <FormLabel>Recipient's Email</FormLabel>
-                        <Input
-                            // mt = "1em" 
-                            type='email'
-                            value={email}
-                            onChange={handleEmailChange}
-                            placeholder='johndoe@something.com'
-                        />
-                    </FormControl>
-                        <Button
-                            mt = "1em"
+                    {inputPdfFile ?
+                        <GridItem
+                            colSpan={3}
                         >
-                            Add Recipient
-                        </Button>
-                </Box>
-                <Button colorScheme='green' onClick={handlePdfUpload}>Upload pDF</Button>
+                            <Box
+                                p="1em"
+                                boxSize="xs"
+                                boxShadow="xl"
+                                borderRadius="2xl"
+                            >
+                                <Box
+                                    border="1px solid black"
+
+                                >
+                                    <Document
+                                        file={inputPdfFile}
+                                    >
+                                        <Page pageNumber={1} width={200} />
+                                    </Document>
+                                    <Text>{fileName}</Text>
+                                </Box>
+                            </Box>
+                        </GridItem>
+
+                        : null}
+                    <GridItem
+                        colSpan={3}
+                    >
+                        <Box
+                            p="1em"
+                            // my= "3"
+                            boxSize="xs"
+                            boxShadow="xl"
+                            borderRadius="2xl"
+                        >
+                            <Button
+                                w="100%"
+                                mt="1em"
+                                textTransform="uppercase"
+                                onClick={() => setIsOpen(true)}
+                            >
+                                Upload PDF
+                            </Button>
+                            <UploadPdfModal
+                                isOpen={isOpen}
+                                setIsOpen={handleSetIsOpen}
+                                // handlePdfUpload={handlePdfUpload}
+                                handlePdfFileChange={handlePdfFileChange}
+                            />
+                            <Button
+                                w="100%"
+                                mt="1em"
+                                textTransform="uppercase"
+                            >
+                                Use Template
+                            </Button>
+                            <Button
+                                w="100%"
+                                mt="1em"
+                                textTransform="uppercase"
+                            >
+                                Get From CLoud
+                            </Button>
+                        </Box>
+                    </GridItem>
+                    <GridItem
+                        colSpan={6}
+                    >
+                        <Box
+                            p="2em"
+                            w="sm"
+                            boxShadow="xl"
+                            boxSize= "xs"
+                            borderRadius={"xl"}
+                        >
+                            <Heading
+                                size="sm"
+                                as="h3"
+                            >
+                                Add Recipient's Details</Heading>
+                            <FormControl
+                                isRequired
+                                mt="1em"
+                            >
+                                <FormLabel>Recipient's Name</FormLabel>
+                                <Input
+                                    // mt = "1em" 
+                                    type='text'
+                                    value={name}
+                                    onChange={handleNameChange}
+                                    placeholder='John Doe'
+                                />
+                            </FormControl>
+                            <FormControl
+                                isRequired
+                            >
+                                <FormLabel>Recipient's Email</FormLabel>
+                                <Input
+                                    // mt = "1em" 
+                                    type='email'
+                                    value={email}
+                                    onChange={handleEmailChange}
+                                    placeholder='johndoe@something.com'
+                                />
+                            </FormControl>
+                            <Button
+                                mt="1em"
+                            >
+                                Add Recipient
+                            </Button>
+                        </Box>
+                        <Button colorScheme='green' onClick={handlePdfUpload}>Upload pDF</Button>
+                    </GridItem>
+                </Grid>
             </Container>
-            
+
         </>
     )
 }

@@ -33,14 +33,24 @@ const ViewPdf = () => {
 
     const handleAddInputField = (e, pageIndex) => {
         if(!dragEnabled) return;
+
+        const pdfViewer = document.querySelector('.page');
+        console.log('pdf viewer0', pdfViewer);
+        const rect = pdfViewer.getBoundingClientRect();
+
         // Calculate the position of the input field relative to the PDF
-        const boundingRect = e.target.getBoundingClientRect();
-        const x = e.clientX - boundingRect.left + window.scrollX;
-        const y = e.clientY - boundingRect.top + window.scrollY;
-        
+        // const boundingRect = e.target.getBoundingClientRect();
+        // const x = e.clientX - rect.left;
+        // const y = e.clientY - rect.top ;
+        const x = (e.clientX - rect.left) * (pdfViewer.clientWidth / rect.width) + pdfViewer.scrollLeft;
+        const y = (e.clientY - rect.top) * (pdfViewer.clientHeight / rect.height) + pdfViewer.scrollTop;
+            
         // Add the input field position and page index to the list
         setInputFields([...inputFields, { x, y, pageIndex }]);
     };
+    
+    
+    
 
     const handleDocumentLoadSuccess = ({ numPages }) => {
         setNumPages(numPages);
@@ -102,8 +112,8 @@ const ViewPdf = () => {
                     bg = "#00000099"
                     display = "flex"
                     justifyContent= "center"
+                    userSelect="none"
                     alignItems = "center"
-                    // w = "50em"
                 >
                     <Document
                         file={`http://localhost:3001/pdf/${user.id}/pdfs/${id}`}
@@ -115,23 +125,24 @@ const ViewPdf = () => {
                                 key={`page_${index + 1}`}
                             >
                                 <Page  pageNumber={index + 1}
+                                    className={"page"}
                                     onClick={(e) => handleAddInputField(e, index)}
                                 />
                                 {/* Render input fields dynamically based on recorded positions */}
                                 {inputFields
                                 .filter(field => field.pageIndex === index)
                                 .map((field, idx) => (
-                                    <SignatureInput 
-                                        key={idx} 
-                                        x={field.x} 
-                                        y={field.y} 
-                                        index={index} 
-                                        isOpen={isOpen}
-                                        setIsOpen={setIsOpen}
-                                        handleSetIsOpen={handleSetIsOpen}
-                                        user = {user}
-                                        />
-                                    // <NameInput key={idx} x={field.x} y={field.y} index={index} />
+                                    // <SignatureInput 
+                                    //     key={idx} 
+                                    //     x={field.x} 
+                                    //     y={field.y} 
+                                    //     index={index} 
+                                    //     isOpen={isOpen}
+                                    //     setIsOpen={setIsOpen}
+                                    //     handleSetIsOpen={handleSetIsOpen}
+                                    //     user = {user}
+                                    //     />
+                                    <NameInput key={idx} x={field.x} y={field.y} index={index} />
                                 ))}
                             </Box>
                         ))}

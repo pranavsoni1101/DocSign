@@ -1,68 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Heading, Box, Button, 
-        Text, Flex, Grid, 
-        GridItem, Input 
-} from '@chakra-ui/react';
+import React, { useEffect, useState, useRef } from 'react';
+import { Heading, Box, Button, Text, Flex, Input } from '@chakra-ui/react';
 import { Page, Document } from 'react-pdf';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDrag, DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FaDownload } from "react-icons/fa6";
+import Draggable from 'react-draggable';
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
 import Sidebar from '../../components/Sidebar';
-import NameInput from '../../components/DraggableInputs/NameInput';
 import fetchUserDetails from '../../utils/fetchUser';
-import SignatureInput from '../../components/DraggableInputs/SignatureInput';
 
 const ViewPdf = () => {
     let { id, fileName } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
-    const [inputFields, setInputFields] = useState([]);
-    const [dragEnabled, setDragEnabled] = useState(false); // State to track drag enablement
     const [usersLoading, setUsersLoading] = useState(true); 
+    const inputFieldRef = useRef(null); // Ref for input field
+    const [inputField, setInputField] = useState(null); // State to store the position and value of the input field
+
     useEffect(()=> {
         fetchUserDetails(navigate, setUser, setUsersLoading);
-    }, [])
-
-    const handleAddInputField = (e, pageIndex) => {
-        if(!dragEnabled) return;
-
-        const pdfViewer = document.querySelector('.page');
-        console.log('pdf viewer0', pdfViewer);
-        const rect = pdfViewer.getBoundingClientRect();
-
-        // Calculate the position of the input field relative to the PDF
-        // const boundingRect = e.target.getBoundingClientRect();
-        // const x = e.clientX - rect.left;
-        // const y = e.clientY - rect.top ;
-        const x = (e.clientX - rect.left) * (pdfViewer.clientWidth / rect.width) + pdfViewer.scrollLeft;
-        const y = (e.clientY - rect.top) * (pdfViewer.clientHeight / rect.height) + pdfViewer.scrollTop;
-            
-        // Add the input field position and page index to the list
-        setInputFields([...inputFields, { x, y, pageIndex }]);
-    };
-    
-    
-    
+    }, []);
 
     const handleDocumentLoadSuccess = ({ numPages }) => {
         setNumPages(numPages);
-    };
-
-    // Function to toggle drag enablement
-    const toggleDrag = () => {
-        setDragEnabled(!dragEnabled);
-    };
-
-    const handleSetIsOpen = (bool) => {
-        setIsOpen(bool);
     };
 
     const handleDownload = async () => {
@@ -80,78 +44,91 @@ const ViewPdf = () => {
         }
     };
 
+    const addInputField = () => {
+        if (!inputField) {
+            setInputField({ x: 0, y: 0, value: '' });
+        }
+    };
+
+    const handleDrag = (e, ui) => {
+        if (ui.position) {
+            const { x, y } = ui.position;
+            setInputField(prevInputField => ({
+                ...prevInputField,
+                x,
+                y
+            }));
+            inputFieldRef.current.style.transform = `translate(${x}px, ${y}px)`; // Update position using ref
+        }
+    };
+
     return(
         <>
-        {usersLoading? 
+        {usersLoading ? 
             (
                 <Box>Loading..</Box>
-            )
-        :
-            (
-            <DndProvider backend={HTML5Backend}>
-                <Sidebar
-                    toggleDrag = {toggleDrag}
-                >
-                <Flex
-                    p = "12px"
-                    justify="space-between"
-                    bg = "grey"
-                    maxH={"4em"}
-                >
-                    <Text display={"inline-block"}>{pageNumber} of {numPages}</Text>
-                    <Button
-                        // variant= "outline"
-                        colorScheme='twitter'
-                        rightIcon={<FaDownload />}
-                        onClick={handleDownload}
+            ) : (
+                <Sidebar>
+                    <Flex
+                        p="12px"
+                        justify="space-between"
+                        bg="grey"
+                        maxH={"4em"}
                     >
-                        Download
-                    </Button>
-                </Flex>
-                <Flex
-                    bg = "#00000099"
-                    display = "flex"
-                    justifyContent= "center"
-                    userSelect="none"
-                    alignItems = "center"
-                >
-                    <Document
-                        file={`http://localhost:3001/pdf/${user.id}/pdfs/${id}`}
-                        onLoadSuccess={handleDocumentLoadSuccess}
+                        <Text display={"inline-block"}>{pageNumber} of {numPages}</Text>
+                        <Button
+                            colorScheme='twitter'
+                            rightIcon={<FaDownload />}
+                            onClick={handleDownload}
+                        >
+                            Download
+                        </Button>
+                        <Button onClick={addInputField}>Add Input</Button> {/* Button to add input field */}
+                    </Flex>
+                    <Flex
+                        bg="#00000099"
+                        display="flex"
+                        justifyContent="center"
+                        userSelect="none"
+                        alignItems="center"
                     >
-                        {Array.from(new Array(numPages), (el, index) => (
-                            <Box
-                                my= "12px"
-                                key={`page_${index + 1}`}
-                            >
-                                <Page  pageNumber={index + 1}
-                                    className={"page"}
-                                    onClick={(e) => handleAddInputField(e, index)}
-                                />
-                                {/* Render input fields dynamically based on recorded positions */}
-                                {inputFields
-                                .filter(field => field.pageIndex === index)
-                                .map((field, idx) => (
-                                    // <SignatureInput 
-                                    //     key={idx} 
-                                    //     x={field.x} 
-                                    //     y={field.y} 
-                                    //     index={index} 
-                                    //     isOpen={isOpen}
-                                    //     setIsOpen={setIsOpen}
-                                    //     handleSetIsOpen={handleSetIsOpen}
-                                    //     user = {user}
-                                    //     />
-                                    <NameInput key={idx} x={field.x} y={field.y} index={index} />
-                                ))}
-                            </Box>
-                        ))}
-                    </Document>
-                </Flex>
+                        <Document
+                            file={`http://localhost:3001/pdf/${user.id}/pdfs/${id}`}
+                            onLoadSuccess={handleDocumentLoadSuccess}
+                        >
+                            {Array.from(new Array(numPages), (el, index) => (
+                                <Box
+                                    my="12px"
+                                    key={`page_${index + 1}`}
+                                >
+                                    <Page  pageNumber={index + 1} className={"page"} />
+                                    {/* Render input field if it exists */}
+                                    {inputField && (
+                                        <Draggable
+                                            onDrag={handleDrag}
+                                            defaultPosition={{ x: inputField.x, y: inputField.y }}
+                                        >
+                                            <Input 
+                                                ref={inputFieldRef}
+                                                zIndex={2} 
+                                                size="xs"
+                                                w="xs"
+                                                placeholder={`x: ${inputField.x} y: ${inputField.y} at ${index + 1} page`}
+                                                style={{ position: 'absolute', left: inputField.x, top: inputField.y }}
+                                                value={inputField.value}
+                                                onChange={(e) => setInputField(prevInputField => ({ ...prevInputField, value: e.target.value }))}
+                                            />
+                                        </Draggable>
+                                    )}
+                                </Box>
+                            ))}
+                        </Document>
+                    </Flex>
                 </Sidebar>
-            </DndProvider>
-            )}
-            </>
-)}
+            )
+        }
+        </>
+    );
+};
 
 export default ViewPdf;

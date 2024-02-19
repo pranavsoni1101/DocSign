@@ -12,6 +12,7 @@ import Sidebar from '../../components/Sidebar';
 import fetchUserDetails from '../../utils/fetchUser';
 
 const ViewPdf = () => {
+    const dragRef = useRef(null);
     let { id, fileName } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
@@ -24,6 +25,10 @@ const ViewPdf = () => {
     useEffect(()=> {
         fetchUserDetails(navigate, setUser, setUsersLoading);
     }, []);
+
+    useEffect(() => {
+        console.log("Updated position:", inputField);
+    }, [inputField]);
 
     const handleDocumentLoadSuccess = ({ numPages }) => {
         setNumPages(numPages);
@@ -47,20 +52,53 @@ const ViewPdf = () => {
     const addInputField = () => {
         if (!inputField) {
             setInputField({ x: 0, y: 0, value: '' });
+        } else {
+            // If an input field already exists, update its position
+            setInputField(prevInputField => ({
+                ...prevInputField,
+                x: 0,
+                y: 0,
+                value: ''
+            }));
         }
     };
+    
 
     const handleDrag = (e, ui) => {
-        if (ui.position) {
-            const { x, y } = ui.position;
+        console.log("this is the hell ui", ui);
+        // if (ui.position) {
+            const x = ui.x;
+            const y = ui.y;
             setInputField(prevInputField => ({
                 ...prevInputField,
                 x,
                 y
             }));
-            inputFieldRef.current.style.transform = `translate(${x}px, ${y}px)`; // Update position using ref
+        // }
+    };
+    
+
+    const handleDragStart = () => {
+        // Ensure the input field remains visible during dragging by setting its zIndex higher
+        setInputField(prevInputField => ({
+            ...prevInputField,
+            zIndex: 9999 // Set a high zIndex value
+        }));
+    };
+    
+    const handleDragStop = (e, ui) => {
+        if (ui.position) {
+            const { x, y } = ui.position;
+            console.log("New position (x, y):", x, y); // Log the new position
+            setInputField(prevInputField => ({
+                ...prevInputField,
+                x,
+                y
+            }));
         }
     };
+    
+    
 
     return(
         <>
@@ -111,6 +149,8 @@ const ViewPdf = () => {
                                     {/* Render input field if it exists */}
                                     {inputField && (
                                         <Draggable
+                                            // onStart={handleDragStart}
+                                            // onStop={handleDragStop}
                                             onDrag={handleDrag}
                                             defaultPosition={{ x: inputField.x, y: inputField.y }}
                                         >

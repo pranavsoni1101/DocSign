@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Heading, Box, Button, Text, Flex, Input } from '@chakra-ui/react';
+import { Heading, Box, Button, Text, Flex, Input, Spinner } from '@chakra-ui/react';
 import { Page, Document } from 'react-pdf';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaDownload } from "react-icons/fa6";
@@ -66,7 +66,13 @@ const ViewPdf = () => {
         <>
         {usersLoading ? 
             (
-                <Box>Loading..</Box>
+                <Spinner 
+                    position= "fixed"
+                    top= "50%"
+                    left= "50%"
+                    size = "xl"
+                    transform= "translate(-50%, -50%)"
+                />
             ) : (
                 <Sidebar>
                     <Flex

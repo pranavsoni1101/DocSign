@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Heading, Spinner, Text  } from '@chakra-ui/react';
+import { Box, Button, Heading, Link, Spinner, Text  } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import fetchUserDetails from '../../utils/fetchUser';
 import axios from 'axios';
@@ -144,6 +144,13 @@ const PendingDocs = () => {
                                             :
                                             null
                                         }
+                                        <br />
+                                        <Button
+                                            as={Link}
+                                            href={`/sign/${file._id}/${file.fileName}`}
+                                        >
+                                            Sign
+                                        </Button>
                                         <br />
                                         <Button
                                             colorScheme='yellow'

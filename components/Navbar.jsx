@@ -304,8 +304,8 @@ const NAV_ITEMS= [
     href: '/dashboard',
   },
   {
-    label: 'Sign Docs',
-    href: '/signDocs',
+    label: 'Pending Docs',
+    href: '/pendingDocs',
   },
   {
     label: 'Profile',

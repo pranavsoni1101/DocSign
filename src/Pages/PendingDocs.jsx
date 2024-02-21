@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Heading, Link, Spinner, Text  } from '@chakra-ui/react';
+import { Box, Button, Heading, Link, Spinner, Text , Container } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import fetchUserDetails from '../../utils/fetchUser';
 import axios from 'axios';
@@ -112,7 +112,9 @@ const PendingDocs = () => {
                     )
                 :
                 (
-                    <>
+                    <Container
+                        maxW= "100%"
+                    >
                         <Heading>This is sign pdf</Heading>
                         <Box
                             p = "1em"
@@ -170,7 +172,7 @@ const PendingDocs = () => {
                                 </Box>
                             ))}
                         </Box>
-                    </>
+                    </Container>
                 )
             }
         </>

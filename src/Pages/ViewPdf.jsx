@@ -4,6 +4,7 @@ import { Page, Document } from 'react-pdf';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaDownload } from "react-icons/fa6";
 import Draggable from 'react-draggable';
+import axios from 'axios';
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -52,7 +53,7 @@ const ViewPdf = () => {
     const handleAddInputField = () => {
         setInputFields(prevInputFields => [
             ...prevInputFields,
-            { x: 0, y: 0, value: '' }
+            { x: 0, y: 0}
         ]);
     };
 
@@ -70,15 +71,24 @@ const ViewPdf = () => {
     };
     
 
-    const handleInputChange = (index, value) => {
-        setInputFields(prevInputFields => {
-            const updatedInputFields = [...prevInputFields];
-            updatedInputFields[index] = {
-                ...updatedInputFields[index],
-                value: value
-            };
-            return updatedInputFields;
-        });
+    const handleSendPositions = async () => {
+        try {
+            const positions = inputFields.map(field => ({
+                pageIndex: field.pageIndex,
+                x: field.x,
+                y: field.y
+            }));
+    
+            // Make a POST request to send input field positions to the backend
+            await axios.post(`http://localhost:3001/pdf/${user.id}/pdfs/${id}/positions`, positions, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('Positions sent successfully');
+        } catch (error) {
+            console.error('Error sending positions:', error);
+        }
     };
 
     return (
@@ -108,6 +118,7 @@ const ViewPdf = () => {
                             >
                                 Download
                             </Button>
+                            <Button colorScheme='green' onClick={handleSendPositions}>Send</Button>
                             <Button onClick={handleAddInputField}>Add Input</Button> {/* Button to add input field */}
                         </Flex>
                         <Flex

@@ -304,6 +304,10 @@ const NAV_ITEMS= [
     href: '/dashboard',
   },
   {
+    label: 'Sign Docs',
+    href: '/signDocs',
+  },
+  {
     label: 'Profile',
     href: '/profile',
   },

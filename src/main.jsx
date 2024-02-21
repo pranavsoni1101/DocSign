@@ -10,6 +10,7 @@ import Dashboard from './Pages/Dashboard';
 import ViewPdf from './Pages/ViewPdf';
 import Envelope from './Pages/Envelope';
 import Profile from './Pages/Profile';
+import SignPdf from './Pages/SignPdf';
 
 
 const router = createBrowserRouter([
@@ -41,7 +42,11 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <Profile />
-  }
+  },
+  {
+    path: '/signDocs',
+    element: <SignPdf />
+  },
 ])
 
 const rootElement = document.getElementById('root')

@@ -5,7 +5,7 @@ import fetchUserDetails from '../../utils/fetchUser';
 import axios from 'axios';
 import { FaFilePdf } from "react-icons/fa";
 
-const SignPdf = () => {
+const PendingDocs = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState();
     const [userLoading, setUserLoading] = useState(true); 
@@ -170,4 +170,4 @@ const SignPdf = () => {
     )
 }
 
-export default SignPdf;
+export default PendingDocs;

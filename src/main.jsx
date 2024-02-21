@@ -10,7 +10,7 @@ import Dashboard from './Pages/Dashboard';
 import ViewPdf from './Pages/ViewPdf';
 import Envelope from './Pages/Envelope';
 import Profile from './Pages/Profile';
-import SignPdf from './Pages/SignPdf';
+import pendingDocs from './Pages/PendingDocs';
 
 
 const router = createBrowserRouter([
@@ -44,8 +44,8 @@ const router = createBrowserRouter([
     element: <Profile />
   },
   {
-    path: '/signDocs',
-    element: <SignPdf />
+    path: '/pendingDocs',
+    element: <pendingDocs />
   },
 ])
 

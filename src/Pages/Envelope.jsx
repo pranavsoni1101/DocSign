@@ -12,6 +12,7 @@ import { Document, Page } from 'react-pdf';
 
 const Envelope = () => {
     const navigate = useNavigate();
+    // const history = useHistory();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [inputPdfFile, setInputPdfFile] = useState(null);
@@ -84,6 +85,15 @@ const Envelope = () => {
             })
             // Close the modal after successful upload
             setIsOpen(false);
+
+            // Handling the new Uploaded file data
+            const newPdf = response.data;
+
+            console.log("newly uploaded", newPdf);
+            setInputPdfFile(null);
+            setName("");
+            setEmail("");
+            navigate(`/pdf/${newPdf.id}/${newPdf.fileName}`);
         } catch (err) {
             toast({
                 position: "top",

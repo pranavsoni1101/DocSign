@@ -29,7 +29,7 @@ const App = () => {
           fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
           lineHeight={'110%'}>
           Document Signing{' '}
-          <Text as={'span'} color={'orange.400'}>
+          <Text as={'span'} color={'primary.400'}>
             made easy
           </Text>
         </Heading>
@@ -44,8 +44,8 @@ const App = () => {
             rounded={'full'}
             px={6}
             colorScheme={'orange'}
-            bg={'orange.400'}
-            _hover={{ bg: 'orange.500' }}>
+            bg={'primary.400'}
+            _hover={{ bg: 'primary.500' }}>
             Get started
           </Button>
           <Button rounded={'full'} px={6}>

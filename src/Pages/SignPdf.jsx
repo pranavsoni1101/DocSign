@@ -34,10 +34,12 @@ const SignPdf = () => {
                     }
                 });
                 setPdf(response.data);
-                const pdfBlob = new Blob([response.data.data], { type: 'application/pdf' });
-                const pdfUrl = URL.createObjectURL(pdfBlob);
-                setPdfBytes(pdfUrl);
-                console.log("bytessss",typeof(pdfBytes), pdfUrl);
+                const pdfData = btoa(
+                    new Uint8Array(response.data.data.data)
+                        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                );
+                setPdfBytes(pdfData);
+                console.log('PDF Data:', pdfData); // Log PDF data for debugging
                 // console.log("this is the pdf", response.data)
             }
         } catch (error) {
@@ -87,36 +89,35 @@ const SignPdf = () => {
                 :
                 (
                     <>
-                        <Heading mb={4}>Sign PDF</Heading>
-                        {pdfBytes && (
-                            <>
-                                <embed src={`data:application/pdf;base64,${pdfBytes}`} type="application/pdf" width="100%" height="600px" />
-                                <form>
-                                    {pdf.inputFields.map((field,index) => (
-                                        <Input
-                                            key={index}
-                                            name={field.id}
-                                            
-                                            placeholder={`${field.pageIndex}, x: ${field.x} ,y: ${field.y}`}
-                                            value={formData[field.id] || ''}
-                                            onChange={handleInputChange}
-                                            posistion = "absolute"
-                                            left = {field.x}
-                                            top = {field.y}
-                                            mb={4}
-                                        />
-                                    ))}
-                                    <Button
-                                        colorScheme="teal"
-                                        isLoading={loading}
-                                        loadingText="Submitting"
-                                        onClick={handleSubmit}
-                                    >
-                                        Submit
-                                    </Button>
-                                </form>
-                            </>
-                        )}
+                        <div style={{ position: 'relative' }}>
+                            <Heading mb={4}>Sign PDF</Heading>
+                            {pdfBytes && (
+                                <>
+                                    <embed src={`data:application/pdf;base64,${pdfBytes}`} type="application/pdf" width="100%" height="600px" />
+                                        {pdf.inputFields.map((field, index) => (
+                                            <Input
+                                                key={index}
+                                                w = "xs"
+                                                name={field.id}
+                                                placeholder={`${field.pageIndex}, x: ${field.x}, y: ${field.y}`}
+                                                value={formData[field.id] || ''}
+                                                zIndex={999} // Ensure input fields are displayed above the PDF
+                                                onChange={handleInputChange}
+                                                style={{ position: 'absolute', left: `${field.x}px`, top: `${field.y}px` }}
+                                            />
+                                        ))}
+                                        <Button
+                                            colorScheme="teal"
+                                            isLoading={loading}
+                                            loadingText="Submitting"
+                                            onClick={handleSubmit}
+                                            style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                                        >
+                                            Submit
+                                        </Button>
+                                </>
+                            )}
+                        </div>
                     </>
                 )}
         </>

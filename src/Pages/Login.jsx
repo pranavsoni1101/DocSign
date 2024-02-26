@@ -13,7 +13,8 @@ const Login = () => {
     const navigate = useNavigate();
     const toast = useToast();
 
-    const handleLogin = async () => {
+    const handleLogin = async (event) => {
+        event.preventDefault();
         try {
             // Perform form validations
             if (!validateEmail(email)) {
@@ -101,31 +102,34 @@ const Login = () => {
                     boxShadow= "2xl"
                     borderRadius= "xl"
                 >
-                    <FormControl mb="1em" isRequired>
-                        <FormLabel>Email</FormLabel>
-                        <Input 
-                            type='email'
-                            value={email}
-                            onChange={handleEmailChange}
-                            placeholder='someone@email.com'
-                        />
-                    </FormControl>
-                    <FormControl mb="1em" isRequired>
-                        <FormLabel>Password</FormLabel>
-                        <Input 
-                            type='password'
-                            value={password}
-                            onChange={handlePasswordChange}
-                            placeholder='Type Your password'
-                        />
-                    </FormControl>
-                    <Button
-                        w = "100%"
-                        colorScheme = "green"
-                        onClick={handleLogin}
-                    >
-                        Sign In
-                    </Button>
+                    <form onSubmit={handleLogin}>
+                        <FormControl mb="1em" isRequired>
+                            <FormLabel>Email</FormLabel>
+                            <Input 
+                                type='email'
+                                value={email}
+                                onChange={handleEmailChange}
+                                placeholder='someone@email.com'
+                            />
+                        </FormControl>
+                        <FormControl mb="1em" isRequired>
+                            <FormLabel>Password</FormLabel>
+                            <Input 
+                                type='password'
+                                value={password}
+                                onChange={handlePasswordChange}
+                                placeholder='Type Your password'
+                            />
+                        </FormControl>
+                        <Button
+                            w = "100%"
+                            colorScheme = "green"
+                            // onClick={handleLogin}
+                            type = "submit"
+                        >
+                            Sign In
+                        </Button>
+                    </form>
                 </Box>
             </Container>
         </>

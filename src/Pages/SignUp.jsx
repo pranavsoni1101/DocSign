@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Heading, Box, 
          FormLabel, Input, Button, 
-        useToast, FormControl
+        useToast, FormControl, Text
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -90,52 +90,91 @@ const SignUp = () => {
                 maxW={"100%"}
             >
                 <Heading
-                    my = "1em"
+                    mt = "1em"
                     textAlign="center"
                 >
-                    This is Sign Up
+                    Sign Up
                 </Heading>
+                <Text
+                    m = "0 auto"
+                    my = "0.5em"
+                    w = "md"
+                    textAlign= "center"
+                >
+                    Ready to ditch the pen and paper? 
+                    Let's turn those scribbles into 
+                    stylish digital signatures! 
+                    Sign up now and join the paperless revolution.
+                </Text>
                 <Box
                     m = "0 auto"
-                    w = "xl"
-                    p = "1em"
+                    w = "lg"
+                    p = "2em"
                     boxShadow= "2xl"
                     borderRadius= "xl"
+                    backgroundColor= 'gray.500'
                 >
                     <FormControl
                         isRequired
                         mb = "1em"
                     >
-                        <FormLabel>Name</FormLabel>
-                        <Input 
+                        <FormLabel
+                            color= "primary.500"
+                        >
+                            Name
+                        </FormLabel>
+                        <Input
+                            color= "#fff" 
                             type='text'
                             value={name}
                             onChange={handleNameChange}
                             placeholder='Some One'
+                            _hover = {{
+                                borderColor: "primary.500"
+                            }}
+                            focusBorderColor='primary.500'
                         />
                     </FormControl>
                     <FormControl
                         isRequired
                         mb = "1em"
                     >
-                        <FormLabel>Email</FormLabel>
-                        <Input 
+                        <FormLabel
+                            color= "primary.500"
+                        >
+                            Email
+                        </FormLabel>
+                        <Input
+                            color= "#fff" 
                             type='email'
                             value={email}
                             onChange={handleEmailChange}
                             placeholder='someone@email.com'
+                            _hover = {{
+                                borderColor: "primary.500"
+                            }}
+                            focusBorderColor='primary.500'
                         />
                     </FormControl>
                     <FormControl
                         mb = "1em"
                         isRequired
                     >
-                        <FormLabel>Password</FormLabel>
-                        <Input 
+                        <FormLabel
+                            color= "primary.500"
+                        >
+                            Password
+                        </FormLabel>
+                        <Input
+                            color= "#fff" 
                             type='password'
                             value={password}
                             onChange={handlePasswordChange}
                             placeholder='Type Your password'
+                            _hover = {{
+                                borderColor: "primary.500"
+                            }}
+                            focusBorderColor='primary.500'
                         />
                     </FormControl>
                     <Button

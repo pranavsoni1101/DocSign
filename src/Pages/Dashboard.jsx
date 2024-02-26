@@ -151,14 +151,15 @@ const Dashboard = () => {
                                     borderRadius= "2xl"
                                     backgroundColor="gray.100"
                                 >
-                                    <Heading
+                                    <Text
                                         w = "sm"
-                                        size= "md"
-                                        ad = "h3"   
+                                        as = "h3"        
+                                        fontSize= "lg"
+                                        fontWeight="bold"
                                     >
                                         Ready to sprinkle some digital magic on those documents? 
                                         Let's seal the deal! Create an envelope now!
-                                    </Heading>
+                                    </Text>
                                     <Spacer/>
                                     <Button
                                         as={Link}
@@ -234,15 +235,16 @@ const Dashboard = () => {
                                         borderRadius= "2xl"
                                         backgroundColor="primary.500"
                                     >
-                                    <Heading
+                                    <Text
                                         as = "h3"
-                                        size = "md"
                                         w = "md"
+                                        fontSize= "lg"
+                                        fontWeight="bold"
                                     >
                                         Let's give those PDFs a digital home! 
                                         Time to create some envelopes and peek 
                                         inside for a whimsical view of your uploaded documents.
-                                    </Heading>                                
+                                    </Text>                                
                                 </Flex>
                             }
                             </Stack>

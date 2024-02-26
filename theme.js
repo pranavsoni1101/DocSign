@@ -1,8 +1,12 @@
-// chakra-theme.js
-
 import { extendTheme } from "@chakra-ui/react";
+import '@fontsource-variable/open-sans'
+import '@fontsource/roboto'
 
 const theme = extendTheme({
+  fonts: {
+    heading: "Roboto, sans-serif",
+    body: "Open Sans, sans-serif",
+  },
   colors: {
     primary: {
       50: "#FFF7E0",

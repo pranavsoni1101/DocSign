@@ -27,10 +27,10 @@ export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(()=> {
+  useEffect(() => {
     const token = sessionStorage.getItem('token');
     setIsLoggedIn(!!token);
-  },[])
+  }, [])
 
   const handleSignOut = () => {
     sessionStorage.removeItem('token');
@@ -41,8 +41,8 @@ export default function WithSubnavigation() {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.600', 'white')}
+        bg="gray.500"
+        color={"primary.500"}
         minH={'60px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
@@ -56,24 +56,29 @@ export default function WithSubnavigation() {
           display={{ base: 'flex', md: 'none' }}>
           <IconButton
             onClick={onToggle}
+            color= "primary.500"
             icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
             variant={'ghost'}
             aria-label={'Toggle Navigation'}
+            _hover={{
+              backgroundColor: "primary.500",
+              color: "gray.500"
+            }}
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
           <Text
-            as = {Link}
+            as={Link}
             href='/'
-            fontWeight= "bold"
+            fontWeight="bold"
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            color={useColorModeValue('gray.800', 'white')}
-            textDecoration= "none"  
+            color="primary.500"
+            textDecoration="none"
             _hover={{
               textDecoration: "none"
             }}
           >
-              
+
             DocSign
           </Text>
 
@@ -87,31 +92,50 @@ export default function WithSubnavigation() {
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
-            {!isLoggedIn? 
-           <>
-          <Button as={Link} fontSize={'sm'} fontWeight={400} variant={'link'} href={'/login'}>
-            Sign In
-          </Button>
-          <Button
-            as={Link}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            href={'/signup'}
-            _hover={{
-              bg: 'pink.300',
-            }}>
-            Sign Up
-          </Button> 
-           </>:
-           <>
-            <Button
-              onClick={handleSignOut}
-            >
-              Sign Out</Button>
-           </>
+          {!isLoggedIn ?
+            <>
+              <Button 
+                as={Link} 
+                fontSize={'sm'} 
+                variant={'outline'} 
+                borderColor= "primary.500"
+                href={'/login'}
+                color= "primary.500"
+                _hover={{
+                  backgroundColor: "gray.900",
+                  textDecoration: "none"
+                }}
+              >
+                Log In
+              </Button>
+              <Button
+                as={Link}
+                display={{ base: 'none', md: 'inline-flex' }}
+                fontSize={'sm'}
+                fontWeight={600}
+                color={'gray.500'}
+                bg={'primary.500'}
+                href={'/signup'}
+                _hover={{
+                  textDecoration: "none",
+                  bg: 'primary.600',
+                  color: "white"
+                }}>
+                Sign Up
+              </Button>
+            </> :
+            <>
+              <Button
+                backgroundColor= "gray.900"
+                color= "primary.500"
+                onClick={handleSignOut}
+                _hover={{
+                  backgroundColor: "primary.500",
+                  color: "gray.900"
+                }}
+              >
+                Sign Out</Button>
+            </>
           }
         </Stack>
       </Flex>
@@ -124,32 +148,53 @@ export default function WithSubnavigation() {
 }
 
 const DesktopNav = () => {
-  const linkColor = useColorModeValue('gray.600', 'gray.200')
-  const linkHoverColor = useColorModeValue('gray.800', 'white')
-  const popoverContentBgColor = useColorModeValue('white', 'gray.800')
+  const linkColor = "primary.500"
+  const linkHoverColor = "primary.500"
+  // const popoverContentBgColor = useColorModeValue('white', 'gray.800')
 
   return (
     <Stack direction={'row'} spacing={4}>
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
-              <Box
-                as="a"
-                p={2}
-                href={navItem.href ?? '#'}
-                fontSize={'sm'}
-                fontWeight={500}
-                color={linkColor}
-                _hover={{
-                  textDecoration: 'none',
-                  color: linkHoverColor,
-                }}>
-                {navItem.label}
-              </Box>
-            </PopoverTrigger>
+          {/* <Popover trigger={'hover'} placement={'bottom-start'}>
+            <PopoverTrigger> */}
+          <Box
+            position="relative"
+          >
+            <Text
+              as="a"
+              p={2}
+              href={navItem.href ?? '#'}
+              fontSize={'sm'}
+              fontWeight={500}
+              color={linkColor}
+              _after={{
+                content: '""',
+                position: "absolute",
+                width: "100%",
+                transform: "scaleX(0)",
+                height: "3px",
+                bottom: 0,
+                left: 0,
+                backgroundColor: "primary.500",
+                transformOrigin: "bottom right",
+                transition: "transform 0.25s ease-out",
+              }}
+              _hover={{
+                textDecoration: 'none',
+                color: linkHoverColor,
+                _after: {
+                  transform: "scaleX(1)",
+                  transformOrigin: "bottom left"
+                }
+              }}
+            >
+              {navItem.label}
+            </Text>
+          </Box>
+          {/* </PopoverTrigger> */}
 
-            {navItem.children && (
+          {/* {navItem.children && (
               <PopoverContent
                 border={0}
                 boxShadow={'xl'}
@@ -163,8 +208,8 @@ const DesktopNav = () => {
                   ))}
                 </Stack>
               </PopoverContent>
-            )}
-          </Popover>
+            )} */}
+          {/* </Popover> */}
         </Box>
       ))}
     </Stack>
@@ -208,7 +253,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
 
 const MobileNav = () => {
   return (
-    <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ md: 'none' }}>
+    <Stack bg="gray.500 " p={4} display={{ md: 'none' }}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
@@ -230,7 +275,7 @@ const MobileNavItem = ({ label, children, href }) => {
         _hover={{
           textDecoration: 'none',
         }}>
-        <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
+        <Text fontWeight={600} color="primary.500">
           {label}
         </Text>
         {children && (
@@ -264,37 +309,22 @@ const MobileNavItem = ({ label, children, href }) => {
   )
 }
 
-const NAV_ITEMS= [
-  {
-    label: 'Inspiration',
-    children: [
-      {
-        label: 'Explore Design Work',
-        subLabel: 'Trending Design to inspire you',
-        href: '#',
-      },
-      {
-        label: 'New & Noteworthy',
-        subLabel: 'Up-and-coming Designers',
-        href: '#',
-      },
-    ],
-  },
-  {
-    label: 'Find Work',
-    children: [
-      {
-        label: 'Job Board',
-        subLabel: 'Find your dream design job',
-        href: '#',
-      },
-      {
-        label: 'Freelance Projects',
-        subLabel: 'An exclusive list for contract work',
-        href: '#',
-      },
-    ],
-  },
+const NAV_ITEMS = [
+  // {
+  //   label: 'Inspiration',
+  //   children: [
+  //     {
+  //       label: 'Explore Design Work',
+  //       subLabel: 'Trending Design to inspire you',
+  //       href: '#',
+  //     },
+  //     {
+  //       label: 'New & Noteworthy',
+  //       subLabel: 'Up-and-coming Designers',
+  //       href: '#',
+  //     },
+  //   ],
+  // },
   {
     label: 'Create Envelope',
     href: '/createEnvelope',

@@ -9,6 +9,8 @@ import {
 import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
 import fetchUserDetails from '../../utils/fetchUser';
 import { Document, Page } from 'react-pdf';
+import { LuUpload, LuLayoutTemplate } from "react-icons/lu";
+import { IoMdCloudOutline, IoMdPersonAdd } from "react-icons/io";
 
 const Envelope = () => {
     const navigate = useNavigate();
@@ -151,7 +153,7 @@ const Envelope = () => {
 
                         : null}
                     <GridItem
-                        colSpan={3}
+                        colSpan={6}
                     >
                         <Box
                             p="1em"
@@ -159,11 +161,18 @@ const Envelope = () => {
                             boxSize="xs"
                             boxShadow="xl"
                             borderRadius="2xl"
+                            backgroundColor= "gray.400"
                         >
                             <Button
                                 w="100%"
                                 mt="1em"
-                                textTransform="uppercase"
+                                textTransform="capitalize"
+                                backgroundColor= "primary.500"
+                                leftIcon={<LuUpload />}
+                                _hover={{
+                                    backgroundColor: "gray.500",
+                                    color: "primary.500"
+                                }}
                                 onClick={() => setIsOpen(true)}
                             >
                                 Upload PDF
@@ -177,31 +186,47 @@ const Envelope = () => {
                             <Button
                                 w="100%"
                                 mt="1em"
-                                textTransform="uppercase"
+                                textTransform="capitalize"
+                                backgroundColor= "gray.500"
+                                color= "primary.500"
+                                leftIcon={<LuLayoutTemplate />}
+                                _hover={{
+                                    color: "gray.500",
+                                    backgroundColor: "primary.500",
+
+                                }}
                             >
                                 Use Template
                             </Button>
                             <Button
                                 w="100%"
                                 mt="1em"
-                                textTransform="uppercase"
+                                textTransform="capitalize"
+                                backgroundColor= "primary.500"
+                                leftIcon={<IoMdCloudOutline />}
+                                _hover={{
+                                    backgroundColor: "gray.500",
+                                    color: "primary.500"
+                                }}
                             >
-                                Get From CLoud
+                                Get From Cloud
                             </Button>
                         </Box>
                     </GridItem>
                     <GridItem
-                        colSpan={6}
+                        colStart={1}
+                        colEnd={7}
                     >
                         <Box
                             p="2em"
-                            w="sm"
-                            boxShadow="xl"
-                            boxSize= "xs"
+                            // w="lg"
+                            boxShadow="2xl"
+                            // boxSize= "xs"
                             borderRadius={"xl"}
+                            backgroundColor= "primary.400"
                         >
                             <Heading
-                                size="sm"
+                                size="md"
                                 as="h3"
                             >
                                 Add Recipient's Details</Heading>
@@ -209,29 +234,38 @@ const Envelope = () => {
                                 isRequired
                                 mt="1em"
                             >
-                                <FormLabel>Recipient's Name</FormLabel>
+                                <FormLabel fontWeight="bold">Recipient's Name</FormLabel>
                                 <Input
-                                    // mt = "1em" 
                                     type='text'
                                     value={name}
                                     onChange={handleNameChange}
                                     placeholder='John Doe'
+                                    borderColor= "gray.500"
+                                    focusBorderColor='gray.500'
                                 />
                             </FormControl>
                             <FormControl
                                 isRequired
+                                mt = "1em"
                             >
-                                <FormLabel>Recipient's Email</FormLabel>
+                                <FormLabel fontWeight="bold">Recipient's Email</FormLabel>
                                 <Input
-                                    // mt = "1em" 
                                     type='email'
                                     value={email}
                                     onChange={handleEmailChange}
                                     placeholder='johndoe@something.com'
+                                    borderColor= "gray.500"
+                                    focusBorderColor='gray.500'
                                 />
                             </FormControl>
                             <Button
                                 mt="1em"
+                                color= "primary.500"
+                                backgroundColor= "gray.500"
+                                leftIcon={<IoMdPersonAdd />}
+                                _hover={{
+                                    backgroundColor: "gray.600"
+                                }}
                             >
                                 Add Recipient
                             </Button>

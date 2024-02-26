@@ -13,7 +13,8 @@ const SignUp = () => {
     const navigate = useNavigate();
     const toast = useToast();
 
-    const handleSignUp = async () => {
+    const handleSignUp = async (event) => {
+        event.preventDefault();
         try {
             // Perform form validations
             if (!name.trim()) {
@@ -97,7 +98,7 @@ const SignUp = () => {
                 </Heading>
                 <Text
                     m = "0 auto"
-                    my = "0.5em"
+                    mt = "0.5em"
                     w = "md"
                     textAlign= "center"
                 >
@@ -108,82 +109,85 @@ const SignUp = () => {
                 </Text>
                 <Box
                     m = "0 auto"
+                    mt = '1em'
                     w = "lg"
                     p = "2em"
                     boxShadow= "2xl"
                     borderRadius= "xl"
                     backgroundColor= 'gray.500'
                 >
-                    <FormControl
-                        isRequired
-                        mb = "1em"
-                    >
-                        <FormLabel
-                            color= "primary.500"
+                    <form onSubmit={handleSignUp}>
+                        <FormControl
+                            isRequired
+                            mb = "1em"
                         >
-                            Name
-                        </FormLabel>
-                        <Input
-                            color= "#fff" 
-                            type='text'
-                            value={name}
-                            onChange={handleNameChange}
-                            placeholder='Some One'
-                            _hover = {{
-                                borderColor: "primary.500"
-                            }}
-                            focusBorderColor='primary.500'
-                        />
-                    </FormControl>
-                    <FormControl
-                        isRequired
-                        mb = "1em"
-                    >
-                        <FormLabel
-                            color= "primary.500"
+                            <FormLabel
+                                color= "primary.500"
+                            >
+                                Name
+                            </FormLabel>
+                            <Input
+                                color= "#fff" 
+                                type='text'
+                                value={name}
+                                onChange={handleNameChange}
+                                placeholder='Some One'
+                                _hover = {{
+                                    borderColor: "primary.500"
+                                }}
+                                focusBorderColor='primary.500'
+                            />
+                        </FormControl>
+                        <FormControl
+                            isRequired
+                            mb = "1em"
                         >
-                            Email
-                        </FormLabel>
-                        <Input
-                            color= "#fff" 
-                            type='email'
-                            value={email}
-                            onChange={handleEmailChange}
-                            placeholder='someone@email.com'
-                            _hover = {{
-                                borderColor: "primary.500"
-                            }}
-                            focusBorderColor='primary.500'
-                        />
-                    </FormControl>
-                    <FormControl
-                        mb = "1em"
-                        isRequired
-                    >
-                        <FormLabel
-                            color= "primary.500"
+                            <FormLabel
+                                color= "primary.500"
+                            >
+                                Email
+                            </FormLabel>
+                            <Input
+                                color= "#fff" 
+                                type='email'
+                                value={email}
+                                onChange={handleEmailChange}
+                                placeholder='someone@email.com'
+                                _hover = {{
+                                    borderColor: "primary.500"
+                                }}
+                                focusBorderColor='primary.500'
+                            />
+                        </FormControl>
+                        <FormControl
+                            mb = "1em"
+                            isRequired
                         >
-                            Password
-                        </FormLabel>
-                        <Input
-                            color= "#fff" 
-                            type='password'
-                            value={password}
-                            onChange={handlePasswordChange}
-                            placeholder='Type Your password'
-                            _hover = {{
-                                borderColor: "primary.500"
-                            }}
-                            focusBorderColor='primary.500'
-                        />
-                    </FormControl>
-                    <Button
-                        w = "100%"
-                        colorScheme = "green"
-                        onClick={handleSignUp}
-                    >
-                        Sign Up
-                    </Button>
+                            <FormLabel
+                                color= "primary.500"
+                            >
+                                Password
+                            </FormLabel>
+                            <Input
+                                color= "#fff" 
+                                type='password'
+                                value={password}
+                                onChange={handlePasswordChange}
+                                placeholder='Type Your password'
+                                _hover = {{
+                                    borderColor: "primary.500"
+                                }}
+                                focusBorderColor='primary.500'
+                            />
+                        </FormControl>
+                        <Button
+                            w = "100%"
+                            type='submit'
+                            colorScheme = "green"
+                        >
+                            Sign Up
+                        </Button>
+                    </form>
                 </Box>
             </Container>
         </>

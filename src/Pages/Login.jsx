@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Heading, Box, 
          FormLabel, Input, Button, 
          useToast,
-         FormControl
+         FormControl, Text
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -90,35 +90,63 @@ const Login = () => {
                 maxW={"100%"}
             >
                 <Heading
-                    my = "1em"
+                    mt = "1em"
                     textAlign="center"
                 >
                     This is login
                 </Heading>
+                <Text
+                    m = "0 auto"
+                    mt = "0.5em"
+                    w = "md"
+                    textAlign= "center" 
+                >
+                    Time to unlock the digital vault! Dive into your signed wonders by logging in now.
+                </Text>
                 <Box
                     m = "0 auto"
-                    w = "xl"
-                    p = "1em"
+                    mt = "1em"
+                    w = "lg"
+                    p = "2em"
                     boxShadow= "2xl"
                     borderRadius= "xl"
+                    backgroundColor= 'gray.500'
                 >
                     <form onSubmit={handleLogin}>
                         <FormControl mb="1em" isRequired>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel
+                                color= "primary.500"
+                            >
+                                Email
+                            </FormLabel>
                             <Input 
+                                color= "white"
                                 type='email'
                                 value={email}
                                 onChange={handleEmailChange}
                                 placeholder='someone@email.com'
+                                _hover = {{
+                                    borderColor: "primary.500"
+                                }}
+                                focusBorderColor='primary.500'
                             />
                         </FormControl>
                         <FormControl mb="1em" isRequired>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel
+                                color= "primary.500"
+                            >
+                                Password
+                            </FormLabel>
                             <Input 
+                                color= "white"
                                 type='password'
                                 value={password}
                                 onChange={handlePasswordChange}
                                 placeholder='Type Your password'
+                                _hover = {{
+                                    borderColor: "primary.500"
+                                }}
+                                focusBorderColor='primary.500'
                             />
                         </FormControl>
                         <Button

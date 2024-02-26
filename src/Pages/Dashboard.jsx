@@ -175,7 +175,7 @@ const Dashboard = () => {
                                         Envelope
                                     </Button>
                                 </Flex>
-                                {pdfs? pdfs.map((pdf) => (
+                                {pdfs.length !== 0 ? pdfs.map((pdf) => (
                                     <Flex
                                         p = "12px"
                                         key={pdf._id}
@@ -228,11 +228,22 @@ const Dashboard = () => {
                                     </Flex>
                                 ))
                                 :
-                                <Text>
-                                    Let's give those PDFs a digital home! 
-                                    Time to create some envelopes and peek 
-                                    inside for a whimsical view of your uploaded documents.
-                                </Text>
+                                <Flex
+                                        p = "12px"
+                                        boxShadow= "lg"
+                                        borderRadius= "2xl"
+                                        backgroundColor="primary.500"
+                                    >
+                                    <Heading
+                                        as = "h3"
+                                        size = "md"
+                                        w = "md"
+                                    >
+                                        Let's give those PDFs a digital home! 
+                                        Time to create some envelopes and peek 
+                                        inside for a whimsical view of your uploaded documents.
+                                    </Heading>                                
+                                </Flex>
                             }
                             </Stack>
                         </Container>

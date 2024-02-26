@@ -12,6 +12,7 @@ import Envelope from './Pages/Envelope';
 import Profile from './Pages/Profile';
 import PendingDocs from './Pages/PendingDocs';
 import SignPdf from './Pages/SignPdf';
+import theme from '../theme';
 
 
 const router = createBrowserRouter([
@@ -57,7 +58,7 @@ const router = createBrowserRouter([
 const rootElement = document.getElementById('root')
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Navbar />
       <RouterProvider router={router}/>
     </ChakraProvider>

@@ -4,12 +4,14 @@ import {
     Container, Heading, Text,
     Box, Button, IconButton, 
     Link, Grid, GridItem, 
-    useToast, Spinner
+    useToast, Spinner, Flex, Spacer, ButtonGroup, Stack
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { FaFilePdf } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import fetchUserDetails from '../../utils/fetchUser';
+import { FaEnvelopeOpenText } from "react-icons/fa";
+
 
 const Dashboard = () => {
     // Stores the user details
@@ -118,6 +120,7 @@ const Dashboard = () => {
                 :
                 (
                     <Container
+                        mt = "1em"
                         maxW={"100%"}
                     >
                         <Heading
@@ -131,80 +134,108 @@ const Dashboard = () => {
                         >
                             Email: {user.email}
                         </Text>
-                        <Grid
-                            templateRows="repeat(2, 1fr)"
-                            templateColumns="repeat(12, 1fr)"
-                            gap={4}
+                        <Container
+                            mt = "1em"
+                            maxW= "4xl"
+                            p = "1em"
+                            boxShadow="2xl"
+                            borderRadius = "md"
+                            backgroundColor="gray.500"
                         >
-                            <GridItem
-                            // colSpan={}
+                            <Stack
+                                w= "100%"
                             >
-                                <Box
-                                    p="1em"
-                                    w="sm"
-                                    boxShadow="2xl"
-                                    display="inline-block"
-                                    borderRadius="xl"
+                                <Flex
+                                    p = "12px"
+                                    boxShadow= "lg"
+                                    borderRadius= "2xl"
+                                    backgroundColor="gray.100"
                                 >
                                     <Heading
-                                        size="md"
+                                        w = "sm"
+                                        size= "md"
+                                        ad = "h3"   
                                     >
-                                        PDF's
+                                        Ready to sprinkle some digital magic on those documents? 
+                                        Let's seal the deal! Create an envelope now!
                                     </Heading>
-                                    {pdfs.map((pdf) => (
-                                        <Box
-                                            my="12px"
-                                            key={pdf._id}
-                                        >
-                                            <FaFilePdf />
-                                            <Text>{pdf.fileName}</Text>
-                                            <Text>{pdf.size} bytes</Text>
-                                            <Text>{formatDateFromISO(pdf.uploadedAt)}</Text>
-                                            <Box>
-                                            </Box>
-                                            <IconButton
-                                                colorScheme='red'
-                                                onClick={() => handleDeletePdf(pdf._id)}
-                                            >
-                                                <MdDelete />
-                                            </IconButton>
-                                            <Button
-                                                as={Link}
-                                                href={`/pdf/${pdf._id}/${pdf.fileName}/`}
-                                                ml="12px"
-                                                colorScheme='twitter'
-                                            >
-                                                View & Edit
-                                            </Button>
-                                        </Box>
-                                    ))}
-                                </Box>
-
-                            </GridItem>
-                            <GridItem
-                            // colSpan={}
-                            >
-                                <Box
-                                    p="1em"
-                                    boxSize="xs"
-                                    boxShadow="2xl"
-                                    borderRadius="xl"
-                                    display="inline-block"
-                                >
-                                    <Heading
-                                        size="md"
-                                    >
-                                        Create an envelope
-                                    </Heading>
+                                    <Spacer/>
                                     <Button
                                         as={Link}
                                         href='/createEnvelope'
+                                        backgroundColor= "primary.500"
+                                        leftIcon={<FaEnvelopeOpenText />}
+                                        transition= "all 0.5s ease-in-out"
+                                        _hover={{
+                                            color: "primary.500",
+                                            backgroundColor: "gray.500",
+                                            textDecoration: "none"
+                                        }}
                                     >
-                                        Create
+                                        Envelope
                                     </Button>
-                                </Box>
-                            </GridItem>
-                        </Grid>
+                                </Flex>
+                                {pdfs? pdfs.map((pdf) => (
+                                    <Flex
+                                        p = "12px"
+                                        key={pdf._id}
+                                        boxShadow= "lg"
+                                        borderRadius= "2xl"
+                                        backgroundColor="primary.500"
+                                    >
+                                        <Box>            
+                                            <FaFilePdf />
+                                            <Text
+                                                fontWeight= "600"
+                                            >
+                                                {pdf.fileName}
+                                            </Text>
+                                            <Text
+                                                fontWeight= "600"
+                                            >
+                                                {pdf.size} bytes
+                                            </Text>
+                                            <Text
+                                                fontWeight= "600"
+                                            >
+                                                {formatDateFromISO(pdf.uploadedAt)}
+                                            </Text>
+                                        </Box>
+                                        <Spacer />
+                                        <ButtonGroup>
+                                                <Button
+                                                    as={Link}
+                                                    href={`/pdf/${pdf._id}/${pdf.fileName}/`}
+                                                    // ml="12px"
+                                                    backgroundColor = "gray.500"
+                                                    color = "primary.500"
+                                                    transition= "all 0.5s ease-in-out"
+                                                    _hover={{
+                                                        textDecoration: "none",
+                                                        backgroundColor: "gray.100",
+                                                        color: "black"
+                                                    }}
+                                                >
+                                                    View & Edit
+                                                </Button>
+                                                <IconButton
+                                                    colorScheme='red'
+                                                    onClick={() => handleDeletePdf(pdf._id)}
+                                                >
+                                                    <MdDelete />
+                                                </IconButton>
+                                        </ButtonGroup>
+                                    </Flex>
+                                ))
+                                :
+                                <Text>
+                                    Let's give those PDFs a digital home! 
+                                    Time to create some envelopes and peek 
+                                    inside for a whimsical view of your uploaded documents.
+                                </Text>
+                            }
+                            </Stack>
+                        </Container>
                     </Container>
                 )}
         </>

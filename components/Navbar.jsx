@@ -330,7 +330,7 @@ const NAV_ITEMS = [
     href: '/createEnvelope',
   },
   {
-    label: 'Dasboard',
+    label: 'Dashboard',
     href: '/dashboard',
   },
   {

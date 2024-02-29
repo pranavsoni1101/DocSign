@@ -56,7 +56,7 @@ const Login = () => {
 
     const validateEmail = (email) => {
         // Basic email validation using regex
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const re =/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
         return re.test(email);
     }
 

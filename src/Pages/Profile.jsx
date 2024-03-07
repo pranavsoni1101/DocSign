@@ -1,9 +1,12 @@
-import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel, useToast, Spinner } from '@chakra-ui/react';
+import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel, useToast, Spinner, Grid, GridItem, VStack, Flex, IconButton, Tooltip } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import fetchUserDetails from '../../utils/fetchUser';
 import { useNavigate } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import axios from 'axios';
+import { CiLocationOn } from "react-icons/ci";
+import { MdCall } from "react-icons/md";
+
 
 const Profile = () => {
     const toast = useToast();
@@ -81,53 +84,99 @@ const Profile = () => {
                     transform= "translate(-50%, -50%)"
                 />
             ) : (
-                <Container maxW="100%">
-                    <Heading>Edit Profile</Heading>
-                    <Image boxSize="xs" borderRadius="full" src={`data:image/png;base64,${user.profilePicture}`} />
-                    <Button mt="1em" colorScheme='twitter' onClick={() => setIsEditing(true)} rightIcon={<FaPen />}>Edit</Button>
+                <Container maxW="100%" p= "2em" mt = "1.8em">
+                    <Grid
+                        templateColumns = "repeat(12, 1fr)"
+                        gap={4}
+                    >
+                        <GridItem
+                            colSpan={4}
+                        >
+                            <VStack
+                                p = "1em"
+                                gap={5}
+                                borderRadius= "xl"
+                                bgColor= "gray.200"
+                                boxShadow= "2xl"
+                            >
+                                <Tooltip 
+                                    hasArrow
+                                    label="Click to Edit Profile" 
+                                    placement='top'
+                                >
+                                    <Image 
+                                        position="relative"
+                                        borderRadius= "full"
+                                        border= "2px solid"
+                                        borderColor= "primary.500"
+                                        boxSize= "xs"
+                                        src='https://images.unsplash.com/photo-1573865526739-10659fec78a5?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                                        _hover={{
+                                            cursor: "pointer",
+                                            boxShadow: "2xl"
+                                        }}
+                                    />
+                                </Tooltip>
+                                <Text>{user.name}</Text>
+                                <Button
+                                    w = "xs"
+                                    variant= "outline"
+                                    colorScheme='primary'
+                                >
+                                    Edit Profile
+                                </Button>
+                                <Flex
+                                    justify= "space-between"
+                                >
+                                    <Text
+                                        display="inline-block"
+                                        fontSize= "2xl"
+                                    >
+                                        <CiLocationOn />
+                                    </Text>
+                                    <Text
+                                        display= "inline-block"
+                                    >
+                                        {user.address}
+                                    </Text>
+                                </Flex>
+                                <Flex
+                                    w = "10em"
+                                    direction= "row"
+                                    alignItems= "center"
+                                    justifyContent= "space-between"
+                                >
+                                    <Text
+                                        // display="inline-block"
+                                        fontSize= "2xl"
+                                    >
+                                        <MdCall />
+                                    </Text>
 
-                    {isEditing ? (
-                        <Container maxW="100%">
-                            <Box p="1em" w="sm" my="1em" borderRadius="xl" boxShadow="2xl">
-                                <FormControl>
-                                    <FormLabel>Upload Picture</FormLabel>
-                                    <Input type='file' accept="image/png, image/jpeg" onChange={handleFileUpload} />
-                                </FormControl>
-                                <FormControl>
-                                    <FormLabel>Name</FormLabel>
-                                    <Input type='text' value={name} onChange={(e) => setName(e.target.value)} />
-                                </FormControl>
-                                <FormControl>
-                                    <FormLabel>Phone</FormLabel>
-                                    <Input type='text' value={phone} onChange={(e) => setPhone(e.target.value)} />
-                                </FormControl>
-                                <FormControl>
-                                    <FormLabel>Address</FormLabel>
-                                    <Input type='text' value={address} onChange={(e) => setAddress(e.target.value)} />
-                                </FormControl>
-                                <Button my="1em" colorScheme='green' onClick={handleUpdate}>Save Changes</Button>
+                                    <Text
+                                        // display= "inline-block"
+                                    >
+                                        {user.phone}
+                                    </Text>
+                                </Flex>
+                            </VStack>
+                        </GridItem>
+                        <GridItem
+                            colSpan={8}
+                        >
+                            <Box
+                                w = "100%"
+                                h = '100%'
+                                p = "2em"
+                                color= "gray.100"
+                                bgColor= "gray.500"
+                                // boxShadow= "2xl"
+                                borderRadius= "xl"
+                            >
+                                heheh
                             </Box>
-                        </Container>
-                    ) : (
-                        <Container maxW="100%">
-                            <Box mt="1em">
-                                <Heading as="h3" size="md" display="inline-block">Name:</Heading>
-                                <Text ml="1em" display="inline-block">{user.name}</Text>
-                            </Box>
-                            <Box mt="1em">
-                                <Heading as="h3" size="md" display="inline-block">Email:</Heading>
-                                <Text ml="1em" display="inline-block">{user.email}</Text>
-                            </Box>
-                            <Box mt="1em">
-                                <Heading as="h3" size="md" display="inline-block">Phone:</Heading>
-                                <Text ml="1em" display="inline-block">{user.phone}</Text>
-                            </Box>
-                            <Box mt="1em">
-                                <Heading as="h3" size="md" display="inline-block">Address:</Heading>
-                                <Text ml="1em" display="inline-block">{user.address}</Text>
-                            </Box>
-                        </Container>
-                    )}
+                        </GridItem>
+                    </Grid>
                 </Container>
             )}
         </>

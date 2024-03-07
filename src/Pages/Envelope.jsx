@@ -163,7 +163,19 @@ const Envelope = () => {
                             borderRadius="2xl"
                             backgroundColor= "gray.400"
                         >
+                            <Input 
+                                type='file'
+                                onChange={handlePdfFileChange}
+                                position= "absolute"
+                                w = "2xs"
+                                // bottom= {0}
+                                // h = "100%"
+                                // opacity= {0}
+                                cursor= "pointer"
+                                zIndex={1}
+                            />
                             <Button
+                                position= "relative"
                                 w="100%"
                                 mt="1em"
                                 textTransform="capitalize"
@@ -173,7 +185,6 @@ const Envelope = () => {
                                     backgroundColor: "gray.500",
                                     color: "primary.500"
                                 }}
-                                onClick={() => setIsOpen(true)}
                             >
                                 Upload PDF
                             </Button>

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Heading, Link, Spinner, Text , Container } from '@chakra-ui/react';
+import { Box, Button, Heading, 
+         Link, Spinner, Text , 
+         Container, Stack, Flex, Spacer, ButtonGroup
+} from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import fetchUserDetails from '../../utils/fetchUser';
 import axios from 'axios';
@@ -115,63 +118,86 @@ const PendingDocs = () => {
                     <Container
                         maxW= "100%"
                     >
-                        <Heading>This is sign pdf</Heading>
-                        <Box
+                        <Container
+                            mt = "1em"
+                            maxW= "4xl"
                             p = "1em"
-                            boxShadow= "2xl"
-                            borderRadius= "xl"
-                            w = "sm"
+                            boxShadow="2xl"
+                            borderRadius = "md"
+                            backgroundColor="gray.500"
                         >
-                            {files.map((file, index) => (
-                                <Box
-                                    key={file._id}
-                                    mb = "1em"
+                            <Stack
+                                w = "100%"
+                            >
+                                <Flex
+                                    p = "12px"
+                                    boxShadow= "lg"
+                                    borderRadius= "2xl"
+                                    backgroundColor="gray.100"
                                 >
-                                    <FaFilePdf />
-                                    <Text>FileName:     {file.fileName}</Text>
-                                    {
-                                        file.expiryDate !== null?
-                                        <Text>Expiry Date: {formatDateFromISO(file.expiryDate)}</Text>
-                                        :
-                                         null
-                                    }
-                                    <Box>
-                                        {file.expiryDate?
-                                            (<Button
+                                    <Text
+                                        w = "sm"
+                                        as = "h3"        
+                                        fontSize= "lg"
+                                        fontWeight="bold"
+                                    >
+                                        Welcome to the Unfinished Symphony: 
+                                        Where Important Docs Await Your Signature!
+                                    </Text>
+                                </Flex>
+                                {files.map((file, index) => (
+                                    <Flex
+                                        p = "12px"
+                                        key={file._id}
+                                        boxShadow= "lg"
+                                        borderRadius= "2xl"
+                                        backgroundColor="primary.500"
+                                    >
+                                        <Box>
+                                            <Text
+                                                fontWeight= "600"
+                                            >
+                                                <FaFilePdf />
+                                                {file.fileName}
+                                            </Text>
+                                            {
+                                                file.expiryDate !== null?
+                                                <Text><strong>Expiry Date: </strong>{formatDateFromISO(file.expiryDate)}</Text>
+                                                :
+                                                <Text>Fear not, for this doc has an eternal life - it'll never expire!</Text>
+                                            }
+                                        </Box>
+                                        <Spacer />
+                                        <ButtonGroup>
+                                            <Button
                                                 colorScheme='green'
                                                 onClick={() => handleAccept(file._id)}
                                             >
                                                 Accept to Sign
-                                            </Button>)
-                                            :
-                                            null
-                                        }
-                                        <br />
-                                        <Button
-                                            as={Link}
-                                            href={`/sign/${file._id}/${file.fileName}`}
-                                        >
-                                            Sign
-                                        </Button>
-                                        <br />
-                                        <Button
-                                            colorScheme='yellow'
-                                            onClick={() =>handleDelay(file._id)}
-                                        >
-                                            Delay In Signing
-                                        </Button>
-                                        <br />
-                                        <Button 
-                                            colorScheme='red'
-                                            onClick={() => handleReject(file._id)}
-                                        >
-                                            Reject
-                                        </Button>
-                                        <br />
-                                    </Box>
-                                </Box>
-                            ))}
-                        </Box>
+                                            </Button>
+                                            <Button
+                                                as={Link}
+                                                href={`/sign/${file._id}/${file.fileName}`}
+                                            >
+                                                Sign
+                                            </Button>
+                                            <Button
+                                                colorScheme='yellow'
+                                                onClick={() =>handleDelay(file._id)}
+                                            >
+                                                Delay In Signing
+                                            </Button>
+                                            <Button 
+                                                colorScheme='red'
+                                                onClick={() => handleReject(file._id)}
+                                            >
+                                                Reject
+                                            </Button>    
+                                        </ButtonGroup>
+                                    </Flex>
+                                ))}
+                            </Stack>
+                        </Container>
                     </Container>
                 )
             }

@@ -12,6 +12,7 @@ import { MdDelete } from "react-icons/md";
 import fetchUserDetails from '../../utils/fetchUser';
 import { FaEnvelopeOpenText } from "react-icons/fa";
 
+const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
 const Dashboard = () => {
     // Stores the user details
@@ -43,7 +44,7 @@ const Dashboard = () => {
     const fetchPDFs = async () => {
         try {
             // Make a GET request to the endpoint that serves PDFs
-            const response = await axios.get(`http://localhost:3001/pdf/${user.id}/pdfs`);
+            const response = await axios.get(`${DOMAIN_NAME}/pdf/${user.id}/pdfs`);
             // Extract the PDFs from the response data
             const pdfFiles = response.data;
             //   return pdfs;
@@ -59,7 +60,7 @@ const Dashboard = () => {
     const handleDeletePdf = async (pdfId) => {
         try {
             // Make a DELETE request to delete the PDF file
-            await axios.delete(`http://localhost:3001/pdf/${user.id}/pdfs/${pdfId}`, {
+            await axios.delete(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${pdfId}`, {
                 headers: {
                     'Authorization': `Bearer ${user.id} ` // Pass the user ID in the Authorization header
                 }

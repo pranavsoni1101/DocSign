@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 const fetchUserDetails = async (navigate, setUser, setUsersLoading) => {
     try {
         // Check if token exists in session storage
@@ -11,7 +11,7 @@ const fetchUserDetails = async (navigate, setUser, setUsersLoading) => {
         }
         
         // Make a GET request to the /user endpoint with the token as a bearer token
-        const response = await axios.get('http://localhost:3001/auth/user', {
+        const response = await axios.get(`${DOMAIN_NAME}/auth/user`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

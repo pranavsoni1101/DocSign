@@ -9,6 +9,8 @@ import {
 } from '@chakra-ui/react'
 import { pdfjs } from 'react-pdf';
 import Illustration from '../components/Illustration';
+// import 'dotenv/config'
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',

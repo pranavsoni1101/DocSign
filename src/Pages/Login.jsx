@@ -7,6 +7,8 @@ import { Container, Heading, Box,
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
+
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,7 +28,7 @@ const Login = () => {
                 return;
             }
 
-            const response = await axios.post("http://localhost:3001/auth/login", {
+            const response = await axios.post(`${DOMAIN_NAME}/auth/login`, {
                 email,
                 password
             });

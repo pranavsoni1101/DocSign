@@ -32,7 +32,7 @@ const Profile = () => {
         
         const token = sessionStorage.getItem("token");
 
-        axios.patch("http://localhost:3001/auth/user", formData, {
+        axios.patch(`${process.env.DOMAIN_NAME}/auth/user`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}` // Pass the user ID in the Authorization header

@@ -8,6 +8,9 @@ import fetchUserDetails from '../../utils/fetchUser';
 import axios from 'axios';
 import { FaFilePdf } from "react-icons/fa";
 
+
+const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
+
 const PendingDocs = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState();
@@ -23,7 +26,7 @@ const PendingDocs = () => {
     const fetchPendingToBeSignedPdfs = async () => {
         try {
             const token = sessionStorage.getItem("token");
-            const response = await axios.get('http://localhost:3001/pdf/pending/toBeSignedPdf', {
+            const response = await axios.get(`${DOMAIN_NAME}/pdf/pending/toBeSignedPdf`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -42,7 +45,7 @@ const PendingDocs = () => {
         try{
             const token = sessionStorage.getItem("token");
             console.log("this toke", token);
-            await axios.post(`http://localhost:3001/pdf/pdfs/${pdfID}/accept`, null, {
+            await axios.post(`${DOMAIN_NAME}/pdf/pdfs/${pdfID}/accept`, null, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -58,7 +61,7 @@ const PendingDocs = () => {
         try{
             const token = sessionStorage.getItem("token");
             console.log("this toke", token);
-            await axios.post(`http://localhost:3001/pdf/pdfs/${pdfID}/delay`, null, {
+            await axios.post(`${DOMAIN_NAME}/pdf/pdfs/${pdfID}/delay`, null, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -74,7 +77,7 @@ const PendingDocs = () => {
         try{
             const token = sessionStorage.getItem("token");
             console.log("this toke", token);
-            await axios.post(`http://localhost:3001/pdf/pdfs/${pdfID}/reject`, null, {
+            await axios.post(`${DOMAIN_NAME}/pdf/pdfs/${pdfID}/reject`, null, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

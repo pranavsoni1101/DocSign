@@ -5,6 +5,8 @@ import { PDFDocument } from 'pdf-lib'; // Import PDFDocument from pdf-lib
 import { useNavigate, useParams } from 'react-router-dom';
 import fetchUserDetails from '../../utils/fetchUser';
 
+const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
+
 const SignPdf = () => {
     const { id, fileName } = useParams();
     const navigate = useNavigate();
@@ -28,7 +30,7 @@ const SignPdf = () => {
         try {
             if (user && id) { // Ensure user and id are defined
                 const token = sessionStorage.getItem("token");
-                const response = await axios.get(`http://localhost:3001/pdf/pending/${id}/${user.email}`, {
+                const response = await axios.get(`${DOMAIN_NAME}/pdf/pending/${id}/${user.email}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

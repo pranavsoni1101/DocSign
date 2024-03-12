@@ -12,6 +12,8 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import Sidebar from '../../components/Sidebar';
 import fetchUserDetails from '../../utils/fetchUser';
 
+const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
+
 const ViewPdf = () => {
     const dragRef = useRef(null);
     let { id, fileName } = useParams();
@@ -37,7 +39,7 @@ const ViewPdf = () => {
 
     const handleDownload = async () => {
         try {
-            const pdfBlob = await fetch(`http://localhost:3001/pdf/${user.id}/pdfs/${id}`).then(res => res.blob());
+            const pdfBlob = await fetch(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`).then(res => res.blob());
             const url = window.URL.createObjectURL(pdfBlob);
             const link = document.createElement('a');
             link.href = url;
@@ -80,7 +82,7 @@ const ViewPdf = () => {
             }));
     
             // Make a POST request to send input field positions to the backend
-            await axios.post(`http://localhost:3001/pdf/${user.id}/pdfs/${id}/positions`, positions, {
+            await axios.post(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}/positions`, positions, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -129,7 +131,7 @@ const ViewPdf = () => {
                             alignItems="center"
                         >
                             <Document
-                                file={`http://localhost:3001/pdf/${user.id}/pdfs/${id}`}
+                                file={`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`}
                                 onLoadSuccess={handleDocumentLoadSuccess}
                             >
                                 {Array.from(new Array(numPages), (el, index) => (

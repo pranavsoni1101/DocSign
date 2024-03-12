@@ -12,6 +12,8 @@ import { Document, Page } from 'react-pdf';
 import { LuUpload, LuLayoutTemplate } from "react-icons/lu";
 import { IoMdCloudOutline, IoMdPersonAdd } from "react-icons/io";
 
+const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
+
 const Envelope = () => {
     const navigate = useNavigate();
     // const history = useHistory();
@@ -70,7 +72,7 @@ const Envelope = () => {
             formData.append('recipientName', name);
             formData.append('recipientEmail', email);
             // Make a POST request to upload the PDF file
-            const response = await axios.post(`http://localhost:3001/pdf/${user.id}/pdfs`, formData, {
+            const response = await axios.post(`${DOMAIN_NAME}/pdf/${user.id}/pdfs`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${user.id}` // Pass the user ID in the Authorization header

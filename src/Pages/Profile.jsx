@@ -1,4 +1,4 @@
-import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel, useToast, Spinner, Grid, GridItem, VStack, Flex, IconButton, Tooltip } from '@chakra-ui/react';
+import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel, useToast, Spinner, Grid, GridItem, VStack, Flex, IconButton, Tooltip, Stack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import fetchUserDetails from '../../utils/fetchUser';
 import { useNavigate } from 'react-router-dom';
@@ -90,7 +90,7 @@ const Profile = () => {
                         gap={4}
                     >
                         <GridItem
-                            colSpan={4}
+                            colSpan={3}
                         >
                             <VStack
                                 p = "1em"
@@ -141,7 +141,7 @@ const Profile = () => {
                                     </Text>
                                 </Flex>
                                 <Flex
-                                    w = "10em"
+                                    // w = "10em"
                                     direction= "row"
                                     alignItems= "center"
                                     justifyContent= "space-between"
@@ -162,18 +162,83 @@ const Profile = () => {
                             </VStack>
                         </GridItem>
                         <GridItem
-                            colSpan={8}
+                            colSpan={9}
+                            overflowY= "auto"
+                            sx = {{
+                                '&::-webkit-scrollbar': {
+                                    h: "5px",
+                                    mr: "3px",
+                                    width: "8px"
+                                },
+                                '&::-webkit-scrollbar-track': {
+                                    padding: "2px",
+                                    background: "gray.600",
+                                    borderRadius: '24px',
+
+                                    // width: '6px',
+                                  },
+                                  '&::-webkit-scrollbar-thumb': {
+                                    background: "primary.600",
+                                    borderRadius: '24px',
+                                  },
+                            }}
                         >
+                            <Box
+                                h = "100%"
+                                bgColor= "primary.500"
+                                borderRadius= "xl"
+                            >
+
+                            </Box>
                             <Box
                                 w = "100%"
                                 h = '100%'
                                 p = "2em"
+                                mt = "1em"
                                 color= "gray.100"
                                 bgColor= "gray.500"
                                 // boxShadow= "2xl"
                                 borderRadius= "xl"
                             >
-                                heheh
+                                <Heading
+                                    letterSpacing= "2px"
+                                    textTransform= "uppercase"
+                                >
+                                    Doc-O-Meter
+                                </Heading>
+                                <Stack 
+                                    w= "100%"
+                                    mt = "1em"
+                                    direction="row" 
+                                >
+                                    <Box
+                                        p = "1em"
+                                        w = "100%"
+                                        borderRadius= "md"
+                                        border="1px solid"
+                                        borderColor="primary.400"
+                                    >
+                                        Heheh
+                                    </Box>
+                                    <Box
+                                        p = "1em"
+                                        w = "100%"
+                                        borderRadius= "md"
+                                        border="1px solid"
+                                        borderColor="primary.400"
+                                    >
+                                        Heheh
+                                    </Box>
+                                    <Box
+                                        p = "1em"
+                                        w = "100%"
+                                        borderRadius= "md"
+                                        border="1px solid"
+                                        borderColor="primary.400"
+                                    >
+                                        Heheh
+                                    </Box>
+                                </Stack>
                             </Box>
                         </GridItem>
                     </Grid>

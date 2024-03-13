@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Chakra UI imports
@@ -25,16 +25,19 @@ import formatDateFromISO from '../../utils/formatDateFromIso';
 import { fetchPendingToBeSignedPdfs } from '../../utils/pendingPdf';
 import { fetchUploadedPDFs, handleDeleteUploadedPdf } from '../../utils/uploadedPdfs';
 import { handleAcceptToSignPdf, handleDelayToSignPdf, handleRejectToSignPdf } from '../../utils/pendingPdf';
+import CountUp from 'react-countup';
 
 
 const Profile = () => {
     const toast = useToast();
+    const countUpRef = useRef(null)
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
+    const [isCounting, setIsCounting] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [usersLoading, setUsersLoading] =  useState(true);
     const [profilePicture, setProfilePicture]  = useState(null);
 
@@ -47,6 +50,7 @@ const Profile = () => {
     const [pendingPdfsLoading, setPendingPdfsLoading] = useState(true);
 
     useEffect(() => {
+        setIsCounting(true);
         fetchUserDetails(navigate, setUser, setUsersLoading);
         fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
         // if(user)
@@ -109,6 +113,11 @@ const Profile = () => {
     };
 
     const isLoading = usersLoading || pendingPdfsLoading || uploadedPdfsLoading;
+
+    const uploadedPdfsLength = uploadedPdfs.length;
+    console.log("uploadd", uploadedPdfsLength);
+    const pendingToSignPdfLength = pendingPdfs.length;
+
     return (
         <>
             {isLoading  ? (
@@ -221,8 +230,114 @@ const Profile = () => {
                             }}
                         >
                             <Box
+                                w = "100%"
+                                // h = '100%'
                                 p = "2em"
-                                h = "100%"
+                                color= "gray.100"
+                                bgColor= "gray.500"
+                                // boxShadow= "2xl"
+                                borderRadius= "xl"
+                            >
+                                <Heading
+                                    textAlign= "center"
+                                    letterSpacing= "1px"
+                                    textTransform= "uppercase"
+                                >
+                                    Doc
+                                    <Text as="span" color={"primary.500"}>
+                                        -O-
+                                    </Text>
+                                    Meter
+                                </Heading>
+                                <Stack 
+                                    w= "100%"
+                                    mt = "1em"
+                                    direction="row" 
+                                >
+                                    <Box
+                                        p = "1em"
+                                        w = "100%"
+                                        borderRadius= "md"
+                                        border="1px solid"
+                                        textTransform= "uppercase"
+                                        color= "primary.500"
+                                        borderColor="primary.400"
+                                    >
+                                        <Text
+                                            fontSize="1.4em"
+                                            textAlign= "center"
+                                            fontWeight= "bold"
+                                        >
+                                            Uploaded Docs
+                                        </Text>
+                                            <Text
+                                                fontSize="2em"
+                                                fontWeight= "bold"
+                                                textAlign="center"
+                                            >
+                                        <CountUp
+                                            start={isCounting ? 0 : null}
+                                            end = {uploadedPdfsLength}
+                                            duration={5}
+                                        >
+                                                <span ref={countUpRef}/>
+                                        </CountUp>
+                                            </Text>
+                                    </Box>
+                                    <Box
+                                        p = "1em"
+                                        w = "100%"
+                                        borderRadius= "md"
+                                        border="1px solid"
+                                        textTransform= "uppercase"
+                                        color= "gray.100"
+                                        borderColor="gray.100"
+                                    >
+                                        <Text
+                                            fontSize="1.4em"
+                                            textAlign= "center"
+                                            fontWeight= "bold"
+                                        >
+                                            Pending Docs
+                                        </Text>
+                                            <Text
+                                                fontSize="2em"
+                                                fontWeight= "bold"
+                                                textAlign="center"
+                                                color= "primary.500"
+                                            >
+                                        <CountUp
+                                            start={isCounting ? 0 : null}
+                                            end = {pendingToSignPdfLength}
+                                            duration={5}
+                                        >
+                                                <span ref={countUpRef}/>
+                                        </CountUp>
+                                            </Text>
+                                    </Box>
+                                    <Box
+                                        p = "1em"
+                                        w = "100%"
+                                        borderRadius= "md"
+                                        border="1px solid"
+                                        borderColor="primary.400"
+                                        color= "primary.500"
+                                    >
+                                        <Text
+                                            textAlign= "center"
+                                            textTransform= "uppercase"
+                                            fontWeight= "bold"
+                                            fontSize= "1.4em"
+                                        >
+                                            Heheh
+                                        </Text>
+                                    </Box>
+                                </Stack>
+                            </Box>
+                            <Box
+                                p = "2em"
+                                // h = "100%"
+                                mt = "1em"
                                 bgColor= "gray.500"
                                 borderRadius= "xl"
                             >
@@ -424,56 +539,6 @@ const Profile = () => {
                                     </Flex>
                                         ))
                                     }
-                                </Stack>
-                            </Box>
-                            <Box
-                                w = "100%"
-                                // h = '100%'
-                                p = "2em"
-                                mt = "1em"
-                                color= "gray.100"
-                                bgColor= "gray.500"
-                                // boxShadow= "2xl"
-                                borderRadius= "xl"
-                            >
-                                <Heading
-                                    letterSpacing= "2px"
-                                    textTransform= "uppercase"
-                                >
-                                    Doc-O-Meter
-                                </Heading>
-                                <Stack 
-                                    w= "100%"
-                                    mt = "1em"
-                                    direction="row" 
-                                >
-                                    <Box
-                                        p = "1em"
-                                        w = "100%"
-                                        borderRadius= "md"
-                                        border="1px solid"
-                                        borderColor="primary.400"
-                                    >
-                                        Heheh
-                                    </Box>
-                                    <Box
-                                        p = "1em"
-                                        w = "100%"
-                                        borderRadius= "md"
-                                        border="1px solid"
-                                        borderColor="primary.400"
-                                    >
-                                        Heheh
-                                    </Box>
-                                    <Box
-                                        p = "1em"
-                                        w = "100%"
-                                        borderRadius= "md"
-                                        border="1px solid"
-                                        borderColor="primary.400"
-                                    >
-                                        Heheh
-                                    </Box>
                                 </Stack>
                             </Box>
                         </GridItem>

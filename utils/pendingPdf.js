@@ -1,4 +1,5 @@
 import axios from "axios";
+import SuccessToast from "../components/Toasts/SuccessToast";
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 // ####################### FETCH THE PDFS THAT ARE TO BE SIGNED BY AN INDIVIDUAL #############################
 
@@ -10,7 +11,7 @@ const fetchPendingToBeSignedPdfs = async (setPendingPdfs, setPendingPdfsLoading)
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log("Pendinggggg", response.data);
+        // console.log("Pendinggggg", response.data);
         setPendingPdfs(response.data);
         setPendingPdfsLoading(false);
     }
@@ -32,7 +33,11 @@ const handleAcceptToSignPdf = async (pdfID) => {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => {console.log("Hurray Accepted!!!");fetchPendingToBeSignedPdfs()})
+        .then(response => {
+                SuccessToast("Yay!", "You have accepted to sign the document!!")
+                console.log("Hurray Accepted!!!");
+                fetchPendingToBeSignedPdfs();
+        })
     }
     catch (error) {
         console.log("Error updating Acceptance", error);
@@ -52,7 +57,11 @@ const handleDelayToSignPdf = async (pdfID) => {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => {console.log("Hurray Delayed!!!");fetchPendingToBeSignedPdfs()})
+        .then(response => {
+            SuccessToast("Umm Okay!", "You will be delayed in signing!!");
+            console.log("Hurray Delayed!!!");
+            fetchPendingToBeSignedPdfs();
+        })
     }
     catch (error) {
         console.log("Error updating Delay", error);
@@ -73,7 +82,11 @@ const handleRejectToSignPdf = async (pdfID) => {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => {console.log("Hurray Rejected!!!");fetchPendingToBeSignedPdfs()})
+        .then(response => {
+            SuccessToast("Sorry to see hear that", "You have rejected to sign the document!!")
+            console.log("Hurray Rejected!!!");
+            fetchPendingToBeSignedPdfs();
+        })
     }
     catch (error) {
         console.log("Error updating rejection", error);

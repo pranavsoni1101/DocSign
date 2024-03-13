@@ -1,3 +1,8 @@
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// Chakra UI imports
 import { Container, Image, Heading, 
          Box, Text, Button, 
          useToast, Spinner, Grid, 
@@ -5,16 +10,20 @@ import { Container, Image, Heading,
          IconButton, Tooltip, Stack,
          Spacer, ButtonGroup, Link
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import fetchUserDetails from '../../utils/fetchUser';
-import { useNavigate } from 'react-router-dom';
+
+// Icon Imports
 import { FaPen } from "react-icons/fa";
-import axios from 'axios';
-import { CiLocationOn } from "react-icons/ci";
-import { MdCall } from "react-icons/md";
-import { fetchPendingToBeSignedPdfs } from '../../utils/pendingPdf';
 import { FaFilePdf } from "react-icons/fa";
+import { CiLocationOn } from "react-icons/ci";
+import { MdCall,MdDelete } from "react-icons/md";
+import { FaEnvelopeOpenText } from "react-icons/fa";
+
+
+// Built Comoponents/Functions
+import fetchUserDetails from '../../utils/fetchUser';
 import formatDateFromISO from '../../utils/formatDateFromIso';
+import { fetchPendingToBeSignedPdfs } from '../../utils/pendingPdf';
+import { fetchUploadedPDFs, handleDeleteUploadedPdf } from '../../utils/uploadedPdfs';
 import { handleAcceptToSignPdf, handleDelayToSignPdf, handleRejectToSignPdf } from '../../utils/pendingPdf';
 
 
@@ -28,13 +37,27 @@ const Profile = () => {
     const [address, setAddress] = useState("");
     const [usersLoading, setUsersLoading] =  useState(true);
     const [profilePicture, setProfilePicture]  = useState(null);
+
+    // State to manage the pdfs that are uploaded by the individual user
+    const [uploadedPdfs, setUploadedPdfs] = useState([]);
+    const [uploadedPdfsLoading, setUploadedPdfsLoading] = useState(true);
+
+    // State to manage the pdfs that are pending by the user to sign
     const [pendingPdfs, setPendingPdfs] = useState([]);
     const [pendingPdfsLoading, setPendingPdfsLoading] = useState(true);
 
     useEffect(() => {
         fetchUserDetails(navigate, setUser, setUsersLoading);
         fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
-    }, []);
+        // if(user)
+            // fetchUploadedPDFs(setUploadedPdfs, setUploadedPdfsLoading, user);
+    }, [navigate]);
+
+    useEffect(() => {
+        if (user) { // Check if user state is not null
+            fetchUploadedPDFs(setUploadedPdfs, setUploadedPdfsLoading, user);
+        }
+    }, [user]); 
 
     const handleUpdate = () => {
         const formData = new FormData();
@@ -85,7 +108,7 @@ const Profile = () => {
         setProfilePicture(file);
     };
 
-    const isLoading = usersLoading || pendingPdfsLoading;
+    const isLoading = usersLoading || pendingPdfsLoading || uploadedPdfsLoading;
     return (
         <>
             {isLoading  ? (
@@ -207,6 +230,126 @@ const Profile = () => {
                                     textTransform= "uppercase"
                                     color= "gray.100"
                                 >
+                                    Here's the uploaded PDFS
+                                </Heading>
+                                <Stack
+                                    w = "100%"
+                                >
+                                    <Flex
+                                    p = "12px"
+                                    boxShadow= "lg"
+                                    borderRadius= "2xl"
+                                    backgroundColor="gray.100"
+                                >
+                                    <Text
+                                        w = "sm"
+                                        as = "h3"        
+                                        fontSize= "lg"
+                                        fontWeight="bold"
+                                    >
+                                        Ready to sprinkle some digital magic on those documents? 
+                                        Let's seal the deal! Create an envelope now!
+                                    </Text>
+                                    <Spacer/>
+                                    <Button
+                                        as={Link}
+                                        href='/createEnvelope'
+                                        backgroundColor= "primary.500"
+                                        leftIcon={<FaEnvelopeOpenText />}
+                                        transition= "all 0.5s ease-in-out"
+                                        _hover={{
+                                            color: "primary.500",
+                                            backgroundColor: "gray.500",
+                                            textDecoration: "none"
+                                        }}
+                                    >
+                                        Envelope
+                                    </Button>
+                                </Flex>
+                                {uploadedPdfs.length !== 0? uploadedPdfs.map((pdf) => (
+                                    <Flex
+                                    p = "12px"
+                                    key={pdf._id}
+                                    boxShadow= "lg"
+                                    borderRadius= "2xl"
+                                    backgroundColor="primary.500"
+                                >
+                                    <Box>            
+                                        <FaFilePdf />
+                                        <Text
+                                            fontWeight= "600"
+                                        >
+                                            {pdf.fileName}
+                                        </Text>
+                                        <Text
+                                            fontWeight= "600"
+                                        >
+                                            {pdf.size} bytes
+                                        </Text>
+                                        <Text
+                                            fontWeight= "600"
+                                        >
+                                            Uploaded At: {formatDateFromISO(pdf.uploadedAt)}
+                                        </Text>
+                                    </Box>
+                                    <Spacer />
+                                    <ButtonGroup>
+                                            <Button
+                                                as={Link}
+                                                href={`/pdf/${pdf._id}/${pdf.fileName}/`}
+                                                // ml="12px"
+                                                backgroundColor = "gray.500"
+                                                color = "primary.500"
+                                                transition= "all 0.5s ease-in-out"
+                                                _hover={{
+                                                    textDecoration: "none",
+                                                    backgroundColor: "gray.100",
+                                                    color: "black"
+                                                }}
+                                            >
+                                                View & Edit
+                                            </Button>
+                                            <IconButton
+                                                colorScheme='red'
+                                                onClick={() => handleDeleteUploadedPdf(pdf._id, user, setUploadedPdfs, setUploadedPdfsLoading)}
+                                            >
+                                                <MdDelete />
+                                            </IconButton>
+                                    </ButtonGroup>
+                                </Flex>
+                                ))
+                                :
+                                <Flex
+                                        p = "12px"
+                                        boxShadow= "lg"
+                                        borderRadius= "2xl"
+                                        backgroundColor="primary.500"
+                                    >
+                                    <Text
+                                        as = "h3"
+                                        w = "md"
+                                        fontSize= "lg"
+                                        fontWeight="bold"
+                                    >
+                                        Let's give those PDFs a digital home! 
+                                        Time to create some envelopes and peek 
+                                        inside for a whimsical view of your uploaded documents.
+                                    </Text>                                
+                                </Flex>
+                            }
+                                </Stack>
+                            </Box>
+                            <Box
+                                p = "2em"
+                                // h = "100%"
+                                mt= "1em"
+                                bgColor= "gray.500"
+                                borderRadius= "xl"
+                            >
+                                <Heading
+                                    textTransform= "uppercase"
+                                    color= "gray.100"
+                                >
                                     Pending to Sign
                                 </Heading>
                                 <Stack
@@ -285,7 +428,7 @@ const Profile = () => {
                             </Box>
                             <Box
                                 w = "100%"
-                                h = '100%'
+                                // h = '100%'
                                 p = "2em"
                                 mt = "1em"
                                 color= "gray.100"

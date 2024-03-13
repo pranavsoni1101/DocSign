@@ -1,4 +1,10 @@
-import { Container, Image, Heading, Box, Text, Button, FormControl, Input, FormLabel, useToast, Spinner, Grid, GridItem, VStack, Flex, IconButton, Tooltip, Stack } from '@chakra-ui/react';
+import { Container, Image, Heading, 
+         Box, Text, Button, 
+         useToast, Spinner, Grid, 
+         GridItem, VStack, Flex, 
+         IconButton, Tooltip, Stack,
+         Spacer, ButtonGroup, Link
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import fetchUserDetails from '../../utils/fetchUser';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +12,10 @@ import { FaPen } from "react-icons/fa";
 import axios from 'axios';
 import { CiLocationOn } from "react-icons/ci";
 import { MdCall } from "react-icons/md";
+import { fetchPendingToBeSignedPdfs } from '../../utils/pendingPdf';
+import { FaFilePdf } from "react-icons/fa";
+import formatDateFromISO from '../../utils/formatDateFromIso';
+import { handleAcceptToSignPdf, handleDelayToSignPdf, handleRejectToSignPdf } from '../../utils/pendingPdf';
 
 
 const Profile = () => {
@@ -18,9 +28,12 @@ const Profile = () => {
     const [address, setAddress] = useState("");
     const [usersLoading, setUsersLoading] =  useState(true);
     const [profilePicture, setProfilePicture]  = useState(null);
+    const [pendingPdfs, setPendingPdfs] = useState([]);
+    const [pendingPdfsLoading, setPendingPdfsLoading] = useState(true);
 
     useEffect(() => {
         fetchUserDetails(navigate, setUser, setUsersLoading);
+        fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
     }, []);
 
     const handleUpdate = () => {
@@ -72,9 +85,10 @@ const Profile = () => {
         setProfilePicture(file);
     };
 
+    const isLoading = usersLoading || pendingPdfsLoading;
     return (
         <>
-            {!user ? (
+            {isLoading  ? (
                 <Spinner 
                     // m = "0 auto "
                     position= "fixed"
@@ -184,11 +198,90 @@ const Profile = () => {
                             }}
                         >
                             <Box
+                                p = "2em"
                                 h = "100%"
-                                bgColor= "primary.500"
+                                bgColor= "gray.500"
                                 borderRadius= "xl"
                             >
-
+                                <Heading
+                                    textTransform= "uppercase"
+                                    color= "gray.100"
+                                >
+                                    Pending to Sign
+                                </Heading>
+                                <Stack
+                                w = "100%"
+                            >
+                                    <Flex
+                                        p = "12px"
+                                        boxShadow= "lg"
+                                        borderRadius= "lg"
+                                        backgroundColor="gray.100"
+                                    >
+                                        <Text
+                                            w = "sm"
+                                            as = "h3"        
+                                            fontSize= "lg"
+                                            fontWeight="bold"
+                                        >
+                                            Welcome to the Unfinished Symphony: 
+                                            Where Important Docs Await Your Signature!
+                                        </Text>
+                                    </Flex>
+                                    {
+                                        pendingPdfs.map((file, index)=> (
+                                            <Flex
+                                        p = "12px"
+                                        key={file._id}
+                                        boxShadow= "lg"
+                                        borderRadius= "2xl"
+                                        backgroundColor="primary.500"
+                                    >
+                                        <Box>
+                                            <Text
+                                                fontWeight= "600"
+                                            >
+                                                <FaFilePdf />
+                                                {file.fileName}
+                                            </Text>
+                                            {
+                                                file.expiryDate !== null?
+                                                <Text><strong>Expiry Date: </strong>{formatDateFromISO(file.expiryDate)}</Text>
+                                                :
+                                                <Text>Fear not, for this doc has an eternal life - it'll never expire!</Text>
+                                            }
+                                        </Box>
+                                        <Spacer />
+                                        <ButtonGroup>
+                                            <Button
+                                                colorScheme='green'
+                                                onClick={() => handleAcceptToSignPdf(file._id)}
+                                            >
+                                                Accept to Sign
+                                            </Button>
+                                            <Button
+                                                as={Link}
+                                                href={`/sign/${file._id}/${file.fileName}`}
+                                            >
+                                                Sign
+                                            </Button>
+                                            <Button
+                                                colorScheme='yellow'
+                                                onClick={() =>handleDelayToSignPdf(file._id)}
+                                            >
+                                                Delay In Signing
+                                            </Button>
+                                            <Button 
+                                                colorScheme='red'
+                                                onClick={() => handleRejectToSignPdf(file._id)}
+                                            >
+                                                Reject
+                                            </Button>    
+                                        </ButtonGroup>
+                                    </Flex>
+                                        ))
+                                    }
+                                </Stack>
                             </Box>
                             <Box
                                 w = "100%"

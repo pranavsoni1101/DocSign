@@ -155,41 +155,44 @@ const Envelope = () => {
 
                         : null}
                     <GridItem
-                        colSpan={6}
+                        colSpan={3}
                     >
                         <Box
-                            p="1em"
-                            // my= "3"
-                            boxSize="xs"
+                            p="2em"
+                            h = "xs"
                             boxShadow="xl"
                             borderRadius="2xl"
                             backgroundColor= "gray.400"
                         >
-                            <Input 
-                                type='file'
-                                onChange={handlePdfFileChange}
-                                position= "absolute"
-                                w = "2xs"
-                                // bottom= {0}
-                                // h = "100%"
-                                // opacity= {0}
-                                cursor= "pointer"
-                                zIndex={1}
-                            />
-                            <Button
+                            <Box
+                                w = "100%"
                                 position= "relative"
-                                w="100%"
-                                mt="1em"
-                                textTransform="capitalize"
-                                backgroundColor= "primary.500"
-                                leftIcon={<LuUpload />}
-                                _hover={{
-                                    backgroundColor: "gray.500",
-                                    color: "primary.500"
-                                }}
                             >
-                                Upload PDF
-                            </Button>
+                                <Input 
+                                    type='file'
+                                    onChange={handlePdfFileChange}
+                                    position= "absolute"
+                                    // w = "2xs"
+                                    // bottom= {0}
+                                    // h = "100%"
+                                    opacity= {0} 
+                                    cursor= "pointer"
+                                    // zIndex={1}
+                                />
+                                <Button
+                                    w="100%"
+                                    // mt="1em"
+                                    textTransform="capitalize"
+                                    backgroundColor= "primary.500"
+                                    leftIcon={<LuUpload />}
+                                    _hover={{
+                                        backgroundColor: "gray.500",
+                                        color: "primary.500"
+                                    }}
+                                >
+                                    Upload PDF
+                                </Button>
+                            </Box>
                             <UploadPdfModal
                                 isOpen={isOpen}
                                 setIsOpen={handleSetIsOpen}
@@ -227,8 +230,9 @@ const Envelope = () => {
                         </Box>
                     </GridItem>
                     <GridItem
-                        colStart={1}
-                        colEnd={7}
+                        colSpan={3}
+                        // colStart={1}
+                        // colEnd={7}
                     >
                         <Box
                             p="2em"

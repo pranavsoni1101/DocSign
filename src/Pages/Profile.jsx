@@ -86,36 +86,17 @@ const Profile = () => {
             }
         })
             .then(response => {
-                console.log('Updated successfully');
                 setIsEditing(false);
                 const title = "Details Updated!";
                 const description = "That's great your details have been saved"
                 SuccessToast(title, description);
-                // toast({
-                //     title: ,
-                //     description: ,
-                //     status: "success",
-                //     variant: "left-accent",
-                //     position: "top",
-                //     duration: 9000,
-                //     isClosable: true
-                // });
                 fetchUserDetails(navigate, setUser, setUsersLoading);
             })
             .catch(err => {
                 console.log("Error updating", err);
                 const title = "OOPS Details not updated";
                 const description = "Error updating your personal details";
-                ErrorToast()
-                // toast({
-                //     position: "top",
-                //     variant: "left-accent",
-                //     title: ,
-                //     description: ,
-                //     status: "error",
-                //     duration: 9000,
-                //     isClosable: true
-                // });
+                ErrorToast(title, description);
             });
     };
     
@@ -128,7 +109,6 @@ const Profile = () => {
     const isLoading = usersLoading || pendingPdfsLoading || uploadedPdfsLoading;
 
     const uploadedPdfsLength = uploadedPdfs.length;
-    console.log("uploadd", uploadedPdfsLength);
     const pendingToSignPdfLength = pendingPdfs.length;
 
     return (

@@ -329,14 +329,14 @@ const NAV_ITEMS = [
     label: 'Create Envelope',
     href: '/createEnvelope',
   },
-  {
-    label: 'Dashboard',
-    href: '/dashboard',
-  },
-  {
-    label: 'Pending Docs',
-    href: '/pendingDocs',
-  },
+  // {
+  //   label: 'Dashboard',
+  //   href: '/dashboard',
+  // },
+  // {
+  //   label: 'Pending Docs',
+  //   href: '/pendingDocs',
+  // },
   {
     label: 'Profile',
     href: '/profile',

@@ -28,10 +28,10 @@ const router = createBrowserRouter([
     path: '/signup',
     element: <SignUp />
   },
-  {
-    path: '/dashboard',
-    element: <Dashboard />
-  },
+  // {
+  //   path: '/dashboard',
+  //   element: <Dashboard />
+  // },
   {
     path: '/pdf/:id/:fileName',
     element: <ViewPdf />
@@ -45,10 +45,10 @@ const router = createBrowserRouter([
     path: '/profile',
     element: <Profile />
   },
-  {
-    path: '/pendingDocs',
-    element: <PendingDocs />
-  },
+  // {
+  //   path: '/pendingDocs',
+  //   element: <PendingDocs />
+  // },
   {
     path: '/sign/:id/:fileName',
     element: <SignPdf />

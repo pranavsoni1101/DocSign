@@ -8,12 +8,11 @@ import { Container, Image, Heading,
          useToast, Spinner, Grid, 
          GridItem, VStack, Flex, 
          IconButton, Tooltip, Stack,
-         Spacer, ButtonGroup, Link
+         Spacer, ButtonGroup, Link, FormControl, Input, FormLabel
 } from '@chakra-ui/react';
 
 // Icon Imports
-import { FaPen } from "react-icons/fa";
-import { FaFilePdf } from "react-icons/fa";
+import { FaFilePdf,FaSave } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { MdCall,MdDelete } from "react-icons/md";
 import { FaEnvelopeOpenText } from "react-icons/fa";
@@ -26,8 +25,12 @@ import { fetchPendingToBeSignedPdfs } from '../../utils/pendingPdf';
 import { fetchUploadedPDFs, handleDeleteUploadedPdf } from '../../utils/uploadedPdfs';
 import { handleAcceptToSignPdf, handleDelayToSignPdf, handleRejectToSignPdf } from '../../utils/pendingPdf';
 import CountUp from 'react-countup';
+import { IoMdClose } from 'react-icons/io';
+import SuccessToast from '../../components/Toasts/SuccessToast';
+import ErrorToast from '../../components/Toasts/ErrorToast';
 
 
+const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 const Profile = () => {
     const toast = useToast();
     const countUpRef = useRef(null)
@@ -60,10 +63,14 @@ const Profile = () => {
     useEffect(() => {
         if (user) { // Check if user state is not null
             fetchUploadedPDFs(setUploadedPdfs, setUploadedPdfsLoading, user);
+            setName(user.name);
+            setAddress(user.address);
+            setPhone(user.phone);
         }
     }, [user]); 
 
-    const handleUpdate = () => {
+    const handleUpdateUserDetails = (event) => {
+        event.preventDefault();
         const formData = new FormData();
         formData.append('name', name);
         formData.append('phone', phone);
@@ -72,7 +79,7 @@ const Profile = () => {
         
         const token = sessionStorage.getItem("token");
 
-        axios.patch(`${process.env.DOMAIN_NAME}/auth/user`, formData, {
+        axios.patch(`${DOMAIN_NAME}/auth/user`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}` // Pass the user ID in the Authorization header
@@ -81,28 +88,34 @@ const Profile = () => {
             .then(response => {
                 console.log('Updated successfully');
                 setIsEditing(false);
-                toast({
-                    title: "Details Updated!",
-                    description: "That's great your details have been saved",
-                    status: "success",
-                    variant: "left-accent",
-                    position: "top",
-                    duration: 9000,
-                    isClosable: true
-                });
+                const title = "Details Updated!";
+                const description = "That's great your details have been saved"
+                SuccessToast(title, description);
+                // toast({
+                //     title: ,
+                //     description: ,
+                //     status: "success",
+                //     variant: "left-accent",
+                //     position: "top",
+                //     duration: 9000,
+                //     isClosable: true
+                // });
                 fetchUserDetails(navigate, setUser, setUsersLoading);
             })
             .catch(err => {
                 console.log("Error updating", err);
-                toast({
-                    position: "top",
-                    variant: "left-accent",
-                    title: "OOPS Details not updated",
-                    description: "Error updating your personal details",
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true
-                });
+                const title = "OOPS Details not updated";
+                const description = "Error updating your personal details";
+                ErrorToast()
+                // toast({
+                //     position: "top",
+                //     variant: "left-accent",
+                //     title: ,
+                //     description: ,
+                //     status: "error",
+                //     duration: 9000,
+                //     isClosable: true
+                // });
             });
     };
     
@@ -142,7 +155,8 @@ const Profile = () => {
                                 p = "1em"
                                 gap={5}
                                 borderRadius= "xl"
-                                bgColor= "gray.200"
+                                bgColor= "gray.500"
+                                color= "gray.100"
                                 boxShadow= "2xl"
                             >
                                 <Tooltip 
@@ -163,48 +177,133 @@ const Profile = () => {
                                         }}
                                     />
                                 </Tooltip>
-                                <Text>{user.name}</Text>
-                                <Button
-                                    w = "xs"
-                                    variant= "outline"
-                                    colorScheme='primary'
-                                >
-                                    Edit Profile
-                                </Button>
-                                <Flex
-                                    justify= "space-between"
-                                >
-                                    <Text
-                                        display="inline-block"
-                                        fontSize= "2xl"
-                                    >
-                                        <CiLocationOn />
-                                    </Text>
-                                    <Text
-                                        display= "inline-block"
-                                    >
-                                        {user.address}
-                                    </Text>
-                                </Flex>
-                                <Flex
-                                    // w = "10em"
-                                    direction= "row"
-                                    alignItems= "center"
-                                    justifyContent= "space-between"
-                                >
-                                    <Text
-                                        // display="inline-block"
-                                        fontSize= "2xl"
-                                    >
-                                        <MdCall />
-                                    </Text>
+                                {isEditing? 
+                                    <>
+                                        <form onSubmit={handleUpdateUserDetails}>
+                                            <Stack
+                                                w = "100%"
+                                                p = "0"
+                                                gap = {2}
+                                            >
+                                                <IconButton 
+                                                    w = "fit-content"
+                                                    alignSelf="flex-end"
+                                                    icon={<IoMdClose />}
+                                                    onClick={() => setIsEditing(false)}
+                                                />
+                                                <FormControl>
+                                                    <FormLabel>Name</FormLabel>
+                                                    <Input 
+                                                        bg = "gray.100"
+                                                        color = "gray.600"
+                                                        placeholder='John Doe'
+                                                        w = "100%"
+                                                        // borderColor= "primary.200"
+                                                        value={name}
+                                                        onChange={(event) => setName(event.target.value)}
+                                                        focusBorderColor='primary.500'
+                                                        _placeholder={{
+                                                            color: "gray.500"
+                                                        }}
+                                                        _hover={{
+                                                            borderColor: "primary.500"
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                                <FormControl>
+                                                    <FormLabel>Address</FormLabel>
+                                                    <Input 
+                                                        bg = "gray.100"
+                                                        color = "gray.600"
+                                                        placeholder='Enter your Address..'
+                                                        // borderColor= "primary.200"
+                                                        value={address}
+                                                        onChange={(event) => setAddress(event.target.value)}
+                                                        focusBorderColor='primary.500'
+                                                        _placeholder={{
+                                                            color: "gray.500"
+                                                        }}
+                                                        _hover={{
+                                                            borderColor: "primary.500"
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                                <FormControl>
+                                                    <FormLabel>Contact</FormLabel>
+                                                    <Input 
+                                                        bg = "gray.100"
+                                                        color = "gray.600"
+                                                        placeholder='+91xxxxx-xxxxx'
+                                                        // borderColor= "primary.200"
+                                                        value={phone}
+                                                        onChange={(event) => setPhone(event.target.value)}
+                                                        focusBorderColor='primary.500'
+                                                        _placeholder={{
+                                                            color: "gray.500"
+                                                        }}
+                                                        _hover={{
+                                                            borderColor: "primary.500"
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                                <Button
+                                                    colorScheme='green'
+                                                    rightIcon={<FaSave/>}
+                                                    type='submit'
+                                                >
+                                                    Save
+                                                </Button>
+                                            </Stack>
+                                        </form>
+                                    </>
+                                    :
+                                    <>
+                                        <Text>{user.name}</Text>
+                                        {/* <Text>{user.name}</Text> */}
+                                        <Button
+                                            w = "xs"
+                                            variant= "outline"
+                                            colorScheme='primary'
+                                            onClick={() => setIsEditing(true)}
+                                        >
+                                            Edit Profile
+                                        </Button>
+                                        <Flex
+                                            justify= "space-between"
+                                        >
+                                            <Text
+                                                display="inline-block"
+                                                fontSize= "2xl"
+                                            >
+                                                <CiLocationOn />
+                                            </Text>
+                                            <Text
+                                                display= "inline-block"
+                                            >
+                                                {user.address}
+                                            </Text>
+                                        </Flex>
+                                        <Flex
+                                            // w = "10em"
+                                            direction= "row"
+                                            alignItems= "center"
+                                            justifyContent= "space-between"
+                                        >
+                                            <Text
+                                                // display="inline-block"
+                                                fontSize= "2xl"
+                                            >
+                                                <MdCall />
+                                            </Text>
 
-                                    <Text
-                                        // display= "inline-block"
-                                    >
-                                        {user.phone}
-                                    </Text>
-                                </Flex>
+                                            <Text
+                                                // display= "inline-block"
+                                            >
+                                                {user.phone}
+                                            </Text>
+                                        </Flex>
+                                    </>
+                                }
                             </VStack>
                         </GridItem>
                         <GridItem

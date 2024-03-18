@@ -3,12 +3,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Chakra UI imports
-import { Container, Image, Heading, 
+import { Container, Avatar, Heading, 
          Box, Text, Button, 
          useToast, Spinner, Grid, 
          GridItem, VStack, Flex, 
          IconButton, Tooltip, Stack,
-         Spacer, ButtonGroup, Link, FormControl, Input, FormLabel
+         Spacer, ButtonGroup, Link, 
+         FormControl, Input, FormLabel
 } from '@chakra-ui/react';
 
 // Icon Imports
@@ -16,7 +17,6 @@ import { FaFilePdf,FaSave } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { MdCall,MdDelete } from "react-icons/md";
 import { FaEnvelopeOpenText } from "react-icons/fa";
-
 
 // Built Comoponents/Functions
 import fetchUserDetails from '../../utils/fetchUser';
@@ -32,7 +32,6 @@ import ErrorToast from '../../components/Toasts/ErrorToast';
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 const Profile = () => {
-    const toast = useToast();
     const countUpRef = useRef(null)
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
@@ -43,6 +42,8 @@ const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [usersLoading, setUsersLoading] =  useState(true);
     const [profilePicture, setProfilePicture]  = useState(null);
+    const [profilePictureName, setProfilePictureName]  = useState(null);
+    const [newUploadedPicture, setNewUploadedPicture] = useState(null);
 
     // State to manage the pdfs that are uploaded by the individual user
     const [uploadedPdfs, setUploadedPdfs] = useState([]);
@@ -66,6 +67,7 @@ const Profile = () => {
             setName(user.name);
             setAddress(user.address);
             setPhone(user.phone);
+            setProfilePicture(user.profilePicture)
         }
     }, [user]); 
 
@@ -75,7 +77,8 @@ const Profile = () => {
         formData.append('name', name);
         formData.append('phone', phone);
         formData.append('address', address);
-        formData.append('profilePicture', profilePicture); // Assuming profilePicture is a file object
+        formData.append('profilePicture', profilePicture); // Append the base64 data
+        formData.append('profilePictureName', profilePictureName); // Append the image name
         
         const token = sessionStorage.getItem("token");
 
@@ -101,13 +104,16 @@ const Profile = () => {
     };
     
 
-    const handleFileUpload = (event) => {
+    const handleProfilePictureUpload = (event) => {
         const file = event.target.files[0];
         setProfilePicture(file);
+        setNewUploadedPicture(URL.createObjectURL(file));
+        setProfilePictureName(file.name);
     };
 
     const isLoading = usersLoading || pendingPdfsLoading || uploadedPdfsLoading;
 
+    console.log(profilePictureName);
     const uploadedPdfsLength = uploadedPdfs.length;
     const pendingToSignPdfLength = pendingPdfs.length;
 
@@ -144,24 +150,31 @@ const Profile = () => {
                                     label="Click to Edit Profile" 
                                     placement='top'
                                 >
-                                    <Image 
-                                        position="relative"
-                                        borderRadius= "full"
-                                        border= "2px solid"
-                                        borderColor= "primary.500"
-                                        boxSize= "xs"
-                                        src='https://images.unsplash.com/photo-1573865526739-10659fec78a5?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                                        _hover={{
-                                            cursor: "pointer",
-                                            boxShadow: "2xl"
-                                        }}
-                                    />
+                                    {user.profilePicture !== "null"? 
+                                        <Avatar 
+                                            position="relative"
+                                            borderRadius= "full"
+                                            // border= "2px solid"
+                                            // borderColor= "teal"
+                                            boxSize= "xs"
+                                            src = {`data:image/png;base64,${user.profilePicture}`}
+                                            _hover={{
+                                                cursor: "pointer",
+                                                boxShadow: "2xl"
+                                            }}
+                                        />
+                                        :
+                                        <Avatar 
+                                            bg = "teal"
+                                            boxSize= "xs"
+                                        />
+                                    }
                                 </Tooltip>
                                 {isEditing? 
                                     <>
                                         <form onSubmit={handleUpdateUserDetails}>
                                             <Stack
-                                                w = "100%"
+                                                // w = "100%"
                                                 p = "0"
                                                 gap = {2}
                                             >
@@ -169,11 +182,31 @@ const Profile = () => {
                                                     w = "fit-content"
                                                     alignSelf="flex-end"
                                                     icon={<IoMdClose />}
-                                                    onClick={() => setIsEditing(false)}
+                                                    onClick={() => {setIsEditing(false); setNewUploadedPicture(null)}}
                                                 />
+                                                <Box>
+                                                    <FormControl>
+                                                        <FormLabel>Profile Picture</FormLabel>
+                                                        <Input 
+                                                            w = "100%"
+                                                            type='file'
+                                                            bg = "gray.100"
+                                                            color= "gray.600"
+                                                            accept='image/*'
+                                                            onChange={handleProfilePictureUpload}
+                                                        />
+                                                        {   newUploadedPicture &&
+                                                            <Avatar 
+                                                             ml = "12px"
+                                                            src = {newUploadedPicture}
+                                                            />
+                                                        }
+                                                    </FormControl>
+                                                </Box>
                                                 <FormControl>
                                                     <FormLabel>Name</FormLabel>
                                                     <Input 
+                                                        // w = "100%"
                                                         bg = "gray.100"
                                                         color = "gray.600"
                                                         placeholder='John Doe'
@@ -238,8 +271,13 @@ const Profile = () => {
                                     </>
                                     :
                                     <>
-                                        <Text>{user.name}</Text>
-                                        {/* <Text>{user.name}</Text> */}
+                                        <Heading
+                                            as = "h4"
+                                            size = "md"
+                                            textAlign="start"
+                                        >
+                                            {user.name}
+                                        </Heading>
                                         <Button
                                             w = "xs"
                                             variant= "outline"

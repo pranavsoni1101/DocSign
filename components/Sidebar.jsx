@@ -28,7 +28,7 @@ const LinkItems = [
   { name: 'Download Pdf', icon: FaDownload },
 ]
 
-export default function Sidebar({ children, toggleDrag }) {
+export default function Sidebar({ children, toggleDrag ,handleAddInputField}) {
   // console.log("sidebar",toggleDrag);
   // const handleToggleDrag = () => toggleDrag();
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -37,7 +37,7 @@ export default function Sidebar({ children, toggleDrag }) {
       <SidebarContent 
         onClose={() => onClose} 
         display={{ base: 'none', md: 'block' }} 
-        toggleDrag={toggleDrag} 
+        handleAddInputField={handleAddInputField} 
       />
       <Drawer
         isOpen={isOpen}
@@ -48,7 +48,7 @@ export default function Sidebar({ children, toggleDrag }) {
         onOverlayClick={onClose}
         size="full">
         <DrawerContent>
-          <SidebarContent onClose={onClose} toggleDrag={toggleDrag}/>
+          <SidebarContent onClose={onClose} toggleDrag={toggleDrag} handleAddInputField={handleAddInputField}/>
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
@@ -61,7 +61,7 @@ export default function Sidebar({ children, toggleDrag }) {
 }
 
 
-const SidebarContent = ({ onClose, toggleDrag, ...rest }) => {
+const SidebarContent = ({ onClose, toggleDrag, handleAddInputField,...rest }) => {
   return (
     <Box
       bg={useColorModeValue('white', 'gray.900')}
@@ -79,7 +79,7 @@ const SidebarContent = ({ onClose, toggleDrag, ...rest }) => {
       </Flex>
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon}
-          toggleDrag={toggleDrag}
+          handleAddInputField={handleAddInputField}
         >
           {link.name}
         </NavItem>
@@ -88,11 +88,10 @@ const SidebarContent = ({ onClose, toggleDrag, ...rest }) => {
   )
 }
 
-const NavItem = ({ icon, toggleDrag, dragEnabled, children, ...rest }) => {
-  const handleClick = () => toggleDrag();
+const NavItem = ({ icon, handleAddInputField, dragEnabled, children, ...rest }) => {
   return (
     <Box
-      onClick={handleClick}
+      onClick={handleAddInputField}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}>
       <Flex

@@ -105,7 +105,7 @@ const ViewPdf = () => {
                         transform= "translate(-50%, -50%)"
                     />
                 ) : (
-                    <Sidebar>
+                    <Sidebar handleAddInputField = {handleAddInputField}>
                         <Flex
                             p="12px"
                             justify="space-between"

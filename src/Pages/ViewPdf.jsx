@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Heading, Box, Button, Text, Flex, Input, Spinner } from '@chakra-ui/react';
-import { Page, Document } from 'react-pdf';
+import { Heading, Box, Button, Text, Flex, Input, Spinner, IconButton } from '@chakra-ui/react';
+import { Page, Document, pdfjs } from 'react-pdf';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaDownload } from "react-icons/fa6";
 import Draggable from 'react-draggable';
 import axios from 'axios';
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -19,11 +22,14 @@ const ViewPdf = () => {
     let { id, fileName } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
     const [usersLoading, setUsersLoading] = useState(true); 
     const [inputFields, setInputFields] = useState([]); // State to store input fields
     const inputFieldRef = useRef(null); // Ref for input field
+    
+    
+    // Number of pages in a pdf
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
 
     useEffect(()=> {
         fetchUserDetails(navigate, setUser, setUsersLoading);
@@ -35,6 +41,7 @@ const ViewPdf = () => {
 
     const handleDocumentLoadSuccess = ({ numPages }) => {
         setNumPages(numPages);
+        setPageNumber(1)
     };
 
     const handleDownload = async () => {
@@ -93,6 +100,20 @@ const ViewPdf = () => {
         }
     };
 
+    // Functions to handle page changes
+    const changePage = (offset) => {
+        // if(pageNumber >0 || pageNumber > numPages)
+        setPageNumber(prevPageNumber => prevPageNumber+offset)
+    }
+    const nextPage = () => {
+        changePage(1);
+    }
+
+    const prevPage = () => {
+        changePage(-1);
+    }
+
+
     return (
         <>
             {usersLoading ? 
@@ -112,7 +133,6 @@ const ViewPdf = () => {
                             bg="grey"
                             maxH={"4em"}
                         >
-                            <Text display={"inline-block"}>{pageNumber} of {numPages}</Text>
                             <Button
                                 colorScheme='twitter'
                                 rightIcon={<FaDownload />}
@@ -120,8 +140,21 @@ const ViewPdf = () => {
                             >
                                 Download
                             </Button>
+                            <Box>
+                                <IconButton 
+                                    icon={<FaArrowLeft />}
+                                    onClick={prevPage}
+                                    isDisabled = {pageNumber === 1?true: false}
+                                />
+                                <Text mx= "1em" display={"inline-block"}>{pageNumber} of {numPages}</Text>
+                                <IconButton 
+                                    icon={<FaArrowRight/>}
+                                    onClick={nextPage}
+                                    isDisabled = {pageNumber === numPages?true: false}
+                                />
+                            </Box>
                             <Button colorScheme='green' onClick={handleSendPositions}>Send</Button>
-                            <Button onClick={handleAddInputField}>Add Input</Button> {/* Button to add input field */}
+                            {/* <Button onClick={handleAddInputField}>Add Input</Button> Button to add input field */}
                         </Flex>
                         <Flex
                             bg="#00000099"
@@ -134,14 +167,14 @@ const ViewPdf = () => {
                                 file={`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`}
                                 onLoadSuccess={handleDocumentLoadSuccess}
                             >
-                                {Array.from(new Array(numPages), (el, index) => (
+                                {/* {Array.from(new Array(numPages), (el, index) => ( */}
                                     <Box
                                         my="12px"
-                                        key={`page_${index + 1}`}
+                                        // key={`page_${index + 1}`}
                                     >
-                                        <Page  pageNumber={index + 1} className={"page"} />
+                                        <Page  pageNumber={pageNumber} className={"page"} />
                                         {/* Render input field if it exists for the current page */}
-                                        {inputFields && inputFields.map((inputField,inputIndex) => (
+                                        {/* {inputFields && inputFields.map((inputField,inputIndex) => (
                                             <Draggable
                                             onDrag={(e, ui) => handleDrag(index, inputIndex, e, ui)}
                                             defaultPosition={{
@@ -165,9 +198,9 @@ const ViewPdf = () => {
                                                     }
                                                 />
                                             </Draggable>
-                                        ))}
+                                        ))} */}
                                     </Box>
-                                ))}
+                                {/* ))} */}
                             </Document>
                         </Flex>
                     </Sidebar>

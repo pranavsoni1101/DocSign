@@ -7,15 +7,15 @@ import {
   Text,
   Button,
 } from '@chakra-ui/react'
-import { pdfjs } from 'react-pdf';
+// import { pdfjs } from 'react-pdf';
 import Illustration from '../components/Illustration';
 // import 'dotenv/config'
 
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
-).toString();
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//   'pdfjs-dist/build/pdf.worker.min.js',
+//   import.meta.url,
+// ).toString();
 
 const App = () => {
   return (

@@ -177,7 +177,7 @@ const Envelope = () => {
                                     // h = "100%"
                                     opacity= {0} 
                                     cursor= "pointer"
-                                    // zIndex={1}
+                                    zIndex={1}
                                 />
                                 <Button
                                     w="100%"

@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Heading, Box, Button, Text, Flex, Input, Spinner, IconButton } from '@chakra-ui/react';
+import { Heading, Box, Button, Text, Flex, Input, Spinner, IconButton, position } from '@chakra-ui/react';
 import { Page, Document, pdfjs } from 'react-pdf';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaDownload } from "react-icons/fa6";
 import Draggable from 'react-draggable';
 import axios from 'axios';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import DrawArea from "../../components/DrawArea";
+import AutoTextArea from "../../components/AutoTextArea"
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -14,6 +16,8 @@ import 'react-pdf/dist/Page/TextLayer.css';
 
 import Sidebar from '../../components/Sidebar';
 import fetchUserDetails from '../../utils/fetchUser';
+import SuccessToast from '../../components/Toasts/SuccessToast';
+import ErrorToast from '../../components/Toasts/ErrorToast';
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
@@ -31,13 +35,23 @@ const ViewPdf = () => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
 
+    // Text area related
+    const [result, setResult] = useState([]);
+    const [redoStack, setRedoStack] = useState([]);
+    const [flag, setFlag] = useState("");
+    const [buttonType, setButtonType] = useState("");
+    const [isText, setIsText] = useState(false);
+    const [bounds, setBounds] = useState({});
+
+    const tempRef = useRef(null);
+
     useEffect(()=> {
         fetchUserDetails(navigate, setUser, setUsersLoading);
     }, []);
 
-    useEffect(() => {
-        console.log("Updated position:", inputFields);
-    }, [inputFields]);
+    // useEffect(() => {
+    //     console.log("Updated position:", inputFields);
+    // }, [inputFields]);
 
     const handleDocumentLoadSuccess = ({ numPages }) => {
         setNumPages(numPages);
@@ -82,23 +96,57 @@ const ViewPdf = () => {
 
     const handleSendPositions = async () => {
         try {
-            const positions = inputFields.map(field => ({
-                pageIndex: field.pageIndex,
-                x: field.x,
-                y: field.y
-            }));
+
+            const positions = result.map((res)=> (
+                {
+                    id: res.id,
+                    x: res.x,
+                    y: res.y,
+                    value: res.value,
+                    page: res.page,
+                    type: res.type
+
+                }
+            ));
     
             // Make a POST request to send input field positions to the backend
-            await axios.post(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}/positions`, positions, {
+            await axios.patch(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}/positions`, positions, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log('Positions sent successfully');
+            const title = "Envelope Sent!"
+            const description = "The recipient will recieve a mail shortly"
+            SuccessToast(title, description)
+            // console.log('Positions sent successfully');
         } catch (error) {
+            const title = "Oops"
+            const description = "An error occured while trying to update the user inputs"
+            ErrorToast()
             console.error('Error sending positions:', error);
         }
     };
+
+    // Input related Functions
+    const addText = () => {
+        //Flag to change cursor if text
+        setIsText(true);
+        document.getElementById("drawArea").addEventListener("click", (e) => {
+          e.preventDefault();
+          setResult(result => [...result, {id:generateKey(e.pageX), x: e.pageX, y: e.pageY -10, value: "", page: pageNumber, type: "text"}]);
+        }, { once: true });
+    }
+
+    console.log("result", result);
+
+    const onTextChange = (id, txt, ref) => {
+        let indx = result.findIndex(x => x.id === id);
+        let item = {...result[indx]};
+        item.value = txt;
+        item.ref = ref;
+        result[indx] = item;
+        setResult(result);
+      }
 
     // Functions to handle page changes
     const changePage = (offset) => {
@@ -113,9 +161,48 @@ const ViewPdf = () => {
         changePage(-1);
     }
 
+    const generateKey = (pre) => {
+        return `${ pre }_${ new Date().getTime() }`;
+      }
+
+      const getPaths = (el) => {
+        setResult(res => [...res,el]);
+    }
+    const resetButtonType = () => {
+        setButtonType("");
+      }
+    
+    const changeFlag = () => {
+        setFlag("");
+      }
+
+      const getBounds = (obj) =>{
+        setBounds(obj);
+      }
+
 
     return (
         <>
+            {
+            result.map((res) => {
+                if(res.type === "text")
+                {
+                let isShowing = "hidden";
+                if(res.page === pageNumber)
+                {
+                    isShowing = "visible";
+                }
+                return(
+                    <AutoTextArea key = {res.id} unique_key = {res.id} val = {res.value} onTextChange = {onTextChange} style = {{visibility: isShowing, color: "red" ,fontWeight:'normal', fontSize: 16, zIndex:20, position: "absolute", left: res.x+'px', top: res.y +'px'}}></AutoTextArea>
+                    //<h1 key={index} style = {{textAlign: "justify",color: "red" ,fontWeight:'normal',width: 200, height: 80,fontSize: 33+'px', fontSize: 16, zIndex:10, position: "absolute", left: res.x+'px', top: res.y +'px'}}>{res.text}</h1>
+                )
+                }
+                else
+                {
+                return(null);
+                }
+            })
+            }
             {usersLoading ? 
                 (
                     <Spinner 
@@ -126,7 +213,7 @@ const ViewPdf = () => {
                         transform= "translate(-50%, -50%)"
                     />
                 ) : (
-                    <Sidebar handleAddInputField = {handleAddInputField}>
+                    <Sidebar handleAddInputField = {addText}>
                         <Flex
                             p="12px"
                             justify="space-between"
@@ -168,11 +255,13 @@ const ViewPdf = () => {
                                 onLoadSuccess={handleDocumentLoadSuccess}
                             >
                                 {/* {Array.from(new Array(numPages), (el, index) => ( */}
-                                    <Box
+                                    {/* <Box
                                         my="12px"
                                         // key={`page_${index + 1}`}
-                                    >
+                                    > */}
+                                    <DrawArea getPaths = {getPaths} page = {pageNumber} flag = {flag} getBounds = {getBounds} changeFlag = {changeFlag} cursor = {isText ? "text": "default"} buttonType = {buttonType} resetButtonType = {resetButtonType}>
                                         <Page  pageNumber={pageNumber} className={"page"} />
+                                    </DrawArea>
                                         {/* Render input field if it exists for the current page */}
                                         {/* {inputFields && inputFields.map((inputField,inputIndex) => (
                                             <Draggable
@@ -199,7 +288,7 @@ const ViewPdf = () => {
                                                 />
                                             </Draggable>
                                         ))} */}
-                                    </Box>
+                                    {/* </Box> */}
                                 {/* ))} */}
                             </Document>
                         </Flex>

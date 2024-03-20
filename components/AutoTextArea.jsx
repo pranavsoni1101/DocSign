@@ -1,3 +1,4 @@
+import { Input, Textarea } from "@chakra-ui/react";
 import React, {useState,useEffect,useRef} from "react";
 
 function AutoTextArea(props) {
@@ -31,10 +32,13 @@ function AutoTextArea(props) {
 			style={{minHeight: parentHeight,}, props.style}
 			ref = {divAreaRef}
 		>
-			<textarea
+			<Input
+				// border="1px solid #000"s
+				h = "xs"
 				ref = {textAreaRef}
 				rows = {1}
-				style = {{height: textAreaHeight, zIndex: 10, background: "transparent", border: "none", color:"red", fontFamily: "helvetica"}}
+				color="black"
+				style = {{height: textAreaHeight, zIndex: 10, background: "transparent", fontFamily: "helvetica"}}
                 value = {text}
 				onChange = {onChangeHandler}
                 onBlur = {onBlurHandler}

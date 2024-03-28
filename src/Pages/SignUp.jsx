@@ -112,7 +112,7 @@ const SignUp = () => {
 
     return (
         <>
-            <Container maxW={"100%"}>
+            <Container maxW={"100%"} h= {"90vh"}>
                 <Heading mt="1em" textAlign="center">
                     Sign Up
                 </Heading>

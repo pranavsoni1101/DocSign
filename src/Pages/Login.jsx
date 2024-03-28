@@ -90,17 +90,18 @@ const Login = () => {
         <>
             <Container
                 maxW={"100%"}
+                h = {"90vh"}
             >
                 <Heading
                     mt = "1em"
                     textAlign="center"
                 >
-                    This is login
+                    Login
                 </Heading>
                 <Text
                     m = "0 auto"
                     mt = "0.5em"
-                    w = "md"
+                    // w = "md"
                     textAlign= "center" 
                 >
                     Time to unlock the digital vault! Dive into your signed wonders by logging in now.

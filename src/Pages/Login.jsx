@@ -35,7 +35,7 @@ const Login = () => {
             const data = response.data;
             sessionStorage.setItem('token', data.token);
             toastSuccess("You have Logged In!");
-            navigate("/dashboard");
+            navigate("/profile");
         } catch (err) {
             if (err.response && err.response.status === 404) {
                 toastError("User does not exist");

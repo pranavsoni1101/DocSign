@@ -102,6 +102,7 @@ const ViewPdf = () => {
                     id: res.id,
                     x: res.x,
                     y: res.y,
+                    ref: tempRef,
                     value: res.value,
                     page: res.page,
                     type: res.type
@@ -133,7 +134,7 @@ const ViewPdf = () => {
         setIsText(true);
         document.getElementById("drawArea").addEventListener("click", (e) => {
           e.preventDefault();
-          setResult(result => [...result, {id:generateKey(e.pageX), x: e.pageX, y: e.pageY -10, value: "", page: pageNumber, type: "text"}]);
+          setResult(result => [...result, {id:generateKey(e.pageX), x: e.pageX, y: e.pageY -10, text: "", page: pageNumber, type: "text", ref: tempRef}]);
         }, { once: true });
     }
 

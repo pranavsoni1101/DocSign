@@ -82,9 +82,11 @@ export default function WithSubnavigation() {
             DocSign
           </Text>
 
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav />
-          </Flex>
+            {isLoggedIn &&
+              <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+                <DesktopNav />
+              </Flex>
+            }
         </Flex>
 
         <Stack

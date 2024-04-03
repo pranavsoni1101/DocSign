@@ -22,18 +22,28 @@ import {
   ChevronRightIcon,
 } from '@chakra-ui/icons'
 import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+console.log(isLoggedIn);
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    setIsLoggedIn(!!token);
+    console.log("Initial run");
+    const token = Cookies.get('jwt');
+    if(token){
+      setIsLoggedIn(prevLoggedIn => {
+        if (!prevLoggedIn) {
+            return true;
+        }
+        return prevLoggedIn;
+    });
+    }
   }, [])
 
   const handleSignOut = () => {
-    sessionStorage.removeItem('token');
+    // sessionStorage.removeItem('token');
+    Cookies.remove("jwt");
     setIsLoggedIn(false);
     console.log("Logged Out");
     history.go("/");
@@ -82,10 +92,12 @@ export default function WithSubnavigation() {
             DocSign
           </Text>
 
-            {isLoggedIn &&
+            {isLoggedIn ?
               <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
                 <DesktopNav />
               </Flex>
+              :
+              null
             }
         </Flex>
 

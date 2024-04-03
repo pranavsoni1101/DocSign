@@ -28,12 +28,14 @@ import CountUp from 'react-countup';
 import { IoMdClose } from 'react-icons/io';
 import SuccessToast from '../../components/Toasts/SuccessToast';
 import ErrorToast from '../../components/Toasts/ErrorToast';
+import Cookies from 'js-cookie';
 
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 const Profile = () => {
     const countUpRef = useRef(null)
     const navigate = useNavigate();
+    const [pfp, setPfp] = useState(null);
     const [user, setUser] = useState(null);
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
@@ -64,12 +66,29 @@ const Profile = () => {
     useEffect(() => {
         if (user) { // Check if user state is not null
             fetchUploadedPDFs(setUploadedPdfs, setUploadedPdfsLoading, user);
+            fetchUserPfp();
             setName(user.name);
             setAddress(user.address);
             setPhone(user.phone);
             setProfilePicture(user.profilePicture)
         }
     }, [user]); 
+
+    const fetchUserPfp = async() => {
+        try{
+            const jwt = Cookies.get("jwt")
+            const response = await axios.get(`${DOMAIN_NAME}/pfp`, {
+                headers: {
+                    'Authorization': `Bearer ${jwt} ` // Pass the user ID in the Authorization header
+                }
+            })
+            console.log("This is pfp response", response.data);
+            setPfp(response.data);
+        }
+        catch (error) {
+            console.log("Error occured", error);
+        }
+    }
 
     const handleUpdateUserDetails = (event) => {
         event.preventDefault();
@@ -80,7 +99,7 @@ const Profile = () => {
         formData.append('profilePicture', profilePicture); // Append the base64 data
         formData.append('profilePictureName', profilePictureName); // Append the image name
         
-        const token = sessionStorage.getItem("token");
+        const token = Cookies.get("jwt")
 
         axios.patch(`${DOMAIN_NAME}/auth/user`, formData, {
             headers: {
@@ -113,7 +132,6 @@ const Profile = () => {
 
     const isLoading = usersLoading || pendingPdfsLoading || uploadedPdfsLoading;
 
-    console.log(profilePictureName);
     const uploadedPdfsLength = uploadedPdfs.length;
     const pendingToSignPdfLength = pendingPdfs.length;
 
@@ -150,14 +168,14 @@ const Profile = () => {
                                     label="Click to Edit Profile" 
                                     placement='top'
                                 >
-                                    {user.profilePicture !== "null"? 
+                                    {pfp.profilePicture !== "null"? 
                                         <Avatar 
                                             position="relative"
                                             borderRadius= "full"
                                             // border= "2px solid"
                                             // borderColor= "teal"
                                             boxSize= "xs"
-                                            src = {`data:image/png;base64,${user.profilePicture}`}
+                                            src = {`data:image/png;base64,${pfp.profilePicture}`}
                                             _hover={{
                                                 cursor: "pointer",
                                                 boxShadow: "2xl"

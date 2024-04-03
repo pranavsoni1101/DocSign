@@ -1,11 +1,13 @@
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { Container, Heading, Box, 
          FormLabel, Input, Button, 
          useToast,
          FormControl, Text
 } from '@chakra-ui/react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
@@ -33,6 +35,7 @@ const Login = () => {
                 password
             });
             const data = response.data;
+            Cookies.set("jwt", data.token)
             sessionStorage.setItem('token', data.token);
             toastSuccess("You have Logged In!");
             navigate("/profile");

@@ -200,7 +200,7 @@ const Footer = () => {
                         color: "primary.300"
                     }}
                 >
-                Satus
+                Status
                 </Text>
             </Link>
           </Stack>

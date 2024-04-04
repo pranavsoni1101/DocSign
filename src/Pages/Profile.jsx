@@ -153,7 +153,7 @@ const Profile = () => {
                         gap={4}
                     >
                         <GridItem
-                            colSpan={3}
+                            colSpan={[12, 12 ,3, 4,3]}
                         >
                             <VStack
                                 p = "1em"
@@ -163,18 +163,18 @@ const Profile = () => {
                                 color= "gray.100"
                                 boxShadow= "2xl"
                             >
-                                <Tooltip 
+                                {/* <Tooltip 
                                     hasArrow
                                     label="Click to Edit Profile" 
                                     placement='top'
-                                >
+                                > */}
                                     {pfp.profilePicture !== "null"? 
                                         <Avatar 
                                             position="relative"
                                             borderRadius= "full"
                                             // border= "2px solid"
                                             // borderColor= "teal"
-                                            boxSize= "xs"
+                                            boxSize= {["5em","10em","15em"]}
                                             src = {`data:image/png;base64,${pfp.profilePicture}`}
                                             _hover={{
                                                 cursor: "pointer",
@@ -187,7 +187,7 @@ const Profile = () => {
                                             boxSize= "xs"
                                         />
                                     }
-                                </Tooltip>
+                                {/* </Tooltip> */}
                                 {isEditing? 
                                     <>
                                         <form onSubmit={handleUpdateUserDetails}>
@@ -297,7 +297,7 @@ const Profile = () => {
                                             {user.name}
                                         </Heading>
                                         <Button
-                                            w = "xs"
+                                            w = "full"
                                             variant= "outline"
                                             colorScheme='primary'
                                             onClick={() => setIsEditing(true)}
@@ -343,7 +343,7 @@ const Profile = () => {
                             </VStack>
                         </GridItem>
                         <GridItem
-                            colSpan={9}
+                            colSpan={[12, 12, 12, 8, 9]}
                             overflowY= "auto"
                             sx = {{
                                 '&::-webkit-scrollbar': {

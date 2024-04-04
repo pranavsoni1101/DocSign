@@ -113,15 +113,15 @@ const SignUp = () => {
 
     return (
         <>
-            <Container maxW={"100%"} h= {"90vh"}>
+            <Container maxW={"100%"} minH= {"90vh"} mb = "2em">
                 <Heading mt="1em" textAlign="center">
                     Sign Up
                 </Heading>
-                <Text m="0 auto" mt="0.5em" w="md" textAlign="center">
+                <Text m="0 auto" mt="0.5em" maxW="md" textAlign="center">
                     Ready to ditch the pen and paper? Let's turn those scribbles into stylish digital signatures! Sign up
                     now and join the paperless revolution.
                 </Text>
-                <Box m="0 auto" mt="1em" w="lg" p="2em" boxShadow="2xl" borderRadius="xl" backgroundColor="gray.500">
+                <Box m="0 auto" mt="1em" maxW="lg" p="2em" boxShadow="2xl" borderRadius="xl" backgroundColor="gray.500">
                     <form onSubmit={handleSignUp}>
                         <FormControl isRequired mb="1em">
                             <FormLabel color="primary.500">Name</FormLabel>

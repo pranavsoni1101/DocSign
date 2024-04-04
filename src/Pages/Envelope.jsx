@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     Box, Container, FormControl,
     Heading, Input, Button,
-    useToast, FormLabel, Grid, GridItem, Text
+    useToast, FormLabel, Grid, GridItem, Text, ButtonGroup
 } from '@chakra-ui/react';
 import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
 import fetchUserDetails from '../../utils/fetchUser';
@@ -275,19 +275,28 @@ const Envelope = () => {
                                     focusBorderColor='gray.500'
                                 />
                             </FormControl>
-                            <Button
+                            <ButtonGroup
                                 mt="1em"
-                                color= "primary.500"
-                                backgroundColor= "gray.500"
-                                leftIcon={<IoMdPersonAdd />}
-                                _hover={{
-                                    backgroundColor: "gray.600"
-                                }}
                             >
-                                Add Recipient
-                            </Button>
+                                <Button 
+                                    colorScheme='green' 
+                                    onClick={handlePdfUpload}
+                                    leftIcon={<LuUpload />}
+                                >
+                                    Upload
+                                </Button>
+                                {/* <Button
+                                    color= "primary.500"
+                                    backgroundColor= "gray.500"
+                                    leftIcon={<IoMdPersonAdd />}
+                                    _hover={{
+                                        backgroundColor: "gray.600"
+                                    }}
+                                >
+                                    Add Recipient
+                                </Button> */}
+                            </ButtonGroup>
                         </Box>
-                        <Button colorScheme='green' onClick={handlePdfUpload}>Upload pDF</Button>
                     </GridItem>
                 </Grid>
             </Container>

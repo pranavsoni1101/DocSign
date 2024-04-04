@@ -73,7 +73,7 @@ ReactDOM.createRoot(rootElement).render(
           <Route path="/profile" element={<Profile />} />
           <Route path="/sign/:id/:fileName" element={<SignPdf />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>,

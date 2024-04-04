@@ -7,6 +7,7 @@ import { Container, Heading, Box,
          FormControl, Text
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../components/Footer';
 
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
@@ -93,7 +94,7 @@ const Login = () => {
         <>
             <Container
                 maxW={"100%"}
-                h = {"90vh"}
+                h = {"86vh"}
             >
                 <Heading
                     mt = "1em"
@@ -166,6 +167,7 @@ const Login = () => {
                     </form>
                 </Box>
             </Container>
+            <Footer />
         </>
     )
 }

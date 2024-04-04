@@ -11,6 +11,7 @@ import fetchUserDetails from '../../utils/fetchUser';
 import { Document, Page } from 'react-pdf';
 import { LuUpload, LuLayoutTemplate } from "react-icons/lu";
 import { IoMdCloudOutline, IoMdPersonAdd } from "react-icons/io";
+import Footer from '../../components/Footer';
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
@@ -159,31 +160,31 @@ const Envelope = () => {
                     >
                         <Box
                             p="2em"
-                            h = "xs"
+                            h="xs"
                             boxShadow="xl"
                             borderRadius="2xl"
-                            backgroundColor= "gray.400"
+                            backgroundColor="gray.400"
                         >
                             <Box
-                                w = "100%"
-                                position= "relative"
+                                w="100%"
+                                position="relative"
                             >
-                                <Input 
+                                <Input
                                     type='file'
                                     onChange={handlePdfFileChange}
-                                    position= "absolute"
+                                    position="absolute"
                                     // w = "2xs"
                                     // bottom= {0}
                                     // h = "100%"
-                                    opacity= {0} 
-                                    cursor= "pointer"
+                                    opacity={0}
+                                    cursor="pointer"
                                     zIndex={1}
                                 />
                                 <Button
                                     w="100%"
                                     // mt="1em"
                                     textTransform="capitalize"
-                                    backgroundColor= "primary.500"
+                                    backgroundColor="primary.500"
                                     leftIcon={<LuUpload />}
                                     _hover={{
                                         backgroundColor: "gray.500",
@@ -203,8 +204,8 @@ const Envelope = () => {
                                 w="100%"
                                 mt="1em"
                                 textTransform="capitalize"
-                                backgroundColor= "gray.500"
-                                color= "primary.500"
+                                backgroundColor="gray.500"
+                                color="primary.500"
                                 leftIcon={<LuLayoutTemplate />}
                                 _hover={{
                                     color: "gray.500",
@@ -218,7 +219,7 @@ const Envelope = () => {
                                 w="100%"
                                 mt="1em"
                                 textTransform="capitalize"
-                                backgroundColor= "primary.500"
+                                backgroundColor="primary.500"
                                 leftIcon={<IoMdCloudOutline />}
                                 _hover={{
                                     backgroundColor: "gray.500",
@@ -231,8 +232,8 @@ const Envelope = () => {
                     </GridItem>
                     <GridItem
                         colSpan={3}
-                        // colStart={1}
-                        // colEnd={7}
+                    // colStart={1}
+                    // colEnd={7}
                     >
                         <Box
                             p="2em"
@@ -240,7 +241,7 @@ const Envelope = () => {
                             boxShadow="2xl"
                             // boxSize= "xs"
                             borderRadius={"xl"}
-                            backgroundColor= "primary.400"
+                            backgroundColor="primary.400"
                         >
                             <Heading
                                 size="md"
@@ -257,13 +258,13 @@ const Envelope = () => {
                                     value={name}
                                     onChange={handleNameChange}
                                     placeholder='John Doe'
-                                    borderColor= "gray.500"
+                                    borderColor="gray.500"
                                     focusBorderColor='gray.500'
                                 />
                             </FormControl>
                             <FormControl
                                 isRequired
-                                mt = "1em"
+                                mt="1em"
                             >
                                 <FormLabel fontWeight="bold">Recipient's Email</FormLabel>
                                 <Input
@@ -271,15 +272,15 @@ const Envelope = () => {
                                     value={email}
                                     onChange={handleEmailChange}
                                     placeholder='johndoe@something.com'
-                                    borderColor= "gray.500"
+                                    borderColor="gray.500"
                                     focusBorderColor='gray.500'
                                 />
                             </FormControl>
                             <ButtonGroup
                                 mt="1em"
                             >
-                                <Button 
-                                    colorScheme='green' 
+                                <Button
+                                    colorScheme='green'
                                     onClick={handlePdfUpload}
                                     leftIcon={<LuUpload />}
                                 >
@@ -300,7 +301,7 @@ const Envelope = () => {
                     </GridItem>
                 </Grid>
             </Container>
-
+            <Footer />
         </>
     )
 }

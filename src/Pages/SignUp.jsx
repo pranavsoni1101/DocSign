@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Heading, Box, FormLabel, Input, Button, useToast, FormControl, Text, FormHelperText } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../components/Footer';
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
@@ -176,6 +177,7 @@ const SignUp = () => {
                     </form>
                 </Box>
             </Container>
+            <Footer />
         </>
     )
 }

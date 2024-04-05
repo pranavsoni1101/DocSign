@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { Container, Heading, Box, 
          FormLabel, Input, Button, 
          useToast,
-         FormControl, Text
+         FormControl, Text, Stack
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 
 
@@ -110,7 +110,7 @@ const Login = () => {
                 >
                     Time to unlock the digital vault! Dive into your signed wonders by logging in now.
                 </Text>
-                <Box
+                <Stack
                     m = "0 auto"
                     mt = "1em"
                     maxW = "lg"
@@ -165,7 +165,21 @@ const Login = () => {
                             Sign In
                         </Button>
                     </form>
-                </Box>
+                    <Text 
+                        color= "gray.100"
+                        textAlign= "center"
+                    >
+                        Do not have an account with us?&nbsp;
+                        <span>
+                            <Link
+                                to={"/signup"}
+                                style={{color: "#FFB738", textDecoration: "underline"}}
+                            >  
+                                Sign Up
+                            </Link>
+                        </span>
+                    </Text>
+                </Stack>
             </Container>
             <Footer />
         </>

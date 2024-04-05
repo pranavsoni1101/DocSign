@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Container, Heading, Box, FormLabel, Input, Button, useToast, FormControl, Text, FormHelperText } from '@chakra-ui/react';
+import { Container, Heading, Stack, FormLabel, Input, Button, useToast, FormControl, Text, FormHelperText } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
+import { Link  } from 'react-router-dom';
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
@@ -121,7 +122,7 @@ const SignUp = () => {
                     Ready to ditch the pen and paper? Let's turn those scribbles into stylish digital signatures! Sign up
                     now and join the paperless revolution.
                 </Text>
-                <Box m="0 auto" mt="1em" maxW="lg" p="2em" boxShadow="2xl" borderRadius="xl" backgroundColor="gray.500">
+                <Stack m="0 auto" mt="1em" maxW="lg" p="2em" boxShadow="2xl" borderRadius="xl" backgroundColor="gray.500">
                     <form onSubmit={handleSignUp}>
                         <FormControl isRequired mb="1em">
                             <FormLabel color="primary.500">Name</FormLabel>
@@ -175,7 +176,21 @@ const SignUp = () => {
                             Sign Up
                         </Button>
                     </form>
-                </Box>
+                    <Text 
+                        color= "gray.100"
+                        textAlign= "center"
+                    >
+                        Already have an account with us?&nbsp;
+                        <span>
+                            <Link
+                                to={"/login"}
+                                style={{color: "#FFB738", textDecoration: "underline"}}
+                            >  
+                                Log in
+                            </Link>
+                        </span>
+                    </Text>
+                </Stack>
             </Container>
             <Footer />
         </>

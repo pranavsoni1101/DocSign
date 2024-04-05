@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Container, Heading, Box, 
          FormLabel, Input, Button, 
          useToast,
-         FormControl, Text, Stack
+         FormControl, Text, Stack, FormErrorMessage
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
@@ -13,10 +13,16 @@ import Footer from '../../components/Footer';
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
 const Login = () => {
+
+    const toast = useToast();
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
-    const toast = useToast();
+
+    const [isEmailError, setIsEmailError] = useState(false);
+    const [isPasswordError, setIsPasswordError] = useState(false);
+
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -42,8 +48,10 @@ const Login = () => {
             navigate("/profile");
         } catch (err) {
             if (err.response && err.response.status === 404) {
+                setIsEmailError(true);
                 toastError("User does not exist");
             } else if (err.response && err.response.status === 401) {
+                setIsPasswordError(true)
                 toastError("Invalid email or password");
             } else {
                 toastError("An error occurred while trying to log you in");
@@ -120,7 +128,7 @@ const Login = () => {
                     backgroundColor= 'gray.500'
                 >
                     <form onSubmit={handleLogin}>
-                        <FormControl mb="1em" isRequired>
+                        <FormControl mb="1em" isRequired isInvalid={isEmailError}>
                             <FormLabel
                                 color= "primary.500"
                             >
@@ -137,8 +145,9 @@ const Login = () => {
                                 }}
                                 focusBorderColor='primary.500'
                             />
+                           <FormErrorMessage>Email entered does not exist</FormErrorMessage>
                         </FormControl>
-                        <FormControl mb="1em" isRequired>
+                        <FormControl mb="1em" isRequired isInvalid= {isPasswordError}>
                             <FormLabel
                                 color= "primary.500"
                             >
@@ -153,8 +162,9 @@ const Login = () => {
                                 _hover = {{
                                     borderColor: "primary.500"
                                 }}
-                                focusBorderColor='primary.500'
+                                // focusBorderColor='primary.500'
                             />
+                           { isPasswordError && <FormErrorMessage>Password entered is incorrect</FormErrorMessage>}
                         </FormControl>
                         <Button
                             w = "100%"

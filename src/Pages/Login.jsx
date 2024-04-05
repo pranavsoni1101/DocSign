@@ -94,7 +94,7 @@ const Login = () => {
         <>
             <Container
                 maxW={"100%"}
-                h = {"86vh"}
+                minH = {"100vh"}
             >
                 <Heading
                     mt = "1em"
@@ -113,7 +113,7 @@ const Login = () => {
                 <Box
                     m = "0 auto"
                     mt = "1em"
-                    w = "lg"
+                    maxW = "lg"
                     p = "2em"
                     boxShadow= "2xl"
                     borderRadius= "xl"

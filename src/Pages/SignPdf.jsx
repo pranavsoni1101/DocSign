@@ -19,6 +19,8 @@ import Sidebar from '../../components/Sidebar';
 import fetchUserDetails from '../../utils/fetchUser';
 import SuccessToast from '../../components/Toasts/SuccessToast';
 import ErrorToast from '../../components/Toasts/ErrorToast';
+import Cookies from 'js-cookie';
+import ModifyPage from '../../components/ModifyPdf';
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
@@ -69,7 +71,12 @@ const SignPdf = () => {
 
     const handleDownload = async () => {
         try {
-            const pdfBlob = await fetch(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`).then(res => res.blob());
+            const token = Cookies.get("jwt")
+            const pdfBlob = await fetch(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Pass the user ID in the Authorization header
+                }
+            }).then(res => res.blob());
             const url = window.URL.createObjectURL(pdfBlob);
             const link = document.createElement('a');
             link.href = url;
@@ -79,60 +86,6 @@ const SignPdf = () => {
             document.body.removeChild(link);
         } catch (error) {
             console.error('Error downloading PDF:', error);
-        }
-    };
-
-    const handleAddInputField = () => {
-        setInputFields(prevInputFields => [
-            ...prevInputFields,
-            { x: 0, y: 0}
-        ]);
-    };
-
-    const handleDrag = (pageIndex, inputIndex, e, ui) => {
-        setInputFields(prevInputFields => {
-            const updatedInputFields = [...prevInputFields];
-            updatedInputFields[inputIndex] = {
-                ...updatedInputFields[inputIndex],
-                x: ui.x,
-                y: ui.y,
-                pageIndex: pageIndex // Store the page index
-            };
-            return updatedInputFields;
-        });
-    };
-    
-
-    const handleSendPositions = async () => {
-        try {
-
-            const positions = result.map((res)=> (
-                {
-                    id: res.id,
-                    x: res.x,
-                    y: res.y,
-                    value: res.value,
-                    page: res.page,
-                    type: res.type
-
-                }
-            ));
-    
-            // Make a POST request to send input field positions to the backend
-            await axios.patch(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}/positions`, positions, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const title = "Envelope Sent!"
-            const description = "The recipient will recieve a mail shortly"
-            SuccessToast(title, description)
-            // console.log('Positions sent successfully');
-        } catch (error) {
-            const title = "Oops"
-            const description = "An error occured while trying to update the user inputs"
-            ErrorToast()
-            console.error('Error sending positions:', error);
         }
     };
 
@@ -149,6 +102,8 @@ const SignPdf = () => {
     // console.log("result", result);
 
     const onTextChange = (id, txt, ref) => {
+        console.log("on text change trigyy wiggy");
+        console.log("Inside text change this is the text: ", txt);
         let indx = result.findIndex(x => x.id === id);
         let item = {...result[indx]};
         item.value = txt;
@@ -191,13 +146,14 @@ const SignPdf = () => {
 
     const fetchPdf = async () => {
         try {
-            const authToken= sessionStorage.getItem('token');
+            const authToken= Cookies.get('jwt');
             const  response = await axios.get(`${DOMAIN_NAME}/pdf/pending/${id}/${user.email}`, {
                 headers: {
                     'Authorization': `Bearer ${authToken}` // Include the authorization token here
                 }
             });
             setPdf(response.data);
+            console.log("response ",response.data);
             setResult(response.data.inputFields);
             const pdfData = btoa(
                 new Uint8Array(response.data.data.data)
@@ -211,7 +167,7 @@ const SignPdf = () => {
         }
     }
 
-    const handleSaveModifiedPdf = async () => {
+    const handleSaveModifiedPdf = async (type) => {
         try {
             const existingPdfBytes = pdfBytes;
             const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -220,13 +176,13 @@ const SignPdf = () => {
             const textSize = 16;
     
             result.forEach((res) => {
-                if (res.type === "text") {
+                if (res.type === "text" && res.ref && res.ref.current) {
                     pages[res.page - 1].drawText(res.value, {
                         x: res.ref.current.offsetLeft - bounds.x,
                         y: bounds.y - res.ref.current.offsetTop - 17,
                         size: textSize,
                         font: helveticaFont,
-                        color: rgb(0.95, 0.1, 0.1),
+                        color: rgb(0, 0, 0),
                         maxWidth: res.ref.current.getBoundingClientRect().width,
                         lineHeight: 15
                     });
@@ -242,20 +198,21 @@ const SignPdf = () => {
             });
     
             const pdfBytes2 = await pdfDoc.save();
-            const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-            // Convert PDF bytes to FormData
-            const formData = new FormData();
-            formData.append('pdf',pdfBlob, { type: 'application/pdf' });
+            const pdfBlob = new Blob([pdfBytes2], { type: 'application/pdf' });
     
-            // Make a PATCH request to your backend API endpoint to save the modified PDF data
-            console.log(`${DOMAIN_NAME}/pdf/${user.email}/pdfs/${pdf._id}`);
-            const response = await axios.patch(`${DOMAIN_NAME}/pdf/${user.email}/pdfs/${pdf._id}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+                // Make a PATCH request to your backend API endpoint to save the modified PDF data
+                console.log(`${DOMAIN_NAME}/pdf/${user.email}/pdfs/${pdf._id}`);
+                const formData = new FormData();
+                // formData.append('pdf', pdfBlob, pdf.fileName);
+                formData.append('pdf', pdfBlob);
     
-            console.log('Modified PDF saved successfully:', response.data);
+                const response = await axios.patch(`${DOMAIN_NAME}/pdf/${user.email}/pdfs/${pdf._id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+    
+                console.log('Modified PDF saved successfully:', response);
         } catch (error) {
             console.error('Error saving modified PDF:', error);
         }
@@ -306,7 +263,7 @@ const SignPdf = () => {
                             <Button
                                 colorScheme='twitter'
                                 rightIcon={<FaDownload />}
-                                onClick={handleDownload}
+                                onClick={() => setButtonType("download")}
                             >
                                 Download
                             </Button>
@@ -323,7 +280,7 @@ const SignPdf = () => {
                                     isDisabled = {pageNumber === numPages?true: false}
                                 />
                             </Box>
-                            <Button colorScheme='green' isDisabled = {areAllTextEmpty} onClick={handleSaveModifiedPdf}>Submit</Button>
+                            <Button colorScheme='green' isDisabled = {areAllTextEmpty} onClick={() => handleSaveModifiedPdf()}>Submit</Button>
                             {/* <Button onClick={handleAddInputField}>Add Input</Button> Button to add input field */}
                         </Flex>
                         <Flex
@@ -375,7 +332,7 @@ const SignPdf = () => {
                                     {/* </Box> */}
                                 {/* ))} */}
                             </Document>
-}
+}                                 <ModifyPage resetButtonType = {resetButtonType} buttonType = {buttonType} pdf = {pdfBytes} result = {result} bounds = {bounds} fileName = {pdf ? pdf.fileName : "document"}/>
                         </Flex>
                 </>
                 )

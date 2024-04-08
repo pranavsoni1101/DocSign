@@ -4,7 +4,7 @@ import React, {useState,useEffect,useRef} from "react";
 function AutoTextArea(props) {
 	const textAreaRef = useRef(null);
 	const divAreaRef = useRef(null);
-	const [text, setText] = useState(props.val);
+	const [text, setText] = useState("");
 	const [textAreaHeight, setTextAreaHeight] = useState("auto");
     const [parentHeight, setParentHeight] = useState("auto");
 
@@ -24,6 +24,7 @@ function AutoTextArea(props) {
     };
     
     const onBlurHandler = () => {
+		console.log("Hello on blur triggered");
         props.onTextChange(props.unique_key,text,divAreaRef);
 	}
 

@@ -46,7 +46,6 @@ const fetchUserDetails = async (navigate, setUser, setUsersLoading, setError) =>
         // Decode the token to obtain user data
         const userData = parseJWT(token);
 
-        console.log("deeetss sheeshs", userData);
         // Set the user state with the received user data
         setUser(userData);
 

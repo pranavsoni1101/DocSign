@@ -12,11 +12,11 @@ function ModifyPage(props) {
     
     async function modifyPdf()
     {
-          const existingPdfBytes = await fetch(props.pdf).then(res => 
-            {
-                return(res.arrayBuffer());
-            })
-
+        //   const existingPdfBytes = await fetch(props.pdf).then(res => 
+        //     {
+        //         return(res.arrayBuffer());
+        //     })
+        const existingPdfBytes = props.pdf;
         const pdfDoc = await PDFDocument.load(existingPdfBytes)
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
         const pages = pdfDoc.getPages()
@@ -27,12 +27,12 @@ function ModifyPage(props) {
             {
                 console.log(res.x,res.y,res.ref.current.offsetLeft,res.ref.current.offsetTop);
                 console.log("Width",res.ref.current.getBoundingClientRect().width, res.ref.current.offsetWidth);
-                pages[res.page - 1].drawText(res.text, {
+                pages[res.page - 1].drawText(res.value, {
                     x: res.ref.current.offsetLeft - props.bounds.x,
                     y: props.bounds.y - res.ref.current.offsetTop -17,
                     size: textSize,
                     font: helveticaFont,
-                    color: rgb(0.95, 0.1, 0.1),
+                    color: rgb(0, 0, 0),
                     maxWidth: res.ref.current.getBoundingClientRect().width,
                     lineHeight: 15
                 })
@@ -57,7 +57,7 @@ function ModifyPage(props) {
         let blob = new Blob([pdfBytes], {type: "application/pdf"});
         let link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        let fileName = "na2";
+        let fileName = props.fileName;
         link.download = fileName;
         link.click();
 

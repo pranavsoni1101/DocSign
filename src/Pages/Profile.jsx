@@ -171,7 +171,7 @@ const Profile = () => {
                                     label="Click to Edit Profile" 
                                     placement='top'
                                 > */}
-                                    {pfp.profilePicture !== "null" || pfp.profilePicture !== null ?
+                                    {pfp.profilePicture !==null || pfp.profilePicture !== "null" ?
                                         <Avatar
                                             position="relative"
                                             borderRadius="full"

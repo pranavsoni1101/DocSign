@@ -11,22 +11,28 @@ const SignUp = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+
     const navigate = useNavigate();
     const toast = useToast();
 
     const handleSignUp = async (event) => {
+        setIsSubmitLoading(true);
         event.preventDefault();
         try {
             // Perform form validations
             if (!name.trim()) {
+                setIsSubmitLoading(false);
                 toastError("Name is required");
                 return;
             }
             if (!validateEmail(email)) {
+                setIsSubmitLoading(false);
                 toastError("Invalid email address");
                 return;
             }
             if (!validatePassword(password)) {
+                setIsSubmitLoading(false);
                 toastError("Password must contain at least one uppercase letter, one lowercase letter, one special character, and one number");
                 return;
             }
@@ -40,6 +46,7 @@ const SignUp = () => {
             toastSuccess("Account created successfully");
             navigate("/login");
         } catch (err) {
+            setIsSubmitLoading(false);
             if (err.response && err.response.status === 409) {
                 // Handle conflict error (email already exists)
                 toastInfo("Email address already exists. Please login instead.");
@@ -172,7 +179,12 @@ const SignUp = () => {
                                 color= "gray.200"
                             >The password must consist atleast 1 uppercase, 1 lowercase, 1 number and 1 special character</FormHelperText>
                         </FormControl>
-                        <Button w="100%" type="submit" colorScheme="green">
+                        <Button 
+                            w="100%" 
+                            type="submit" 
+                            isLoading = {isSubmitLoading}
+                            colorScheme="green"
+                        >
                             Sign Up
                         </Button>
                     </form>

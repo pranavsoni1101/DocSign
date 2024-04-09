@@ -42,6 +42,7 @@ const ViewPdf = () => {
     const [buttonType, setButtonType] = useState("");
     const [isText, setIsText] = useState(false);
     const [bounds, setBounds] = useState({});
+    const [isSendLoading, setIsSendLoading] = (false);
 
     const tempRef = useRef(null);
 
@@ -95,6 +96,7 @@ const ViewPdf = () => {
     
 
     const handleSendPositions = async () => {
+        setIsSendLoading(true);
         try {
 
             const positions = result.map((res)=> (
@@ -241,7 +243,7 @@ const ViewPdf = () => {
                                     isDisabled = {pageNumber === numPages?true: false}
                                 />
                             </Box>
-                            <Button colorScheme='green' onClick={handleSendPositions}>Send</Button>
+                            <Button colorScheme='green' onClick={handleSendPositions} isLoading= {isSendLoading}>Send</Button>
                             {/* <Button onClick={handleAddInputField}>Add Input</Button> Button to add input field */}
                         </Flex>
                         <Flex

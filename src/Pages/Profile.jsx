@@ -171,25 +171,25 @@ const Profile = () => {
                                     label="Click to Edit Profile" 
                                     placement='top'
                                 > */}
-                                    {pfp.profilePicture !==null || pfp.profilePicture !== "null" ?
-                                        <Avatar
-                                            position="relative"
-                                            borderRadius="full"
-                                            // border= "2px solid"
-                                            // borderColor= "teal"
-                                            boxSize={["5em", "10em", "15em"]}
-                                            src={`data:image/png;base64,${pfp.profilePicture}`}
-                                            _hover={{
-                                                cursor: "pointer",
-                                                boxShadow: "2xl"
-                                            }}
-                                        />
-                                        :
-                                        <Avatar
-                                            bg="teal"
-                                            boxSize="xs"
-                                        />
-                                    }
+                                        {pfp && pfp.profilePicture && pfp.profilePicture !== "null" ?
+                                            <Avatar
+                                                position="relative"
+                                                borderRadius="full"
+                                                // border= "2px solid"
+                                                // borderColor= "teal"
+                                                boxSize={["5em", "10em", "15em"]}
+                                                src={`data:image/png;base64,${pfp.profilePicture}`}
+                                                _hover={{
+                                                    cursor: "pointer",
+                                                    boxShadow: "2xl"
+                                                }}
+                                            />
+                                            :
+                                            <Avatar
+                                                bg="teal"
+                                                boxSize="xs"
+                                            />
+                                        }
                                     {/* </Tooltip> */}
                                     {isEditing ?
                                         <>

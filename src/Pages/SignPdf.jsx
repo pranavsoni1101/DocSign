@@ -48,6 +48,7 @@ const SignPdf = () => {
     const [isText, setIsText] = useState(false);
     const [bounds, setBounds] = useState({});
 
+    const [isSubmuitClickable, setIsSubmitClickable] = useState(true);
     const tempRef = useRef(null);
 
     useEffect(()=> {
@@ -169,6 +170,7 @@ const SignPdf = () => {
 
     const handleSaveModifiedPdf = async (type) => {
         try {
+            setIsSubmitClickable(false);
             const existingPdfBytes = pdfBytes;
             const pdfDoc = await PDFDocument.load(existingPdfBytes);
             const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -280,7 +282,7 @@ const SignPdf = () => {
                                     isDisabled = {pageNumber === numPages?true: false}
                                 />
                             </Box>
-                            <Button colorScheme='green' isDisabled = {areAllTextEmpty} onClick={() => handleSaveModifiedPdf()}>Submit</Button>
+                            <Button colorScheme='green' isDisabled = {isSubmuitClickable} onClick={() => handleSaveModifiedPdf()}>Submit</Button>
                             {/* <Button onClick={handleAddInputField}>Add Input</Button> Button to add input field */}
                         </Flex>
                         <Flex

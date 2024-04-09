@@ -160,7 +160,7 @@ const Envelope = () => {
                     >
                         <Box
                             p="2em"
-                            h="xs"
+                            // h="xs"
                             boxShadow="xl"
                             borderRadius="2xl"
                             backgroundColor="gray.400"

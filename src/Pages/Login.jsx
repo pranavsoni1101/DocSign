@@ -20,11 +20,14 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+
     const [isEmailError, setIsEmailError] = useState(false);
     const [isPasswordError, setIsPasswordError] = useState(false);
 
 
     const handleLogin = async (event) => {
+        setIsSubmitLoading(true);
         event.preventDefault();
         try {
             // Perform form validations
@@ -170,6 +173,7 @@ const Login = () => {
                             w = "100%"
                             colorScheme = "green"
                             // onClick={handleLogin}
+                            isLoading = {isSubmitLoading}
                             type = "submit"
                         >
                             Sign In

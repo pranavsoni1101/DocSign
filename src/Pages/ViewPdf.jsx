@@ -42,7 +42,7 @@ const ViewPdf = () => {
     const [buttonType, setButtonType] = useState("");
     const [isText, setIsText] = useState(false);
     const [bounds, setBounds] = useState({});
-    const [isSendLoading, setIsSendLoading] = (false);
+    const [isSendLoading, setIsSendLoading] = useState(false);
 
     const tempRef = useRef(null);
 

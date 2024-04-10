@@ -256,6 +256,7 @@ const SignPdf = () => {
                     />
                 ) : (
                         <>
+                        {/* <Sidebar> */}
                         <Flex
                             p="12px"
                             justify="space-between"
@@ -336,6 +337,7 @@ const SignPdf = () => {
                             </Document>
 }                                 <ModifyPage resetButtonType = {resetButtonType} buttonType = {buttonType} pdf = {pdfBytes} result = {result} bounds = {bounds} fileName = {pdf ? pdf.fileName : "document"}/>
                         </Flex>
+                        {/* </Sidebar> */}
                 </>
                 )
             }

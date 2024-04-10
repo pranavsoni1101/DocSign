@@ -21,11 +21,11 @@ import { FaSignature, FaRegEnvelope, FaDownload } from "react-icons/fa6";
 
 const LinkItems = [
   { name: 'Signature', icon: FaSignature },
-  { name: 'Date Signed', icon: FiCalendar },
-  { name: 'Name', icon: FiPenTool },
-  { name: 'Email', icon: FaRegEnvelope },
-  { name: 'Contact', icon: FiPhone },
-  { name: 'Download Pdf', icon: FaDownload },
+  // { name: 'Date Signed', icon: FiCalendar },
+  // { name: 'Name', icon: FiPenTool },
+  // { name: 'Email', icon: FaRegEnvelope },
+  // { name: 'Contact', icon: FiPhone },
+  // { name: 'Download Pdf', icon: FaDownload },
 ]
 
 export default function Sidebar({ children, toggleDrag ,handleAddInputField}) {

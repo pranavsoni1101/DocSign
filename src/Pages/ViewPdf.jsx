@@ -257,42 +257,9 @@ const ViewPdf = () => {
                                 file={`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`}
                                 onLoadSuccess={handleDocumentLoadSuccess}
                             >
-                                {/* {Array.from(new Array(numPages), (el, index) => ( */}
-                                    {/* <Box
-                                        my="12px"
-                                        // key={`page_${index + 1}`}
-                                    > */}
                                     <DrawArea getPaths = {getPaths} page = {pageNumber} flag = {flag} getBounds = {getBounds} changeFlag = {changeFlag} cursor = {isText ? "text": "default"} buttonType = {buttonType} resetButtonType = {resetButtonType}>
                                         <Page  pageNumber={pageNumber} className={"page"} />
                                     </DrawArea>
-                                        {/* Render input field if it exists for the current page */}
-                                        {/* {inputFields && inputFields.map((inputField,inputIndex) => (
-                                            <Draggable
-                                            onDrag={(e, ui) => handleDrag(index, inputIndex, e, ui)}
-                                            defaultPosition={{
-                                                    x: inputField.x,
-                                                    y: inputField.y
-                                                }}
-                                            >
-                                                <Input
-                                                    zIndex={2}
-                                                    size="xs"
-                                                    w="xs"
-                                                    placeholder={`x: ${inputField.x} y: ${inputField.y} at ${index + 1} page`}
-                                                    style={{
-                                                        position: 'absolute',
-                                                        left: inputField.x,
-                                                        top: inputField.y
-                                                    }}
-                                                    value={inputField.value}
-                                                    onChange={e =>
-                                                        handleInputChange(index, e.target.value)
-                                                    }
-                                                />
-                                            </Draggable>
-                                        ))} */}
-                                    {/* </Box> */}
-                                {/* ))} */}
                             </Document>
                         </Flex>
                     </Sidebar>

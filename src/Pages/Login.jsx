@@ -32,10 +32,12 @@ const Login = () => {
         try {
             // Perform form validations
             if (!validateEmail(email)) {
+                setIsSubmitLoading(false);
                 toastError("Invalid email address");
                 return;
             }
             if (!password.trim()) {
+                setIsSubmitLoading(false);
                 toastError("Password is required");
                 return;
             }
@@ -50,6 +52,7 @@ const Login = () => {
             toastSuccess("You have Logged In!");
             navigate("/profile");
         } catch (err) {
+            setIsSubmitLoading(false);
             if (err.response && err.response.status === 404) {
                 setIsEmailError(true);
                 toastError("User does not exist");

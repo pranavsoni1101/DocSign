@@ -21,6 +21,7 @@ const Envelope = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [inputPdfFile, setInputPdfFile] = useState(null);
+    const [recipients, setRecipients] = useState([{ name: '', email: '' }]);
     const [isOpen, setIsOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [usersLoading, setUsersLoading] = useState(true);
@@ -33,15 +34,22 @@ const Envelope = () => {
         fetchUserDetails(navigate, setUser, setUsersLoading)
     }, [])
 
-    // Handle Name input change and store to state
-    const handleNameChange = (event) => {
-        setName(event.target.value);
-    }
+    const handleRecipientChange = (event, index, field) => {
+        const { value } = event.target;
+        const updatedRecipients = [...recipients];
+        updatedRecipients[index][field] = value;
+        setRecipients(updatedRecipients);
+    };
+    
+    // // Handle Name input change and store to state
+    // const handleNameChange = (event) => {
+    //     setName(event.target.value);
+    // }
 
-    // Handle Email input change and store to state
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    }
+    // // Handle Email input change and store to state
+    // const handleEmailChange = (event) => {
+    //     setEmail(event.target.value);
+    // }
 
     // Handle File Input Change
     const handlePdfFileChange = (e) => {
@@ -53,9 +61,13 @@ const Envelope = () => {
         }, 1000)
     };
 
+    const handleAddRecipients = () => {
+        setRecipients([...recipients, { name: '', email: '' }]);
+    }
+     console.log("recipients", recipients);
     // Handle PDF upload
     const handlePdfUpload = async () => {
-        if (!name.trim() || !email.trim()) {
+        if (recipients.some(recipient => !recipient.name.trim() || !recipient.email.trim())) {
             toast({
                 position: "top",
                 variant: "left-accent",
@@ -70,8 +82,7 @@ const Envelope = () => {
         try {
             const formData = new FormData();
             formData.append('pdf', inputPdfFile);
-            formData.append('recipientName', name);
-            formData.append('recipientEmail', email);
+            formData.append('recipients', JSON.stringify(recipients));
             // Make a POST request to upload the PDF file
             const response = await axios.post(`${DOMAIN_NAME}/pdf/${user.id}/pdfs`, formData, {
                 headers: {
@@ -247,35 +258,34 @@ const Envelope = () => {
                                 size="md"
                                 as="h3"
                             >
-                                Add Recipient's Details</Heading>
-                            <FormControl
-                                isRequired
-                                mt="1em"
-                            >
-                                <FormLabel fontWeight="bold">Recipient's Name</FormLabel>
-                                <Input
-                                    type='text'
-                                    value={name}
-                                    onChange={handleNameChange}
-                                    placeholder='John Doe'
-                                    borderColor="gray.500"
-                                    focusBorderColor='gray.500'
-                                />
-                            </FormControl>
-                            <FormControl
-                                isRequired
-                                mt="1em"
-                            >
-                                <FormLabel fontWeight="bold">Recipient's Email</FormLabel>
-                                <Input
-                                    type='email'
-                                    value={email}
-                                    onChange={handleEmailChange}
-                                    placeholder='johndoe@something.com'
-                                    borderColor="gray.500"
-                                    focusBorderColor='gray.500'
-                                />
-                            </FormControl>
+                                Add Recipient&#40;s&#41; Details</Heading>
+                                {recipients.map((recipient, index) => (
+    <Box key={index}>
+        <FormControl isRequired mt="1em">
+            <FormLabel fontWeight="bold">Recipient {index + 1}'s Name</FormLabel>
+            <Input
+                type='text'
+                value={recipient.name}
+                onChange={(e) => handleRecipientChange(e, index, 'name')}
+                placeholder='John Doe'
+                borderColor="gray.500"
+                focusBorderColor='gray.500'
+            />
+        </FormControl>
+        <FormControl isRequired mt="1em">
+            <FormLabel fontWeight="bold">Recipient {index + 1}'s Email</FormLabel>
+            <Input
+                type='email'
+                value={recipient.email}
+                onChange={(e) => handleRecipientChange(e, index, 'email')}
+                placeholder='johndoe@something.com'
+                borderColor="gray.500"
+                focusBorderColor='gray.500'
+            />
+        </FormControl>
+    </Box>
+))}
+
                             <ButtonGroup
                                 mt="1em"
                             >
@@ -286,16 +296,17 @@ const Envelope = () => {
                                 >
                                     Upload
                                 </Button>
-                                {/* <Button
+                                <Button
                                     color= "primary.500"
                                     backgroundColor= "gray.500"
                                     leftIcon={<IoMdPersonAdd />}
+                                    onClick={handleAddRecipients}
                                     _hover={{
                                         backgroundColor: "gray.600"
                                     }}
                                 >
                                     Add Recipient
-                                </Button> */}
+                                </Button>
                             </ButtonGroup>
                         </Box>
                     </GridItem>

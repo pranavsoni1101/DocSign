@@ -84,7 +84,6 @@ const Profile = () => {
                     'Authorization': `Bearer ${jwt} ` // Pass the user ID in the Authorization header
                 }
             })
-            console.log("This is pfp response", response.data);
             setPfp(response.data);
         }
         catch (error) {

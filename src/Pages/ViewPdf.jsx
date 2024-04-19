@@ -31,6 +31,8 @@ const ViewPdf = () => {
     const inputFieldRef = useRef(null); // Ref for input field
     
     
+    const [pdf, setPdf] = useState(null);
+    const [pdfUrl, setPdfUrl] = useState(null);
     // Number of pages in a pdf
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
@@ -43,13 +45,24 @@ const ViewPdf = () => {
     const [isText, setIsText] = useState(false);
     const [bounds, setBounds] = useState({});
     const [isSendLoading, setIsSendLoading] = useState(false);
+    const [selectOptions, setSelectOptions] = useState([]);
+        // const selectOptions = ["Option 1", "Option 2","Option 3"];
+        // const selectOptions = ["Option 1"];
 
+
+    const [selectValue, setSelectValue] = useState(null);
+    
     const tempRef = useRef(null);
 
     useEffect(()=> {
         fetchUserDetails(navigate, setUser, setUsersLoading);
     }, []);
 
+    useEffect(() => {
+        if (user) {
+            fetchPdfData();
+        }
+    }, [user]);
     // useEffect(() => {
     //     console.log("Updated position:", inputFields);
     // }, [inputFields]);
@@ -94,6 +107,9 @@ const ViewPdf = () => {
         });
     };
     
+    const handleSelectState = (event) => {
+        setSelectValue(event.target.value)
+    }
 
     const handleSendPositions = async () => {
         setIsSendLoading(true);
@@ -104,6 +120,7 @@ const ViewPdf = () => {
                     id: res.id,
                     x: res.x,
                     y: res.y,
+                    user: res.user,
                     ref: tempRef,
                     value: res.value,
                     page: res.page,
@@ -130,13 +147,32 @@ const ViewPdf = () => {
         }
     };
 
+    const fetchPdfData = async () => {
+        try{
+            console.log("About to hit pdf route");
+            const response = await axios.get(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`);
+            const pdfData = btoa(
+                new Uint8Array(response.data.data.data)
+                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            setSelectOptions(response.data.recipients);
+            setPdf(response.data);
+            setPdfUrl(pdfData);
+            setSelectValue(selectOptions[0])
+            console.log("This is pdf data heeheh", response.data.recipients);
+        }
+        catch(error) {
+            console.log("An error occured while fetching data", error);
+        }
+    }
+
     // Input related Functions
-    const addText = () => {
+    const addText = (user) => {
         //Flag to change cursor if text
         setIsText(true);
         document.getElementById("drawArea").addEventListener("click", (e) => {
           e.preventDefault();
-          setResult(result => [...result, {id:generateKey(e.pageX), x: e.pageX, y: e.pageY -10, text: "", page: pageNumber, type: "text", ref: tempRef}]);
+          setResult(result => [...result, {id:generateKey(e.pageX), x: e.pageX, y: e.pageY -10, text: "", page: pageNumber, type: "text", ref: tempRef, user: user}]);
         }, { once: true });
     }
 
@@ -196,7 +232,7 @@ const ViewPdf = () => {
                     isShowing = "visible";
                 }
                 return(
-                    <AutoTextArea key = {res.id} unique_key = {res.id} val = {res.value} onTextChange = {onTextChange} style = {{visibility: isShowing, color: "red" ,fontWeight:'normal', fontSize: 16, zIndex:20, position: "absolute", left: res.x+'px', top: res.y +'px'}}></AutoTextArea>
+                    <AutoTextArea key = {res.id} unique_key = {res.id} user = {res.user}  val = {res.value} onTextChange = {onTextChange} style = {{visibility: isShowing, color: "red" ,fontWeight:'normal', fontSize: 16, zIndex:20, position: "absolute", left: res.x+'px', top: res.y +'px'}}></AutoTextArea>
                     //<h1 key={index} style = {{textAlign: "justify",color: "red" ,fontWeight:'normal',width: 200, height: 80,fontSize: 33+'px', fontSize: 16, zIndex:10, position: "absolute", left: res.x+'px', top: res.y +'px'}}>{res.text}</h1>
                 )
                 }
@@ -216,7 +252,7 @@ const ViewPdf = () => {
                         transform= "translate(-50%, -50%)"
                     />
                 ) : (
-                    <Sidebar handleAddInputField = {addText}>
+                    <Sidebar handleAddInputField = {addText} handleSelectState = {handleSelectState} selectValue = {selectValue} selectOptions={selectOptions}>
                         <Flex
                             p="12px"
                             justify="space-between"
@@ -253,14 +289,19 @@ const ViewPdf = () => {
                             userSelect="none"
                             alignItems="center"
                         >
-                            <Document
-                                file={`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`}
-                                onLoadSuccess={handleDocumentLoadSuccess}
-                            >
-                                    <DrawArea getPaths = {getPaths} page = {pageNumber} flag = {flag} getBounds = {getBounds} changeFlag = {changeFlag} cursor = {isText ? "text": "default"} buttonType = {buttonType} resetButtonType = {resetButtonType}>
-                                        <Page  pageNumber={pageNumber} className={"page"} />
-                                    </DrawArea>
-                            </Document>
+                            {pdfUrl? 
+                                <Document
+                                    // file={`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`}
+                                    file={`data:application/pdf;base64,${pdfUrl}`}
+                                    onLoadSuccess={handleDocumentLoadSuccess}
+                                >
+                                        <DrawArea getPaths = {getPaths} page = {pageNumber} flag = {flag} getBounds = {getBounds} changeFlag = {changeFlag} cursor = {isText ? "text": "default"} buttonType = {buttonType} resetButtonType = {resetButtonType}>
+                                            <Page  pageNumber={pageNumber} className={"page"} />
+                                        </DrawArea>
+                                </Document>
+                                :
+                                <Spinner />
+                            }
                         </Flex>
                     </Sidebar>
                 )

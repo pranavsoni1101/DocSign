@@ -6,12 +6,13 @@ const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 const fetchPendingToBeSignedPdfs = async (setPendingPdfs, setPendingPdfsLoading) => {
     try {
         const token = sessionStorage.getItem("token");
+        console.log('route ====>',`${DOMAIN_NAME}/pdf/pending/toBeSignedPdf`);
         const response = await axios.get(`${DOMAIN_NAME}/pdf/pending/toBeSignedPdf`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
-        // console.log("Pendinggggg", response.data);
+        console.log("Pendinggggg", response);
         setPendingPdfs(response.data);
         setPendingPdfsLoading(false);
     }

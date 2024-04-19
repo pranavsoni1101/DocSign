@@ -1,7 +1,7 @@
 {
   "name": "projectdocsign",
   "private": true,
-  "proxy": "http://ec2-52-66-207-75.ap-south-1.compute.amazonaws.com:3001",
+  "proxy": "http://localhost:3001",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 import {
   IconButton,
   Box,
   CloseButton,
+  Select,
   Flex,
   Icon,
   useColorModeValue,
@@ -28,16 +29,20 @@ const LinkItems = [
   // { name: 'Download Pdf', icon: FaDownload },
 ]
 
-export default function Sidebar({ children, toggleDrag ,handleAddInputField}) {
+export default function Sidebar({ children, toggleDrag ,handleAddInputField, selectOptions, selectValue,handleSelectState}) {
   // console.log("sidebar",toggleDrag);
   // const handleToggleDrag = () => toggleDrag();
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent 
         onClose={() => onClose} 
         display={{ base: 'none', md: 'block' }} 
         handleAddInputField={handleAddInputField} 
+        handleSelectState = {handleSelectState}
+        selectValue={selectValue}
+        selectOptions={selectOptions}
       />
       <Drawer
         isOpen={isOpen}
@@ -48,7 +53,7 @@ export default function Sidebar({ children, toggleDrag ,handleAddInputField}) {
         onOverlayClick={onClose}
         size="full">
         <DrawerContent>
-          <SidebarContent onClose={onClose} toggleDrag={toggleDrag} handleAddInputField={handleAddInputField}/>
+          <SidebarContent onClose={onClose} toggleDrag={toggleDrag} handleAddInputField={handleAddInputField} handleSelectState = {handleSelectState} selectValue={selectValue} selectOptions={selectOptions}/>
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
@@ -61,7 +66,7 @@ export default function Sidebar({ children, toggleDrag ,handleAddInputField}) {
 }
 
 
-const SidebarContent = ({ onClose, toggleDrag, handleAddInputField,...rest }) => {
+const SidebarContent = ({ onClose, toggleDrag, selectOptions,selectValue,handleSelectState,handleAddInputField,...rest }) => {
   return (
     <Box
       bg={useColorModeValue('white', 'gray.900')}
@@ -71,6 +76,20 @@ const SidebarContent = ({ onClose, toggleDrag, handleAddInputField,...rest }) =>
       pos="fixed"
       h="full"
       {...rest}>
+        
+      <Box px = "10px">
+        <Text
+          fontWeight= "600"
+          mt = "1em"
+        >
+          Select Signer
+        </Text>
+        <Select my="1em" variant= "filled" onChange={handleSelectState} isDisabled = {selectOptions.length >1? false: true}>
+          {selectOptions.map(option => (
+            <option key={option.email} value={option.email}>{option.email}</option>
+          ))}
+        </Select>
+      </Box>  
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="xl" fontWeight="bold">
           Standard Fields
@@ -80,6 +99,7 @@ const SidebarContent = ({ onClose, toggleDrag, handleAddInputField,...rest }) =>
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon}
           handleAddInputField={handleAddInputField}
+          selectValue = {selectValue}
         >
           {link.name}
         </NavItem>
@@ -88,10 +108,11 @@ const SidebarContent = ({ onClose, toggleDrag, handleAddInputField,...rest }) =>
   )
 }
 
-const NavItem = ({ icon, handleAddInputField, dragEnabled, children, ...rest }) => {
+const NavItem = ({ icon, handleAddInputField, dragEnabled, selectValue,children, ...rest }) => {
+  console.log("Select value change?", selectValue);
   return (
     <Box
-      onClick={handleAddInputField}
+      onClick={() => handleAddInputField(selectValue)}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}>
       <Flex

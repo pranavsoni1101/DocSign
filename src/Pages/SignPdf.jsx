@@ -285,7 +285,7 @@ const SignPdf = () => {
                                     isDisabled = {pageNumber === numPages?true: false}
                                 />
                             </Box>
-                            <Button colorScheme='green' isDisabled = {isSubmuitClickable} onClick={() => handleSaveModifiedPdf()}>Submit</Button>
+                            <Button colorScheme='green' isDisabled = {!isSubmuitClickable} onClick={() => handleSaveModifiedPdf()}>Submit</Button>
                             {/* <Button onClick={handleAddInputField}>Add Input</Button> Button to add input field */}
                         </Flex>
                         <Flex

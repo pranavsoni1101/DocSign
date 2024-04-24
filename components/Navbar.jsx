@@ -51,14 +51,14 @@ console.log(isLoggedIn);
   return (
     <Box>
       <Flex
-        bg="gray.500"
-        color={"primary.500"}
+        bg="primary.500"
+        color={"gray.100"}
         minH={'60px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
         borderStyle={'solid'}
-        borderColor={useColorModeValue('gray.200', 'gray.900')}
+        borderColor={"gray.100"}
         align={'center'}>
         <Flex
           flex={{ base: 1, md: 'auto' }}
@@ -82,7 +82,8 @@ console.log(isLoggedIn);
             href='/'
             fontWeight="bold"
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            color="primary.500"
+            color="#fff"
+            letterSpacing= "1px"
             textDecoration="none"
             _hover={{
               textDecoration: "none"
@@ -111,12 +112,16 @@ console.log(isLoggedIn);
               <Button 
                 as={Link} 
                 fontSize={'sm'} 
-                variant={'outline'} 
-                borderColor= "primary.500"
+                variant={'ghost'} 
                 href={'/login'}
-                color= "primary.500"
+                // colorScheme='primary'
+                color= "#FFF"
+                textDecoration= "none"
+                // borderColor= "primary.500"
+                // color= "primary.500"
                 _hover={{
-                  backgroundColor: "gray.900",
+                  backgroundColor: "primary.200",
+                  color: "primary.600",
                   textDecoration: "none"
                 }}
               >
@@ -127,7 +132,7 @@ console.log(isLoggedIn);
                 display={{ base: 'none', md: 'inline-flex' }}
                 fontSize={'sm'}
                 fontWeight={600}
-                color={'gray.500'}
+                color={'white'}
                 bg={'primary.500'}
                 href={'/signup'}
                 _hover={{
@@ -140,15 +145,18 @@ console.log(isLoggedIn);
             </> :
             <>
               <Button
-                backgroundColor= "gray.900"
-                color= "primary.500"
                 onClick={handleSignOut}
+                variant={"ghost"}
+                // backgroundColor= "gray.200"
+                // colorScheme='gray'
+                color= "gray.500"
+                backgroundColor= "primary.200"
                 _hover={{
-                  backgroundColor: "primary.500",
-                  color: "gray.900"
+                  backgroundColor: "primary.300",
+                  color: "#fff"
                 }}
               >
-                Sign Out</Button>
+                Log Out</Button>
             </>
           }
         </Stack>
@@ -162,8 +170,8 @@ console.log(isLoggedIn);
 }
 
 const DesktopNav = () => {
-  const linkColor = "primary.500"
-  const linkHoverColor = "primary.500"
+  const linkColor = "#fff"
+  const linkHoverColor = "gray.100"
   // const popoverContentBgColor = useColorModeValue('white', 'gray.800')
 
   return (
@@ -190,7 +198,7 @@ const DesktopNav = () => {
                 height: "3px",
                 bottom: 0,
                 left: 0,
-                backgroundColor: "primary.500",
+                backgroundColor: "white",
                 transformOrigin: "bottom right",
                 transition: "transform 0.25s ease-out",
               }}

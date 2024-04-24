@@ -116,11 +116,12 @@ import {
             <Heading fontSize={'2xl'}>Sign in to your account</Heading>
             <form onSubmit={handleLogin}>
                 <FormControl id="email">
-                <FormLabel>Email address</FormLabel>
+                <FormLabel>Email </FormLabel>
                 <Input 
                     type="email" 
                     value={email}
                     onChange={handleEmailChange}
+                    // placeholder='abc@gmail.com'
                 />
                 </FormControl>
                 <FormControl id="password">
@@ -138,7 +139,10 @@ import {
                     direction={{ base: 'column', sm: 'row' }}
                     align={'start'}
                     justify={'space-between'}>
-                    <Checkbox>Remember me</Checkbox>
+                    <Text>
+                        Do not have an account? 
+                        <Link to={"/signup"} style={{color: "#3182CE"}}> Sign Up</Link>
+                    </Text>
                     <Text color={'blue.500'}>Forgot password?</Text>
                 </Stack>
                 <Button 

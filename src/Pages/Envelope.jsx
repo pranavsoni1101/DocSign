@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import {
     Box, Container, FormControl,
     Heading, Input, Button,
-    useToast, FormLabel, Grid, GridItem, Text, ButtonGroup
+    useToast, FormLabel, Grid, GridItem, Text, ButtonGroup,
+    Divider,
+    IconButton
 } from '@chakra-ui/react';
 import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
 import fetchUserDetails from '../../utils/fetchUser';
 import { Document, Page } from 'react-pdf';
 import { LuUpload, LuLayoutTemplate } from "react-icons/lu";
-import { IoMdCloudOutline, IoMdPersonAdd } from "react-icons/io";
+import { IoMdCloudOutline, IoMdPersonAdd, IoIosClose } from "react-icons/io";
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
@@ -41,7 +43,7 @@ const Envelope = () => {
         updatedRecipients[index][field] = value;
         setRecipients(updatedRecipients);
     };
-    
+
     // // Handle Name input change and store to state
     // const handleNameChange = (event) => {
     //     setName(event.target.value);
@@ -65,7 +67,7 @@ const Envelope = () => {
     const handleAddRecipients = () => {
         setRecipients([...recipients, { name: '', email: '' }]);
     }
-     console.log("recipients", recipients);
+    console.log("recipients", recipients);
     // Handle PDF upload
     const handlePdfUpload = async () => {
         if (recipients.some(recipient => !recipient.name.trim() || !recipient.email.trim())) {
@@ -130,12 +132,21 @@ const Envelope = () => {
         setIsOpen(bool);
     }
 
+    // Handle removing a recipient by index
+    const handleRemoveRecipient = (index) => {
+        const updatedRecipients = [...recipients];
+        updatedRecipients.splice(index, 1); // Remove the recipient at the specified index
+        setRecipients(updatedRecipients);
+    };
+
+
     return (
         <>
             <Navbar />
             <Container
                 p="2em"
                 maxW="100%"
+                bgColor="gray.100"
             >
                 <Grid
                     templateRows="repeat(2, 1fr)"
@@ -152,18 +163,32 @@ const Envelope = () => {
                                 boxSize="xs"
                                 boxShadow="xl"
                                 borderRadius="2xl"
+                                bgColor= "white"
+                                position= "relative"
                             >
+                                <IconButton 
+                                    icon={<IoIosClose />}
+                                    position="absolute"
+                                    top="0.5em"
+                                    right="0.5em"
+                                    colorScheme="red"
+                                    size="sm"
+                                    borderRadius= "full"
+                                    onClick={() => setInputPdfFile(null)}
+                                    zIndex={2}
+                                />
                                 <Box
+                                    // p = "1em"
                                     border="1px solid black"
 
                                 >
                                     <Document
                                         file={inputPdfFile}
                                     >
-                                        <Page pageNumber={1} width={200} />
+                                        <Page pageNumber={1} width={187}/>
                                     </Document>
-                                    <Text>{fileName}</Text>
                                 </Box>
+                                    <Text>{fileName}</Text>
                             </Box>
                         </GridItem>
 
@@ -176,7 +201,7 @@ const Envelope = () => {
                             // h="xs"
                             boxShadow="xl"
                             borderRadius="2xl"
-                            backgroundColor="gray.400"
+                            backgroundColor="white"
                         >
                             <Box
                                 w="100%"
@@ -197,7 +222,8 @@ const Envelope = () => {
                                     w="100%"
                                     // mt="1em"
                                     textTransform="capitalize"
-                                    backgroundColor="primary.500"
+                                    colorScheme='primary'
+                                    // backgroundColor="primary.500"
                                     leftIcon={<LuUpload />}
                                     _hover={{
                                         backgroundColor: "gray.500",
@@ -217,14 +243,8 @@ const Envelope = () => {
                                 w="100%"
                                 mt="1em"
                                 textTransform="capitalize"
-                                backgroundColor="gray.500"
-                                color="primary.500"
+                                colorScheme='gray'
                                 leftIcon={<LuLayoutTemplate />}
-                                _hover={{
-                                    color: "gray.500",
-                                    backgroundColor: "primary.500",
-
-                                }}
                             >
                                 Use Template
                             </Button>
@@ -232,12 +252,8 @@ const Envelope = () => {
                                 w="100%"
                                 mt="1em"
                                 textTransform="capitalize"
-                                backgroundColor="primary.500"
+                                colorScheme='primary'
                                 leftIcon={<IoMdCloudOutline />}
-                                _hover={{
-                                    backgroundColor: "gray.500",
-                                    color: "primary.500"
-                                }}
                             >
                                 Get From Cloud
                             </Button>
@@ -251,42 +267,51 @@ const Envelope = () => {
                         <Box
                             p="2em"
                             // w="lg"
+                            bgColor= "white"
                             boxShadow="2xl"
                             // boxSize= "xs"
                             borderRadius={"xl"}
-                            backgroundColor="primary.400"
                         >
                             <Heading
                                 size="md"
                                 as="h3"
                             >
                                 Add Recipient&#40;s&#41; Details</Heading>
-                                {recipients.map((recipient, index) => (
-    <Box key={index}>
-        <FormControl isRequired mt="1em">
-            <FormLabel fontWeight="bold">Recipient {index + 1}'s Name</FormLabel>
-            <Input
-                type='text'
-                value={recipient.name}
-                onChange={(e) => handleRecipientChange(e, index, 'name')}
-                placeholder='John Doe'
-                borderColor="gray.500"
-                focusBorderColor='gray.500'
-            />
-        </FormControl>
-        <FormControl isRequired mt="1em">
-            <FormLabel fontWeight="bold">Recipient {index + 1}'s Email</FormLabel>
-            <Input
-                type='email'
-                value={recipient.email}
-                onChange={(e) => handleRecipientChange(e, index, 'email')}
-                placeholder='johndoe@something.com'
-                borderColor="gray.500"
-                focusBorderColor='gray.500'
-            />
-        </FormControl>
-    </Box>
-))}
+                            {recipients.map((recipient, index) => (
+                                <Box key={index}>
+                                    {   index >0 && index <= recipients.length && 
+                                        <Divider 
+                                            mt = "12px"
+                                        />
+                                    }
+                                    <FormControl isRequired mt="1em">
+                                        <FormLabel fontWeight="bold">Recipient {index + 1}'s Name</FormLabel>
+                                        <Input
+                                            type='text'
+                                            value={recipient.name}
+                                            onChange={(e) => handleRecipientChange(e, index, 'name')}
+                                        />
+                                    </FormControl>
+                                    <FormControl isRequired mt="1em">
+                                        <FormLabel fontWeight="bold">Recipient {index + 1}'s Email</FormLabel>
+                                        <Input
+                                            type='email'
+                                            value={recipient.email}
+                                            onChange={(e) => handleRecipientChange(e, index, 'email')}
+                                        />
+                                    </FormControl>
+                                    {index>0 &&
+                                        <Button
+                                            mt="0.5em"
+                                            colorScheme="red"
+                                            size="sm"
+                                            onClick={() => handleRemoveRecipient(index)}
+                                        >
+                                            Remove Recipient {index +1}
+                                        </Button>
+                                    }
+                                </Box>
+                            ))}
 
                             <ButtonGroup
                                 mt="1em"
@@ -299,13 +324,9 @@ const Envelope = () => {
                                     Upload
                                 </Button>
                                 <Button
-                                    color= "primary.500"
-                                    backgroundColor= "gray.500"
+                                    colorScheme='primary'
                                     leftIcon={<IoMdPersonAdd />}
                                     onClick={handleAddRecipients}
-                                    _hover={{
-                                        backgroundColor: "gray.600"
-                                    }}
                                 >
                                     Add Recipient
                                 </Button>

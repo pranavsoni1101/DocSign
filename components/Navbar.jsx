@@ -171,7 +171,7 @@ console.log(isLoggedIn);
 
 const DesktopNav = () => {
   const linkColor = "#fff"
-  const linkHoverColor = "gray.100"
+  const linkHoverColor = "orange.200"
   // const popoverContentBgColor = useColorModeValue('white', 'gray.800')
 
   return (
@@ -188,8 +188,9 @@ const DesktopNav = () => {
               p={2}
               href={navItem.href ?? '#'}
               fontSize={'sm'}
-              fontWeight={500}
+              fontWeight={600}
               color={linkColor}
+
               _after={{
                 content: '""',
                 position: "absolute",
@@ -198,7 +199,7 @@ const DesktopNav = () => {
                 height: "3px",
                 bottom: 0,
                 left: 0,
-                backgroundColor: "white",
+                backgroundColor: "orange.200",
                 transformOrigin: "bottom right",
                 transition: "transform 0.25s ease-out",
               }}

@@ -1,10 +1,12 @@
 import { extendTheme } from "@chakra-ui/react";
 import '@fontsource-variable/open-sans'
 import '@fontsource/roboto'
+// Supports weights 100-900
+import '@fontsource-variable/montserrat';
 
 const theme = extendTheme({
   fonts: {
-    heading: "Roboto, sans-serif",
+    heading: "Montserrat Variable, sans-serif",
     body: "Open Sans, sans-serif",
   },
   colors: {

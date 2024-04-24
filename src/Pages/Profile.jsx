@@ -151,7 +151,7 @@ const Profile = () => {
             ) : (
                 <>
                     <Navbar />
-                    <Container maxW="100%" p="2em" mt="1.8em">
+                    <Container maxW="100%" p="2em" bgColor= "gray.100">
                         <Grid
                             templateColumns="repeat(12, 1fr)"
                             gap={4}
@@ -163,7 +163,7 @@ const Profile = () => {
                                     p="1em"
                                     gap={5}
                                     borderRadius="xl"
-                                    bgColor="gray.500"
+                                    bgColor="primary.700"
                                     color="gray.100"
                                     boxShadow="2xl"
                                 >
@@ -212,7 +212,7 @@ const Profile = () => {
                                                             <Input
                                                                 w="100%"
                                                                 type='file'
-                                                                bg="gray.100"
+                                                                bg="white"
                                                                 color="gray.600"
                                                                 accept='image/*'
                                                                 onChange={handleProfilePictureUpload}
@@ -229,7 +229,7 @@ const Profile = () => {
                                                         <FormLabel>Name</FormLabel>
                                                         <Input
                                                             // w = "100%"
-                                                            bg="gray.100"
+                                                            bg="white"
                                                             color="gray.600"
                                                             placeholder='John Doe'
                                                             w="100%"
@@ -248,7 +248,7 @@ const Profile = () => {
                                                     <FormControl>
                                                         <FormLabel>Address</FormLabel>
                                                         <Input
-                                                            bg="gray.100"
+                                                            bg="white"
                                                             color="gray.600"
                                                             placeholder='Enter your Address..'
                                                             // borderColor= "primary.200"
@@ -266,7 +266,7 @@ const Profile = () => {
                                                     <FormControl>
                                                         <FormLabel>Contact</FormLabel>
                                                         <Input
-                                                            bg="gray.100"
+                                                            bg="white"
                                                             color="gray.600"
                                                             placeholder='+91xxxxx-xxxxx'
                                                             // borderColor= "primary.200"
@@ -302,8 +302,8 @@ const Profile = () => {
                                             </Heading>
                                             <Button
                                                 w="full"
-                                                variant="outline"
-                                                colorScheme='primary'
+                                                // variant="outline"
+                                                colorScheme='orange'
                                                 onClick={() => setIsEditing(true)}
                                             >
                                                 Edit Profile
@@ -326,8 +326,9 @@ const Profile = () => {
                                             <Flex
                                                 // w = "10em"
                                                 direction="row"
-                                                alignItems="center"
-                                                justifyContent="space-between"
+                                                alignItems="start"
+                                                justify= "start"
+                                                justifyContent="start"
                                             >
                                                 <Text
                                                     // display="inline-block"
@@ -370,20 +371,19 @@ const Profile = () => {
                             >
                                 <Box
                                     w="100%"
-                                    // h = '100%'
                                     p="2em"
-                                    color="gray.100"
-                                    bgColor="gray.500"
-                                    // boxShadow= "2xl"
+                                    bgColor="primary.700"
+                                    boxShadow= "lg"
                                     borderRadius="xl"
                                 >
                                     <Heading
                                         textAlign="center"
                                         letterSpacing="1px"
                                         textTransform="uppercase"
+                                        color= "white"
                                     >
                                         Doc
-                                        <Text as="span" color={"primary.500"}>
+                                        <Text as="span" color={"#ec7507"}>
                                             -O-
                                         </Text>
                                         Meter
@@ -399,8 +399,11 @@ const Profile = () => {
                                             borderRadius="md"
                                             border="1px solid"
                                             textTransform="uppercase"
-                                            color="primary.500"
-                                            borderColor="primary.400"
+                                            // color="primary.500"
+                                            // bg = "primary.100"
+                                            // borderColor="primary.400"
+                                            color="orange.500"
+                                            borderColor= "orange.500"
                                         >
                                             <Text
                                                 fontSize="1.4em"
@@ -430,7 +433,9 @@ const Profile = () => {
                                             border="1px solid"
                                             textTransform="uppercase"
                                             color="gray.100"
-                                            borderColor="gray.100"
+                                            borderColor= "gray.100"
+                                            // color="gray.400"
+                                            // borderColor="gray.400"
                                         >
                                             <Text
                                                 fontSize="1.4em"
@@ -459,8 +464,12 @@ const Profile = () => {
                                             w="100%"
                                             borderRadius="md"
                                             border="1px solid"
-                                            borderColor="primary.400"
-                                            color="primary.500"
+                                            color="orange.500"
+                                            borderColor= "orange.500"
+                                            // bg = "primary.100"
+
+                                            // borderColor="primary.400"
+                                            // color="primary.500"
                                         >
                                             <Text
                                                 textAlign="center"
@@ -475,14 +484,14 @@ const Profile = () => {
                                 </Box>
                                 <Box
                                     p="2em"
-                                    // h = "100%"
                                     mt="1em"
-                                    bgColor="gray.500"
+                                    bgColor="cyan.700"
+                                    boxShadow= "md"
                                     borderRadius="xl"
                                 >
                                     <Heading
                                         textTransform="uppercase"
-                                        color="gray.100"
+                                        color= "white"
                                     >
                                         Here's the uploaded PDFS
                                     </Heading>
@@ -493,7 +502,7 @@ const Profile = () => {
                                             p="12px"
                                             boxShadow="lg"
                                             borderRadius="2xl"
-                                            backgroundColor="gray.100"
+                                            backgroundColor="primary.100"
                                         >
                                             <Text
                                                 w="sm"
@@ -508,12 +517,13 @@ const Profile = () => {
                                             <Button
                                                 as={Link}
                                                 href='/createEnvelope'
-                                                backgroundColor="primary.500"
+                                                colorScheme='primary'
+                                                // backgroundColor="primary.500"
                                                 leftIcon={<FaEnvelopeOpenText />}
                                                 transition="all 0.5s ease-in-out"
                                                 _hover={{
-                                                    color: "primary.500",
-                                                    backgroundColor: "gray.500",
+                                                    // color: "primary.500",
+                                                    // backgroundColor: "gray.500",
                                                     textDecoration: "none"
                                                 }}
                                             >
@@ -526,6 +536,7 @@ const Profile = () => {
                                                 key={pdf._id}
                                                 boxShadow="lg"
                                                 borderRadius="2xl"
+                                                color={"white"}
                                                 backgroundColor="primary.500"
                                             >
                                                 <Box>
@@ -552,13 +563,15 @@ const Profile = () => {
                                                         as={Link}
                                                         href={`/pdf/${pdf._id}/${pdf.fileName}/`}
                                                         // ml="12px"
-                                                        backgroundColor="gray.500"
-                                                        color="primary.500"
-                                                        transition="all 0.5s ease-in-out"
+
+                                                        colorScheme='orange'
+                                                        // backgroundColor="gray.500"
+                                                        // color="primary.500"
+                                                        // transition="all 0.5s ease-in-out"
                                                         _hover={{
                                                             textDecoration: "none",
-                                                            backgroundColor: "gray.100",
-                                                            color: "black"
+                                                            // backgroundColor: "gray.100",
+                                                            // color: "black"
                                                         }}
                                                     >
                                                         View & Edit
@@ -597,12 +610,12 @@ const Profile = () => {
                                     p="2em"
                                     // h = "100%"
                                     mt="1em"
-                                    bgColor="gray.500"
+                                    bgColor="cyan.700"
                                     borderRadius="xl"
                                 >
                                     <Heading
                                         textTransform="uppercase"
-                                        color="gray.100"
+                                        color="white"
                                     >
                                         Pending to Sign
                                     </Heading>
@@ -613,7 +626,7 @@ const Profile = () => {
                                             p="12px"
                                             boxShadow="lg"
                                             borderRadius="lg"
-                                            backgroundColor="gray.100"
+                                            backgroundColor="primary.100"
                                         >
                                             <Text
                                                 w="sm"
@@ -633,6 +646,7 @@ const Profile = () => {
                                                     boxShadow="lg"
                                                     borderRadius="2xl"
                                                     backgroundColor="primary.500"
+                                                    color= "white"
                                                 >
                                                     <Box>
                                                         <Text

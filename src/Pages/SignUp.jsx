@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Heading, Stack, FormLabel, Input, Button, useToast, FormControl, Text, FormHelperText } from '@chakra-ui/react';
+import { Container, Heading, Stack, FormLabel, Flex, Image,Input, Button, useToast, FormControl, Text, FormHelperText } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
@@ -121,90 +121,75 @@ const SignUp = () => {
 
     return (
         <>
-            <Container maxW={"100%"} minH= {"90vh"} mb = "2em">
-                <Heading mt="1em" textAlign="center">
-                    Sign Up
-                </Heading>
-                <Text m="0 auto" mt="0.5em" maxW="md" textAlign="center">
-                    Ready to ditch the pen and paper? Let's turn those scribbles into stylish digital signatures! Sign up
-                    now and join the paperless revolution.
-                </Text>
-                <Stack m="0 auto" mt="1em" maxW="lg" p="2em" boxShadow="2xl" borderRadius="xl" backgroundColor="gray.500">
+            <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
+                <Flex p={8} flex={1} align={'center'} justify={'center'}>
+                <Stack spacing={4} w={'full'} maxW={'md'}>
+                    <Heading fontSize={'2xl'}>Create your account</Heading>
                     <form onSubmit={handleSignUp}>
-                        <FormControl isRequired mb="1em">
-                            <FormLabel color="primary.500">Name</FormLabel>
-                            <Input
-                                color="#fff"
-                                type="text"
-                                value={name}
-                                onChange={handleNameChange}
-                                placeholder="Some One"
-                                _hover={{ borderColor: "primary.500" }}
-                                _placeholder={{
-                                    color: "gray.200"
-                                }}
-                                focusBorderColor="primary.500"
-                            />
+                    <FormControl id="name">
+                        <FormLabel>Name</FormLabel>
+                        <Input 
+                            type="name" 
+                            value={name}
+                            onChange={handleNameChange}
+                            // placeholder='abc@gmail.com'
+                        />
                         </FormControl>
-                        <FormControl isRequired mb="1em">
-                            <FormLabel color="primary.500">Email</FormLabel>
-                            <Input
-                                color="#fff"
-                                type="email"
-                                value={email}
-                                onChange={handleEmailChange}
-                                placeholder="someone@email.com"
-                                _hover={{ borderColor: "primary.500" }}
-                                _placeholder={{
-                                    color: "gray.200"
-                                }}
-                                focusBorderColor="primary.500"
-                            />
+                        <FormControl id="email">
+                        <FormLabel>Email </FormLabel>
+                        <Input 
+                            type="email" 
+                            value={email}
+                            onChange={handleEmailChange}
+                            // placeholder='abc@gmail.com'
+                        />
                         </FormControl>
-                        <FormControl mb="1em" isRequired>
-                            <FormLabel color="primary.500">Password</FormLabel>
-                            <Input
-                                color="#fff"
-                                type="password"
-                                value={password}
-                                onChange={handlePasswordChange}
-                                placeholder="Type Your password"
-                                _hover={{ borderColor: "primary.500" }}
-                                _placeholder={{
-                                    color: "gray.200"
-                                }}
-                                focusBorderColor="primary.500"
-                            />
+                        <FormControl id="password">
+                        <FormLabel>
+                            Password
+                        </FormLabel>
+                        <Input 
+                            type="password" 
+                            value={password}
+                            onChange={handlePasswordChange}
+                        />
                             <FormHelperText
-                                color= "gray.200"
-                            >The password must consist atleast 1 uppercase, 1 lowercase, 1 number and 1 special character</FormHelperText>
+                                color= "gray.400"
+                            >
+                                Password must have: 1 uppercase, 1 lowercase, 1 number, and 1 special character.
+                            </FormHelperText>
                         </FormControl>
+                        <Stack spacing={6}>
+                        <Stack
+                            direction={{ base: 'column', sm: 'row' }}
+                            align={'start'}
+                            justify={'space-between'}>
+                            <Text>
+                                Already have an account? 
+                                <Link to={"/login"} style={{color: "#3182CE"}}> Log In</Link>
+                            </Text>
+                        </Stack>
                         <Button 
-                            w="100%" 
-                            type="submit" 
-                            isLoading = {isSubmitLoading}
-                            colorScheme="green"
+                            type='submit'
+                            colorScheme={'blue'} 
+                            variant={'solid'}
                         >
-                            Sign Up
+                            Sign in
                         </Button>
+                        </Stack>
                     </form>
-                    <Text 
-                        color= "gray.100"
-                        textAlign= "center"
-                    >
-                        Already have an account with us?&nbsp;
-                        <span>
-                            <Link
-                                to={"/login"}
-                                style={{color: "#FFB738", textDecoration: "underline"}}
-                            >  
-                                Log in
-                            </Link>
-                        </span>
-                    </Text>
                 </Stack>
-            </Container>
-            <Footer />
+                </Flex>
+                <Flex flex={1}>
+                <Image
+                    alt={'Login Image'}
+                    objectFit={'cover'}
+                    src={
+                    'https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                    }
+                />
+                </Flex>
+            </Stack>
         </>
     )
 }

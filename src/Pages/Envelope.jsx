@@ -11,6 +11,7 @@ import fetchUserDetails from '../../utils/fetchUser';
 import { Document, Page } from 'react-pdf';
 import { LuUpload, LuLayoutTemplate } from "react-icons/lu";
 import { IoMdCloudOutline, IoMdPersonAdd } from "react-icons/io";
+import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
@@ -131,6 +132,7 @@ const Envelope = () => {
 
     return (
         <>
+            <Navbar />
             <Container
                 p="2em"
                 maxW="100%"

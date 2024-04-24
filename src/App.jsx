@@ -7,20 +7,15 @@ import {
   Text,
   Button,
 } from '@chakra-ui/react'
-// import { pdfjs } from 'react-pdf';
 import Illustration from '../components/Illustration';
+import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-// import 'dotenv/config'
 
-
-// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-//   'pdfjs-dist/build/pdf.worker.min.js',
-//   import.meta.url,
-// ).toString();
 
 const App = () => {
   return (
     <>
+      <Navbar />
       <Container maxW={'5xl'}>
         <Stack
           textAlign={'center'}

@@ -31,6 +31,7 @@ import SuccessToast from '../../components/Toasts/SuccessToast';
 import ErrorToast from '../../components/Toasts/ErrorToast';
 import Cookies from 'js-cookie';
 import Footer from '../../components/Footer';
+import Navbar from '../../components/Navbar';
 
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
@@ -149,6 +150,7 @@ const Profile = () => {
                 />
             ) : (
                 <>
+                    <Navbar />
                     <Container maxW="100%" p="2em" mt="1.8em">
                         <Grid
                             templateColumns="repeat(12, 1fr)"

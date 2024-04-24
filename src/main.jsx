@@ -63,7 +63,7 @@ ReactDOM.createRoot(rootElement).render(
     <ChakraProvider theme={theme}>
       {/* <RouterProvider router={router}/> */}
       <BrowserRouter>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />

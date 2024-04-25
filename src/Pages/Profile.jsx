@@ -448,7 +448,7 @@ const Profile = () => {
                                                 fontSize="2em"
                                                 fontWeight="bold"
                                                 textAlign="center"
-                                                color="primary.500"
+                                                color="gray.100"
                                             >
                                                 <CountUp
                                                     start={isCounting ? 0 : null}

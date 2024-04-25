@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Heading, Box, Button, Text, Flex, Input, Spinner, IconButton, position } from '@chakra-ui/react';
 import { Page, Document, pdfjs } from 'react-pdf';
-import { useNavigate, useParams } from 'react-router-dom';
+import { redirect, useNavigate, useParams } from 'react-router-dom';
 import { FaDownload } from "react-icons/fa6";
 import Draggable from 'react-draggable';
 import axios from 'axios';
@@ -137,6 +137,7 @@ const ViewPdf = () => {
             });
             const title = "Envelope Sent!"
             const description = "The recipient will recieve a mail shortly"
+            redirect("/profile");
             SuccessToast(title, description)
             // console.log('Positions sent successfully');
         } catch (error) {

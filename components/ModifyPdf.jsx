@@ -23,13 +23,20 @@ function ModifyPage(props) {
         const textSize = 16
 
         props.result.forEach((res) => {
+            console.log("this is for each result", res);
             if(res.type === "text")
             {
-                console.log(res.x,res.y,res.ref.current.offsetLeft,res.ref.current.offsetTop);
+                console.log(res.x,res.y,res.ref.current.offsetLeft,res.ref.current.offsetTop)
+                console.log("This is x in result",Math.abs( res.ref.current.offsetLeft - props.bounds.x));
+                console.log("This is y in result",Math.abs( props.bounds.y - res.ref.current.offsetTop-17));
                 console.log("Width",res.ref.current.getBoundingClientRect().width, res.ref.current.offsetWidth);
                 pages[res.page - 1].drawText(res.value, {
-                    x: res.ref.current.offsetLeft - props.bounds.x,
-                    y: props.bounds.y - res.ref.current.offsetTop -17,
+                    // x: res.x,
+                    // y: res.y,
+                    x: Math.abs( res.ref.current.offsetLeft - props.bounds.x),
+                    // x: res.ref.current.offsetLeft - props.bounds.x,
+                    // y: props.bounds.y - res.ref.current.offsetTop -17,
+                    y: Math.abs( props.bounds.y - res.ref.current.offsetTop-17),
                     size: textSize,
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
@@ -53,8 +60,9 @@ function ModifyPage(props) {
         })
         
         const pdfBytes = await pdfDoc.save()
-
+        console.log("post download bytes", pdfBytes);
         let blob = new Blob([pdfBytes], {type: "application/pdf"});
+        console.log("Blob", blob);
         let link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         let fileName = props.fileName;

@@ -66,14 +66,15 @@ console.log(isLoggedIn);
           display={{ base: 'flex', md: 'none' }}>
           <IconButton
             onClick={onToggle}
-            color= "primary.500"
+            colorScheme='gray'
+            // color= "orange.500"
             icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
             variant={'ghost'}
             aria-label={'Toggle Navigation'}
-            _hover={{
-              backgroundColor: "primary.500",
-              color: "gray.500"
-            }}
+            // _hover={{
+            //   backgroundColor: "primary.500",
+            //   color: "gray.500"
+            // }}
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>

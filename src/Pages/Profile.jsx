@@ -157,7 +157,7 @@ const Profile = () => {
                             gap={4}
                         >
                             <GridItem
-                                colSpan={[12, 12, 3, 4, 3]}
+                                colSpan={[12, 12, 12, 4, 3]}
                             >
                                 <VStack
                                     p="1em"

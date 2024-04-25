@@ -237,7 +237,7 @@ const SignPdf = () => {
                     isShowing = "visible";
                 }
                 return(
-                    <AutoTextArea key = {res.id} unique_key = {res.id} isDisabled={isDisabled} user = {res.user} val = {res.value} onTextChange = {onTextChange} style = {{visibility: isShowing, color: "red" ,fontWeight:'normal', fontSize: 16, zIndex:20, position: "absolute", left: res.x+'px', top: res.y +'px'}}></AutoTextArea>
+                    <AutoTextArea key = {res.id} unique_key = {res.id}  user = {res.user} val = {res.value} onTextChange = {onTextChange} style = {{visibility: isShowing, color: "red" ,fontWeight:'normal', fontSize: 16, zIndex:20, position: "absolute", left:`calc(${res.x}px - 256px)`, top: res.y +'px'}}></AutoTextArea>
                     //<h1 key={index} style = {{textAlign: "justify",color: "red" ,fontWeight:'normal',width: 200, height: 80,fontSize: 33+'px', fontSize: 16, zIndex:10, position: "absolute", left: res.x+'px', top: res.y +'px'}}>{res.value}</h1>
                 )
                 }

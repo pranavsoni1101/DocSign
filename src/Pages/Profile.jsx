@@ -61,13 +61,14 @@ const Profile = () => {
     useEffect(() => {
         setIsCounting(true);
         fetchUserDetails(navigate, setUser, setUsersLoading);
-        fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
         // if(user)
         // fetchUploadedPDFs(setUploadedPdfs, setUploadedPdfsLoading, user);
     }, [navigate]);
 
     useEffect(() => {
         if (user) { // Check if user state is not null
+        fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
+
             fetchUploadedPDFs(setUploadedPdfs, setUploadedPdfsLoading, user);
             fetchUserPfp();
             setName(user.name);
@@ -483,7 +484,7 @@ const Profile = () => {
                                     </Stack>
                                 </Box>
                                 <Box
-                                    p="2em"
+                                    p={["16px","2em"]}
                                     mt="1em"
                                     bgColor="cyan.700"
                                     boxShadow= "md"
@@ -503,6 +504,9 @@ const Profile = () => {
                                             boxShadow="lg"
                                             borderRadius="2xl"
                                             backgroundColor="primary.100"
+                                            align={"center"}
+                                            justify={"space-between"}
+                                            wrap= "wrap"
                                         >
                                             <Text
                                                 w="sm"
@@ -513,7 +517,7 @@ const Profile = () => {
                                                 Ready to sprinkle some digital magic on those documents?
                                                 Let's seal the deal! Create an envelope now!
                                             </Text>
-                                            <Spacer />
+                                            {/* <Spacer /> */}
                                             <Button
                                                 as={Link}
                                                 href='/createEnvelope'
@@ -538,6 +542,9 @@ const Profile = () => {
                                                 borderRadius="2xl"
                                                 color={"white"}
                                                 backgroundColor="primary.500"
+                                                align={"center"}
+                                                justify={"space-between"}
+                                                wrap={"wrap"}
                                             >
                                                 <Box>
                                                     <FaFilePdf />
@@ -557,8 +564,10 @@ const Profile = () => {
                                                         Uploaded At: {formatDateFromISO(pdf.uploadedAt)}
                                                     </Text>
                                                 </Box>
-                                                <Spacer />
-                                                <ButtonGroup>
+                                                {/* <Spacer /> */}
+                                                <Stack
+                                                    direction={{base: "column",  md: "row"}}
+                                                >
                                                     <Button
                                                         as={Link}
                                                         href={`/pdf/${pdf._id}/${pdf.fileName}/`}
@@ -582,7 +591,7 @@ const Profile = () => {
                                                     >
                                                         <MdDelete />
                                                     </IconButton>
-                                                </ButtonGroup>
+                                                </Stack>
                                             </Flex>
                                         ))
                                             :
@@ -607,93 +616,121 @@ const Profile = () => {
                                     </Stack>
                                 </Box>
                                 <Box
-                                    p="2em"
-                                    // h = "100%"
-                                    mt="1em"
-                                    bgColor="cyan.700"
-                                    borderRadius="xl"
-                                >
-                                    <Heading
-                                        textTransform="uppercase"
-                                        color="white"
-                                    >
-                                        Pending to Sign
-                                    </Heading>
-                                    <Stack
-                                        w="100%"
-                                    >
-                                        <Flex
-                                            p="12px"
-                                            boxShadow="lg"
-                                            borderRadius="lg"
-                                            backgroundColor="primary.100"
-                                        >
-                                            <Text
-                                                w="sm"
-                                                as="h3"
-                                                fontSize="lg"
-                                                fontWeight="bold"
-                                            >
-                                                Welcome to the Unfinished Symphony:
-                                                Where Important Docs Await Your Signature!
-                                            </Text>
-                                        </Flex>
-                                        {
-                                            pendingPdfs.map((file, index) => (
-                                                <Flex
-                                                    p="12px"
-                                                    key={file._id}
-                                                    boxShadow="lg"
-                                                    borderRadius="2xl"
-                                                    backgroundColor="primary.500"
-                                                    color= "white"
-                                                >
-                                                    <Box>
-                                                        <Text
-                                                            fontWeight="600"
-                                                        >
-                                                            <FaFilePdf />
-                                                            {file.fileName}
-                                                        </Text>
-                                                        {
-                                                            file.expiryDate !== null ?
-                                                                <Text><strong>Expiry Date: </strong>{formatDateFromISO(file.expiryDate)}</Text>
-                                                                :
-                                                                <Text>Fear not, for this doc has an eternal life - it'll never expire!</Text>
-                                                        }
-                                                    </Box>
-                                                    <Spacer />
-                                                    <ButtonGroup>
-                                                        <Button
-                                                            colorScheme='green'
-                                                            onClick={() => handleAcceptToSignPdf(file._id)}
-                                                        >
-                                                            Accept to Sign
-                                                        </Button>
-                                                        <Button
-                                                            as={Link}
-                                                            href={`/sign/${file._id}/${file.fileName}`}
-                                                        >
-                                                            Sign
-                                                        </Button>
-                                                        <Button
-                                                            colorScheme='yellow'
-                                                            onClick={() => handleDelayToSignPdf(file._id)}
-                                                        >
-                                                            Delay In Signing
-                                                        </Button>
-                                                        <Button
-                                                            colorScheme='red'
-                                                            onClick={() => handleRejectToSignPdf(file._id)}
-                                                        >
-                                                            Reject
-                                                        </Button>
-                                                    </ButtonGroup>
-                                                </Flex>
-                                            ))
-                                        }
-                                    </Stack>
-                                </Box>
+    p={["16px","2em"]}
+    mt="1em"
+    bgColor="cyan.700"
+    borderRadius="xl"
+>
+    <Heading
+        textTransform="uppercase"
+        color="white"
+    >
+        Pending to Sign
+    </Heading>
+    <Stack
+        w="100%"
+    >
+        <Flex
+            p="12px"
+            boxShadow="lg"
+            borderRadius="lg"
+            backgroundColor="primary.100"
+        >
+            <Text
+                w={["100%", "100%","sm"]}
+                as="h3"
+                fontSize="lg"
+                fontWeight="bold"
+            >
+                Welcome to the Unfinished Symphony:
+                Where Important Docs Await Your Signature!
+            </Text>
+        </Flex>
+        {pendingPdfs.map((file, index) => (
+            <Flex
+                p="12px"
+                key={file._id}
+                boxShadow="lg"
+                borderRadius="2xl"
+                backgroundColor="primary.500"
+                color="white"
+                align="center"
+                justify={"space-between"}
+                wrap= "wrap"
+            >
+                <Box>
+                    <Text
+                        fontWeight="600"
+                    >
+                        <FaFilePdf />
+                        {file.fileName}
+                    </Text>
+                    {file.expiryDate !== null ? (
+                        <Text>
+                            <strong>Expiry Date: </strong>
+                            {formatDateFromISO(file.expiryDate)}
+                        </Text>
+                    ) : (
+                        <Text>
+                            Fear not, for this doc has an eternal life - it'll never expire!
+                        </Text>
+                    )}
+                </Box>
+                {/* <Spacer /> */}
+                <Stack
+                    direction={{base: "column", md: "row"}}
+                    spacing={2}
+                >
+
+                {(file.accepted || file.delayed) && (
+                    <Button
+                        as={Link}
+                        href={`/sign/${file._id}/${file.fileName}`}
+                        colorScheme='whatsapp'
+                        _hover={{
+                            textDecoration: "none",
+                        }}
+                    >
+                        Sign
+                    </Button>
+                )}
+                {file.rejected && (
+                    <Text>PDF is rejected and cannot be accessed.</Text>
+                )}
+                {(!file.accepted && !file.delayed && !file.rejected) && (
+                    <>
+                        <Button
+                            colorScheme="green"
+                            onClick={() => handleAcceptToSignPdf(file._id)}
+                        >
+                            Accept to Sign
+                        </Button>
+                        <Button
+                            colorScheme="yellow"
+                            onClick={() => handleDelayToSignPdf(file._id)}
+                        >
+                            Delay In Signing
+                        </Button>
+                        <Button
+                            as={Link}
+                            href={`/sign/${file._id}/${file.fileName}`}
+                        >
+                            Sign
+                        </Button>
+                        <Button
+                            colorScheme="red"
+                            onClick={() => handleRejectToSignPdf(file._id)}
+                        >
+                            Reject
+                        </Button>
+                    </>
+                )}
+                </Stack>
+            </Flex>
+        ))}
+    </Stack>
+</Box>
+
                             </GridItem>
                         </Grid>
                     </Container>

@@ -15,9 +15,9 @@ function DrawArea(props) {
       x: drawAreaEl.current.getBoundingClientRect().left,
       y: drawAreaEl.current.getBoundingClientRect().bottom,
     })
-    return () => {
-      document.getElementById("drawArea").removeEventListener("mouseup", handleMouseUp);
-    }
+    // return () => {
+    //   document.getElementById("drawArea").removeEventListener("mouseup", handleMouseUp);
+    // }
   },[])
 
   useEffect(() => {

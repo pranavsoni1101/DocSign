@@ -137,7 +137,7 @@ const ViewPdf = () => {
             });
             const title = "Envelope Sent!"
             const description = "The recipient will recieve a mail shortly"
-            redirect("/profile");
+            navigate("/profile");
             SuccessToast(title, description)
             // console.log('Positions sent successfully');
         } catch (error) {
@@ -159,7 +159,7 @@ const ViewPdf = () => {
             setSelectOptions(response.data.recipients);
             setPdf(response.data);
             setPdfUrl(pdfData);
-            setSelectValue(selectOptions[0])
+            setSelectValue(response.data.recipients[0].email)
             console.log("This is pdf data heeheh", response.data.recipients);
         }
         catch(error) {

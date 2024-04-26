@@ -391,7 +391,7 @@ const Profile = () => {
                                     <Stack
                                         w="100%"
                                         mt="1em"
-                                        direction="row"
+                                        direction={{base: "column", md:"row"}}
                                     >
                                         <Box
                                             p="1em"
@@ -477,7 +477,7 @@ const Profile = () => {
                                                 fontWeight="bold"
                                                 fontSize="1.4em"
                                             >
-                                                Heheh
+                                                Signed Docs
                                             </Text>
                                         </Box>
                                     </Stack>

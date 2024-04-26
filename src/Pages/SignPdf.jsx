@@ -200,6 +200,7 @@ const SignPdf = () => {
             });
     
             const pdfBytes2 = await pdfDoc.save();
+            console.log("This is pdf byteessssss in save modified pdf", pdfBytes2);
             const pdfBlob = new Blob([pdfBytes2], { type: 'application/pdf' });
     
                 // Make a PATCH request to your backend API endpoint to save the modified PDF data
@@ -215,6 +216,8 @@ const SignPdf = () => {
                 });
     
                 console.log('Modified PDF saved successfully:', response);
+                SuccessToast("Congratulations! You just signed", "The signature has been recorded and saved");
+                navigate("/profile")
         } catch (error) {
             console.error('Error saving modified PDF:', error);
         }

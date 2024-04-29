@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     Box, Container, FormControl,
     Heading, Input, Button,
-    useToast, FormLabel, Grid, GridItem, Text, ButtonGroup,
+    useToast, FormLabel, Grid, GridItem, Text, Stack,
     Divider,
     IconButton
 } from '@chakra-ui/react';
@@ -156,11 +156,11 @@ const Envelope = () => {
                 >
                     {inputPdfFile ?
                         <GridItem
-                            colSpan={3}
+                            colSpan={[12, 12, 6,3,3]}
                         >
                             <Box
-                                p="1em"
-                                boxSize="xs"
+                                p="2em"
+                                // boxSize="xs"
                                 boxShadow="xl"
                                 borderRadius="2xl"
                                 bgColor= "white"
@@ -194,11 +194,13 @@ const Envelope = () => {
 
                         : null}
                     <GridItem
-                        colSpan={3}
+                        colSpan={[12, 12, 6,3,3]}
                     >
-                        <Box
+                        <Stack
                             p="2em"
                             // h="xs"
+                            align= "center"
+                            justify={"space-around"}
                             boxShadow="xl"
                             borderRadius="2xl"
                             backgroundColor="white"
@@ -257,10 +259,10 @@ const Envelope = () => {
                             >
                                 Get From Cloud
                             </Button>
-                        </Box>
+                        </Stack>
                     </GridItem>
                     <GridItem
-                        colSpan={3}
+                        colSpan={[12, 12, 12,3,3]}
                     // colStart={1}
                     // colEnd={7}
                     >
@@ -313,7 +315,8 @@ const Envelope = () => {
                                 </Box>
                             ))}
 
-                            <ButtonGroup
+                            <Stack
+                                direction={{base: "column",  xl: "row"}}
                                 mt="1em"
                             >
                                 <Button
@@ -330,7 +333,7 @@ const Envelope = () => {
                                 >
                                     Add Recipient
                                 </Button>
-                            </ButtonGroup>
+                            </Stack>
                         </Box>
                     </GridItem>
                 </Grid>

@@ -25,7 +25,7 @@ const fetchPendingToBeSignedPdfs = async (setPendingPdfs, setPendingPdfsLoading)
 // #############################################################################################
 
 // ################################## ACCEPT TO SIGN THE PDF ###################################
-const handleAcceptToSignPdf = async (pdfID) => {
+const handleAcceptToSignPdf = async (pdfID,setPendingPdfs, setPendingPdfsLoading) => {
     try{
         const token = sessionStorage.getItem("token");
         console.log("this toke", token);
@@ -37,7 +37,7 @@ const handleAcceptToSignPdf = async (pdfID) => {
         .then(response => {
                 SuccessToast("Yay!", "You have accepted to sign the document!!")
                 console.log("Hurray Accepted!!!");
-                fetchPendingToBeSignedPdfs();
+                fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
         })
     }
     catch (error) {
@@ -49,7 +49,7 @@ const handleAcceptToSignPdf = async (pdfID) => {
 
 // #################### HANDLE DELAY IN SIGNING THE PDF ####################################
 
-const handleDelayToSignPdf = async (pdfID) => {
+const handleDelayToSignPdf = async (pdfID, setPendingPdfs, setPendingPdfsLoading) => {
     try{
         const token = sessionStorage.getItem("token");
         console.log("this toke", token);
@@ -74,7 +74,7 @@ const handleDelayToSignPdf = async (pdfID) => {
 
 // #################### HANDLE REJECTION IN NOT SIGNING THE PDF ####################
 
-const handleRejectToSignPdf = async (pdfID) => {
+const handleRejectToSignPdf = async (pdfID, setPendingPdfs, setPendingPdfsLoading) => {
     try{
         const token = sessionStorage.getItem("token");
         console.log("this toke", token);
@@ -86,7 +86,7 @@ const handleRejectToSignPdf = async (pdfID) => {
         .then(response => {
             SuccessToast("Sorry to see hear that", "You have rejected to sign the document!!")
             console.log("Hurray Rejected!!!");
-            fetchPendingToBeSignedPdfs();
+            fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
         })
     }
     catch (error) {

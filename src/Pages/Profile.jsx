@@ -701,13 +701,13 @@ const Profile = () => {
                     <>
                         <Button
                             colorScheme="green"
-                            onClick={() => handleAcceptToSignPdf(file._id)}
+                            onClick={() => handleAcceptToSignPdf(file._id,setPendingPdfs, setPendingPdfsLoading)}
                         >
                             Accept to Sign
                         </Button>
                         <Button
                             colorScheme="yellow"
-                            onClick={() => handleDelayToSignPdf(file._id)}
+                            onClick={() => handleDelayToSignPdf(file._id,setPendingPdfs, setPendingPdfsLoading)}
                         >
                             Delay In Signing
                         </Button>
@@ -719,7 +719,7 @@ const Profile = () => {
                         </Button>
                         <Button
                             colorScheme="red"
-                            onClick={() => handleRejectToSignPdf(file._id)}
+                            onClick={() => handleRejectToSignPdf(file._id,setPendingPdfs, setPendingPdfsLoading)}
                         >
                             Reject
                         </Button>

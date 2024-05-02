@@ -682,7 +682,7 @@ const Profile = () => {
                     spacing={2}
                 >
 
-                {(file.accepted || file.delayed) && (
+                {(file.accepted || file.delayed) && !file.signed && (
                     <Button
                         as={Link}
                         href={`/sign/${file._id}/${file.fileName}`}

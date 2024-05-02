@@ -201,16 +201,17 @@ const SignPdf = () => {
     
             const pdfBytes2 = await pdfDoc.save();
             console.log("This is pdf byteessssss in save modified pdf", pdfBytes2);
-            const pdfBlob = new Blob([pdfBytes2], { type: 'application/pdf' });
+            const pdfBlob = new Blob(pdfBytes2);
     
                 // Make a PATCH request to your backend API endpoint to save the modified PDF data
-                console.log(`${DOMAIN_NAME}/pdf/${user.email}/pdfs/${pdf._id}`);
+                console.log(`Signing route === ===== === ${DOMAIN_NAME}/pdf/${user.email}/pdfs/${pdf._id}`);
                 const formData = new FormData();
                 // formData.append('pdf', pdfBlob, pdf.fileName);
                 formData.append('pdf', pdfBlob);
-    
+                const token  = Cookies.get("jwt");
                 const response = await axios.patch(`${DOMAIN_NAME}/pdf/${user.email}/pdfs/${pdf._id}`, formData, {
                     headers: {
+                        'Authorization' : `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });

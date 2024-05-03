@@ -10,13 +10,14 @@ import {
     GridItem, VStack, Flex,
     IconButton, Tooltip, Stack,
     Spacer, ButtonGroup, Link,
-    FormControl, Input, FormLabel
+    FormControl, Input, FormLabel,
+    HStack
 } from '@chakra-ui/react';
 
 // Icon Imports
 import { FaFilePdf, FaSave } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
-import { MdCall, MdDelete } from "react-icons/md";
+import { MdCall, MdClose, MdDelete, MdUpload } from "react-icons/md";
 import { FaEnvelopeOpenText } from "react-icons/fa";
 
 // Built Comoponents/Functions
@@ -49,6 +50,7 @@ const Profile = () => {
     const [profilePicture, setProfilePicture] = useState(null);
     const [profilePictureName, setProfilePictureName] = useState(null);
     const [newUploadedPicture, setNewUploadedPicture] = useState(null);
+    const [newUploadedPictureName, setNewUploadedPictureName] = useState(null);
 
     // State to manage the pdfs that are uploaded by the individual user
     const [uploadedPdfs, setUploadedPdfs] = useState([]);
@@ -133,6 +135,7 @@ const Profile = () => {
         setProfilePicture(file);
         setNewUploadedPicture(URL.createObjectURL(file));
         setProfilePictureName(file.name);
+        setNewUploadedPictureName(file.name);
     };
 
     const isLoading = usersLoading || pendingPdfsLoading || uploadedPdfsLoading;
@@ -205,29 +208,69 @@ const Profile = () => {
                                                 >
                                                     <IconButton
                                                         w="fit-content"
+                                                        // float= "right"
                                                         alignSelf="flex-end"
+                                                        colorScheme='red'
                                                         icon={<IoMdClose />}
                                                         onClick={() => { setIsEditing(false); setNewUploadedPicture(null) }}
                                                     />
-                                                    <Box>
-                                                        <FormControl>
-                                                            <FormLabel>Profile Picture</FormLabel>
-                                                            <Input
-                                                                w="100%"
-                                                                type='file'
-                                                                bg="white"
-                                                                color="gray.600"
-                                                                accept='image/*'
-                                                                onChange={handleProfilePictureUpload}
-                                                            />
-                                                            {newUploadedPicture &&
-                                                                <Avatar
-                                                                    ml="12px"
-                                                                    src={newUploadedPicture}
-                                                                />
-                                                            }
-                                                        </FormControl>
-                                                    </Box>
+                                                    {/* <Box> */}
+                                                            <FormControl>
+                                                                <FormLabel>Profile Picture</FormLabel>
+                                                        <HStack
+                                                            justify= "space-evenly"
+                                                            align={"center"}
+                                                        >
+                                                                <Box
+
+                                                                    position="relative"
+                                                                    // display="inline-block"
+                                                                >
+                                                                    <IconButton
+                                                                        // w = "100%"
+                                                                        position="relative"
+                                                                        cursor="pointer"
+                                                                        icon={<MdUpload />}
+                                                                    />
+                                                                    <Input
+                                                                        w="2.6em"
+                                                                        opacity={0}     
+                                                                        cursor="pointer"
+                                                                        position= "absolute"
+                                                                        left= {0}
+                                                                        type='file'
+                                                                        bg="white"
+                                                                        color="gray.600"
+                                                                        accept='image/*'
+                                                                        zIndex={2}
+                                                                        onChange={handleProfilePictureUpload}
+                                                                    />
+                                                                </Box>
+                                                                <Spacer />
+                                                                {newUploadedPicture &&
+                                                                    <Box
+                                                                        position="relative"
+                                                                        // display="inline-block"
+                                                                        >
+                                                                        <Avatar
+                                                                            ml="12px"
+                                                                            src={newUploadedPicture}
+                                                                        />
+                                                                        <IconButton 
+                                                                            position= "absolute"
+                                                                            // right={0}
+                                                                            onClick={() => setNewUploadedPicture(null)}
+                                                                            borderRadius= "full"
+                                                                            size="16px"
+                                                                            colorScheme='red'
+                                                                            icon={<MdClose />}
+                                                                        />
+                                                                        <Text fontSize="xs" wordBreak={"12px"}>{newUploadedPictureName}</Text>
+                                                                    </Box>
+                                                                }
+                                                            </HStack>
+                                                            </FormControl>
+                                                    {/* </Box> */}
                                                     <FormControl>
                                                         <FormLabel>Name</FormLabel>
                                                         <Input

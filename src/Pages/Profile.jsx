@@ -232,19 +232,23 @@ const Profile = () => {
                                                                         cursor="pointer"
                                                                         icon={<MdUpload />}
                                                                     />
-                                                                    <Input
-                                                                        w="2.6em"
-                                                                        opacity={0}     
-                                                                        cursor="pointer"
-                                                                        position= "absolute"
-                                                                        left= {0}
-                                                                        type='file'
-                                                                        bg="white"
-                                                                        color="gray.600"
-                                                                        accept='image/*'
-                                                                        zIndex={2}
-                                                                        onChange={handleProfilePictureUpload}
-                                                                    />
+                                                                    <Tooltip hasArrow label="Upload File" placement='auto'>
+                                                                        <Input
+                                                                            w="2.6em"
+                                                                            opacity={0}     
+                                                                            cursor="pointer"
+                                                                            position= "absolute"
+                                                                            left= {0}
+                                                                            type='file'
+                                                                            bg="white"
+                                                                            color="gray.600"
+                                                                            accept='image/*'
+                                                                            zIndex={2}
+                                                                            aria-hidden = "true"
+                                                                            onChange={handleProfilePictureUpload}
+                                                                            style = {{title: ' '}}
+                                                                        />
+                                                                    </Tooltip>
                                                                 </Box>
                                                                 <Spacer />
                                                                 {newUploadedPicture &&

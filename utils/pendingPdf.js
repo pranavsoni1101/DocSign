@@ -61,7 +61,7 @@ const handleDelayToSignPdf = async (pdfID, setPendingPdfs, setPendingPdfsLoading
         .then(response => {
             SuccessToast("Umm Okay!", "You will be delayed in signing!!");
             console.log("Hurray Delayed!!!");
-            fetchPendingToBeSignedPdfs();
+            fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
         })
     }
     catch (error) {

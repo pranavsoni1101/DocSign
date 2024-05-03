@@ -15,6 +15,9 @@ import { LuUpload, LuLayoutTemplate } from "react-icons/lu";
 import { IoMdCloudOutline, IoMdPersonAdd, IoIosClose } from "react-icons/io";
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import WarningToast from '../../components/Toasts/WarningToast';
+import SuccessToast from '../../components/Toasts/SuccessToast';
+import ErrorToast from '../../components/Toasts/ErrorToast';
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
@@ -71,15 +74,7 @@ const Envelope = () => {
     // Handle PDF upload
     const handlePdfUpload = async () => {
         if (recipients.some(recipient => !recipient.name.trim() || !recipient.email.trim())) {
-            toast({
-                position: "top",
-                variant: "left-accent",
-                title: "Fields Required",
-                description: "Please enter both name and email",
-                status: "warning",
-                duration: 9000,
-                isClosable: true,
-            });
+            WarningToast("Fields Required", "Please enter both name and email");
             return;
         }
         try {
@@ -93,15 +88,7 @@ const Envelope = () => {
                     'Authorization': `Bearer ${user.id}` // Pass the user ID in the Authorization header
                 }
             });
-            toast({
-                position: "top",
-                variant: "left-accent",
-                title: 'PDF Uploaded',
-                description: 'File Uploaded Successfully',
-                status: 'success',
-                duration: 9000,
-                isClosable: true
-            })
+            SuccessToast('PDF Uploaded','File Uploaded Successfully');
             // Close the modal after successful upload
             setIsOpen(false);
 
@@ -114,15 +101,7 @@ const Envelope = () => {
             setEmail("");
             navigate(`/pdf/${newPdf.id}/${newPdf.fileName}`);
         } catch (err) {
-            toast({
-                position: "top",
-                variant: "left-accent",
-                title: "OOPS Could not upload PDF",
-                description: 'An Error Occured in Uploading the file',
-                status: 'error',
-                duration: 9000,
-                isClosable: true
-            })
+            ErrorToast("OOPS Could not upload PDF", 'An Error Occured in Uploading the file');
             console.error('Error uploading PDF:', err);
             // setError('Error uploading PDF');
         }

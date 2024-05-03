@@ -112,6 +112,8 @@ const Profile = () => {
         })
             .then(response => {
                 setIsEditing(false);
+                const {token} = response.data;
+                Cookies.set('jwt', token); // Using js-cookie library
                 const title = "Details Updated!";
                 const description = "That's great your details have been saved"
                 SuccessToast(title, description);

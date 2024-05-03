@@ -15,6 +15,8 @@ import {
   import Cookies from 'js-cookie';
   import React, { useState } from 'react';
   import { Link, useNavigate } from 'react-router-dom';
+import ErrorToast from '../../components/Toasts/ErrorToast';
+import SuccessToast from '../../components/Toasts/SuccessToast';
 //   import Footer from '../../components/Footer';
   const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
   const Login = () => {
@@ -38,12 +40,12 @@ import {
             // Perform form validations
             if (!validateEmail(email)) {
                 setIsSubmitLoading(false);
-                toastError("Invalid email address");
+                ErrorToast("Error","Invalid email address");
                 return;
             }
             if (!password.trim()) {
                 setIsSubmitLoading(false);
-                toastError("Password is required");
+                ErrorToast("Error","Password is required");
                 return;
             }
 
@@ -54,18 +56,18 @@ import {
             const data = response.data;
             Cookies.set("jwt", data.token)
             sessionStorage.setItem('token', data.token);
-            toastSuccess("You have Logged In!");
+            SuccessToast("Success","You have Logged In!");
             navigate("/profile");
         } catch (err) {
             setIsSubmitLoading(false);
             if (err.response && err.response.status === 404) {
                 setIsEmailError(true);
-                toastError("User does not exist");
+                ErrorToast("Error","User does not exist");
             } else if (err.response && err.response.status === 401) {
                 setIsPasswordError(true)
-                toastError("Invalid email or password");
+                ErrorToast("Error","Invalid email or password");
             } else {
-                toastError("An error occurred while trying to log you in");
+                ErrorToast("Error","An error occurred while trying to log you in");
                 console.error("Oops login error", err);
             }
         }
@@ -83,30 +85,6 @@ import {
         // Basic email validation using regex
         const re =/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
         return re.test(email);
-    }
-
-    const toastSuccess = (message) => {
-        toast({
-            position: "top",
-            variant: "left-accent",
-            title: "Success",
-            description: message,
-            status: "success",
-            duration: 9000,
-            isClosable: true
-        });
-    }
-
-    const toastError = (message) => {
-        toast({
-            position: "top",
-            variant: "left-accent",
-            title: "Error",
-            description: message,
-            status: "error",
-            duration: 9000,
-            isClosable: true
-        });
     }
 
     return (

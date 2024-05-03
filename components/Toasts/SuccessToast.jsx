@@ -10,7 +10,7 @@ const SuccessToast = (title, description) => {
             title: title,
             description: description,
             status: "success",
-            duration: 9000,
+            duration: 1200,
             isClosable: true
         })
     )

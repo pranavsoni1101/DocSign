@@ -10,7 +10,7 @@ const ErrorToast = (title, description) => {
             title: title,
             description: description,
             status: "error",
-            duration: 9000,
+            duration: 1200,
             isClosable: true
         })
     )

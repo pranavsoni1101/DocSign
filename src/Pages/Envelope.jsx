@@ -5,7 +5,7 @@ import {
     Box, Container, FormControl,
     Heading, Input, Button,
     useToast, FormLabel, Grid, GridItem, Text, Stack,
-    Divider,
+    Divider, Flex,
     IconButton
 } from '@chakra-ui/react';
 import UploadPdfModal from '../../components/ModalsPopover/UploadPdfModal';
@@ -135,11 +135,12 @@ const Envelope = () => {
                 >
                     {inputPdfFile ?
                         <GridItem
-                            colSpan={[12, 12, 6,3,3]}
+                            colSpan={[12, 12, 6,4,4]}
                         >
                             <Box
                                 p="2em"
                                 // boxSize="xs"
+                                h = "100%"
                                 boxShadow="xl"
                                 borderRadius="2xl"
                                 bgColor= "white"
@@ -173,13 +174,13 @@ const Envelope = () => {
 
                         : null}
                     <GridItem
-                        colSpan={[12, 12, 6,3,3]}
+                        colSpan={[12, 12, 6,4,4]}
                     >
                         <Stack
                             p="2em"
-                            // h="xs"
+                            h="100%"
                             align= "center"
-                            justify={"space-around"}
+                            justify={"center"}
                             boxShadow="xl"
                             borderRadius="2xl"
                             backgroundColor="white"
@@ -240,31 +241,31 @@ const Envelope = () => {
                             </Button>
                         </Stack>
                     </GridItem>
+                    {recipients.map((recipient, index) => (
+
                     <GridItem
-                        colSpan={[12, 12, 12,3,3]}
-                    // colStart={1}
-                    // colEnd={7}
+                        colSpan={[12, 12, 12,4,4]}
+                        key={index}
                     >
-                        <Box
+                        <Flex
                             p="2em"
-                            // w="lg"
+                            h = "100%"
+                            w="full"
+                            align= "stretch"
+                            justify="center"
+                            direction="column"
                             bgColor= "white"
                             boxShadow="2xl"
                             // boxSize= "xs"
                             borderRadius={"xl"}
+                            position="relative"
                         >
                             <Heading
                                 size="md"
                                 as="h3"
                             >
-                                Add Recipient&#40;s&#41; Details</Heading>
-                            {recipients.map((recipient, index) => (
-                                <Box key={index}>
-                                    {   index >0 && index <= recipients.length && 
-                                        <Divider 
-                                            mt = "12px"
-                                        />
-                                    }
+                                Add Recipient&apos;s Details</Heading>
+                                <Box >
                                     <FormControl isRequired mt="1em">
                                         <FormLabel fontWeight="bold">Recipient {index + 1}'s Name</FormLabel>
                                         <Input
@@ -282,18 +283,21 @@ const Envelope = () => {
                                         />
                                     </FormControl>
                                     {index>0 &&
-                                        <Button
-                                            mt="0.5em"
-                                            colorScheme="red"
-                                            size="sm"
-                                            onClick={() => handleRemoveRecipient(index)}
-                                        >
-                                            Remove Recipient {index +1}
-                                        </Button>
+                                    <IconButton 
+                                    icon={<IoIosClose />}
+                                    position="absolute"
+                                    top="0.5em"
+                                    right="0.5em"
+                                    colorScheme="red"
+                                    size="sm"
+                                    borderRadius= "full"
+                                    onClick={() => handleRemoveRecipient(index)}
+                                    zIndex={2}
+                                />
                                     }
                                 </Box>
-                            ))}
-
+                                {
+                                    (index === recipients.length-1) &&
                             <Stack
                                 direction={{base: "column",  xl: "row"}}
                                 mt="1em"
@@ -305,6 +309,7 @@ const Envelope = () => {
                                 >
                                     Upload
                                 </Button>
+                                
                                 <Button
                                     colorScheme='primary'
                                     leftIcon={<IoMdPersonAdd />}
@@ -313,8 +318,11 @@ const Envelope = () => {
                                     Add Recipient
                                 </Button>
                             </Stack>
-                        </Box>
+                                }
+                        </Flex>
                     </GridItem>
+                ))}
+
                 </Grid>
             </Container>
             <Footer />

@@ -150,17 +150,18 @@ const ViewPdf = () => {
 
     const fetchPdfData = async () => {
         try{
-            console.log("About to hit pdf route");
             const response = await axios.get(`${DOMAIN_NAME}/pdf/${user.id}/pdfs/${id}`);
+            console.log("About to hit pdf route", response.data);
             const pdfData = btoa(
-                new Uint8Array(response.data.data.data)
+                new Uint8Array(response.data.decryptedData)
                     .reduce((data, byte) => data + String.fromCharCode(byte), '')
             );
-            setSelectOptions(response.data.recipients);
-            setPdf(response.data);
-            setPdfUrl(pdfData);
-            setSelectValue(response.data.recipients[0].email)
-            console.log("This is pdf data heeheh", response.data.recipients);
+            console.log("pdf data", response.data.pdf);
+            setSelectOptions(response.data.pdf.recipients);
+            setPdf(response.data.pdf);
+            setPdfUrl(response.data.decryptedData);
+            setSelectValue(response.data.pdf.recipients[0].email)
+            console.log("This is pdf data heeheh", response.data.pdf.recipients);
         }
         catch(error) {
             console.log("An error occured while fetching data", error);
@@ -173,7 +174,7 @@ const ViewPdf = () => {
         setIsText(true);
         document.getElementById("drawArea").addEventListener("click", (e) => {
           e.preventDefault();
-          setResult(result => [...result, {id:generateKey(e.pageX), x: e.pageX, y: e.pageY -10, text: "", page: pageNumber, type: "text", ref: tempRef, user: user}]);
+          setResult(result => [...result, {id:generateKey(e.pageX), x: (e.pageX/window.innerWidth) *100 , y: e.pageY -10, text: "", page: pageNumber, type: "text", ref: tempRef, user: user}]);
         }, { once: true });
     }
 
@@ -233,7 +234,7 @@ const ViewPdf = () => {
                     isShowing = "visible";
                 }
                 return(
-                    <AutoTextArea key = {res.id} unique_key = {res.id} user = {res.user}  val = {res.value} onTextChange = {onTextChange} style = {{visibility: isShowing, color: "red" ,fontWeight:'normal', fontSize: 16, zIndex:20, position: "absolute", left: res.x+'px', top: res.y +'px'}}></AutoTextArea>
+                    <AutoTextArea key = {res.id} unique_key = {res.id} user = {res.user}  val = {res.value} onTextChange = {onTextChange} style = {{visibility: isShowing, color: "red" ,fontWeight:'normal', fontSize: 16, zIndex:20, position: "absolute", left: res.x+'%', top: res.y +'px'}}></AutoTextArea>
                     //<h1 key={index} style = {{textAlign: "justify",color: "red" ,fontWeight:'normal',width: 200, height: 80,fontSize: 33+'px', fontSize: 16, zIndex:10, position: "absolute", left: res.x+'px', top: res.y +'px'}}>{res.text}</h1>
                 )
                 }

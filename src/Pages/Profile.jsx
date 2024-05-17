@@ -142,6 +142,10 @@ const Profile = () => {
 
     const uploadedPdfsLength = uploadedPdfs.length;
     const pendingToSignPdfLength = pendingPdfs.length;
+    const rejectedPdfLength = pendingPdfs.reduce((count, obj) => {
+        return count + (obj.rejected ? 1 : 0);
+      }, 0);
+          // const rejectedPdfsLength = 
 
     return (
         <>
@@ -527,7 +531,21 @@ const Profile = () => {
                                                 fontWeight="bold"
                                                 fontSize="1.4em"
                                             >
-                                                Signed Docs
+                                                Rejected Docs
+                                            </Text>
+                                            <Text
+                                                fontSize="2em"
+                                                fontWeight="bold"
+                                                textAlign="center"
+                                                color="orange.500"
+                                            >
+                                                <CountUp
+                                                    start={isCounting ? 0 : null}
+                                                    end={rejectedPdfLength}
+                                                    duration={5}
+                                                >
+                                                    <span ref={countUpRef} />
+                                                </CountUp>
                                             </Text>
                                         </Box>
                                     </Stack>
@@ -636,7 +654,7 @@ const Profile = () => {
                                                     </Button>
                                                     <IconButton
                                                         colorScheme='red'
-                                                        onClick={() => handleDeleteUploadedPdf(pdf._id, user, setUploadedPdfs, setUploadedPdfsLoading)}
+                                                        onClick={() => handleDeleteUploadedPdf(pdf._id, user, setUploadedPdfs, setUploadedPdfsLoading, setPendingPdfs, setPendingPdfsLoading)}
                                                     >
                                                         <MdDelete />
                                                     </IconButton>

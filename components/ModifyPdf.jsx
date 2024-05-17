@@ -27,22 +27,30 @@ function ModifyPage(props) {
             if(res.type === "text")
             {
                 console.log(res.x,res.y,res.ref.current.offsetLeft,res.ref.current.offsetTop)
+                console.log("props", props.bounds.x, props.bounds.y);
+                console.log("This is x in result res x",Math.abs( res.ref.current.offsetLeft - res.x));
                 console.log("This is x in result",Math.abs( res.ref.current.offsetLeft - props.bounds.x));
+                console.log("This is y in result res y",Math.abs( res.y - res.ref.current.offsetTop+17));
                 console.log("This is y in result",Math.abs( props.bounds.y - res.ref.current.offsetTop-17));
                 console.log("Width",res.ref.current.getBoundingClientRect().width, res.ref.current.offsetWidth);
                 pages[res.page - 1].drawText(res.value, {
                     // x: res.x,
                     // y: res.y,
-                    x: Math.abs( res.ref.current.offsetLeft - props.bounds.x),
+                    // x: Math.abs(res.x),
+                    x: Math.abs(res.ref.current.offsetWidth + res.x),
+                    // x: Math.abs( res.ref.current.offsetLeft - res.x),
+                    // x: Math.abs( res.ref.current.offsetLeft - props.bounds.x),
                     // x: res.ref.current.offsetLeft - props.bounds.x,
                     // y: props.bounds.y - res.ref.current.offsetTop -17,
-                    y: Math.abs( props.bounds.y - res.ref.current.offsetTop-17),
+                    // y: Math.abs( res.y - res.ref.current.offsetTop+17),
+                    y: Math.abs( res.y +res.ref.current.offsetTop - res.ref.current.offsetHeight -140),
+                    // y: Math.abs( props.bounds.y - res.ref.current.offsetTop-17),
                     size: textSize,
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
                     maxWidth: res.ref.current.getBoundingClientRect().width,
                     lineHeight: 15
-                })
+                })  
             }
             if(res.type === "freehand")
             {

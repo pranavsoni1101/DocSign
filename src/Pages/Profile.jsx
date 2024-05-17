@@ -142,6 +142,7 @@ const Profile = () => {
 
     const uploadedPdfsLength = uploadedPdfs.length;
     const pendingToSignPdfLength = pendingPdfs.length;
+    // const rejectedPdfsLength = 
 
     return (
         <>

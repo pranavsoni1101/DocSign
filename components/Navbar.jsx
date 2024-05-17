@@ -27,9 +27,7 @@ import Cookies from 'js-cookie';
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-console.log(isLoggedIn);
   useEffect(() => {
-    console.log("Initial run");
     const token = Cookies.get('jwt');
     if(token){
       setIsLoggedIn(prevLoggedIn => {

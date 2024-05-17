@@ -3,6 +3,7 @@ import React from 'react';
 import ErrorToast from "../components/Toasts/ErrorToast";
 import SuccessToast from "../components/Toasts/SuccessToast";
 import Cookies from "js-cookie";
+import { fetchPendingToBeSignedPdfs } from "./pendingPdf";
 
 const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
 
@@ -26,7 +27,7 @@ const fetchUploadedPDFs = async (setUploadedPdfs, setUploadedPdfsLoading, user) 
 };
 
     // DELETE delete a PDF file by ID
-    const handleDeleteUploadedPdf = async (pdfId, user, setUploadedPdfs, setUploadedPdfsLoading) => {
+    const handleDeleteUploadedPdf = async (pdfId, user, setUploadedPdfs, setUploadedPdfsLoading, setPendingPdfs, setPendingPdfsLoading) => {
         try {
             
             // Make a DELETE request to delete the PDF file
@@ -36,7 +37,7 @@ const fetchUploadedPDFs = async (setUploadedPdfs, setUploadedPdfsLoading, user) 
                 }
             });
             fetchUploadedPDFs(setUploadedPdfs, setUploadedPdfsLoading, user);
-
+            fetchPendingToBeSignedPdfs(setPendingPdfs, setPendingPdfsLoading);
             const title ="PDF Deleted!";
             const description = "File Deleted Successfully"; 
 

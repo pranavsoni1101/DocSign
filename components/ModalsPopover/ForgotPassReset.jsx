@@ -30,7 +30,8 @@ const ForgotPassReset  = ({isOpen, onClose, email}) => {
                     password
                 });
                 console.log("Your success res here", response);
-                navigate("/login");
+                // navigate("/login");
+                window.location.reload();
                 SuccessToast("Password Changed Successfully", "Please Login")
             }
         }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import WarningToast from "../../components/Toasts/WarningToast";
 
 // Chakra UI imports
 import {
@@ -147,6 +148,20 @@ const Profile = () => {
       }, 0);
           // const rejectedPdfsLength = 
 
+    const handlePhoneChange = (event) => {
+        const inputValue = event.target.value;
+        // Regular expression to validate phone numbers
+        const phoneRegex = /^[+]?[0-9]*$/;
+        // Check if the input value matches the regex pattern
+        if ((phoneRegex.test(inputValue) || inputValue === '')) {
+            setPhone(inputValue);
+            // If the input value is valid or empty, update the state
+        }
+        else{
+            WarningToast("Invaild Input", "Enter the correct phone number")
+        }
+
+    }
     return (
         <>
             {isLoading ? (
@@ -325,7 +340,7 @@ const Profile = () => {
                                                             placeholder='+91xxxxx-xxxxx'
                                                             // borderColor= "primary.200"
                                                             value={phone}
-                                                            onChange={(event) => setPhone(event.target.value)}
+                                                            onChange={handlePhoneChange}
                                                             focusBorderColor='primary.500'
                                                             _placeholder={{
                                                                 color: "gray.500"

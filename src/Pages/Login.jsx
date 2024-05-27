@@ -9,7 +9,8 @@ import {
     Input,
     Stack,
     Image,
-    useToast
+    useToast,
+    useDisclosure
   } from '@chakra-ui/react';
   import axios from 'axios';
   import Cookies from 'js-cookie';
@@ -17,6 +18,9 @@ import {
   import { Link, useNavigate } from 'react-router-dom';
 import ErrorToast from '../../components/Toasts/ErrorToast';
 import SuccessToast from '../../components/Toasts/SuccessToast';
+import { FcGoogle } from "react-icons/fc";
+import ForgotPassGetMail from '../../components/ModalsPopover/ForgotPassGetMailModal';
+
 //   import Footer from '../../components/Footer';
   const DOMAIN_NAME = import.meta.env.VITE_DOMAIN_NAME;
   const Login = () => {
@@ -32,6 +36,7 @@ import SuccessToast from '../../components/Toasts/SuccessToast';
     const [isEmailError, setIsEmailError] = useState(false);
     const [isPasswordError, setIsPasswordError] = useState(false);
 
+    const {isOpen, onOpen, onClose} = useDisclosure()
 
     const handleLogin = async (event) => {
         setIsSubmitLoading(true);
@@ -116,19 +121,41 @@ import SuccessToast from '../../components/Toasts/SuccessToast';
                 <Stack
                     direction={{ base: 'column', sm: 'row' }}
                     align={'start'}
-                    justify={'space-between'}>
+                    justify={'space-between'}
+                    mt = "10px"
+                    >
                     <Text>
                         Do not have an account? 
                         <Link to={"/signup"} style={{color: "#3182CE"}}> Sign Up</Link>
                     </Text>
-                    <Text color={'blue.500'}>Forgot password?</Text>
+                    <Button 
+                        color={'blue.500'} 
+                        variant='link' 
+                        fontWeight= "normal"
+                        onClick={onOpen}
+                    >
+                        Forgot password?
+                    </Button>
+                    <ForgotPassGetMail open = {isOpen} close = {onClose}/>
                 </Stack>
                 <Button 
                     type='submit'
+                    isLoading={isSubmitLoading}
                     colorScheme={'blue'} 
                     variant={'solid'}
                 >
                     Sign in
+                </Button>
+                <Text 
+                    textAlign= "center"
+                    fontWeight= "bold"
+                >
+                    OR
+                </Text>
+                <Button
+                    fontSize="xl"
+                >
+                    <FcGoogle />
                 </Button>
                 </Stack>
             </form>
